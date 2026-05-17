@@ -1,0 +1,96 @@
+#==============================================================================
+# ■ FO_Target_BossBar
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor: ChatGPT + Caio
+# Versão: 1.1
+# Data: 17/05/2026
+#------------------------------------------------------------------------------
+# CHANGELOG v1.1:
+# - Guard fo_hp/fo_maxhp nil — evita NoMethodError com alvos sem HP
+# - Guard disposed? no refresh e dispose
+#==============================================================================
+
+class FO_Target_BossBar
+
+  def initialize
+    create_sprite
+  end
+
+  def create_sprite
+    @sprite        = Sprite.new
+    @sprite.bitmap = Bitmap.new(640, 64)
+    @sprite.z      = 9998   # 9998 para não sobrepor HUD (z=9999)
+
+    font      = @sprite.bitmap.font
+    font.name = "Arial"
+    font.size = 22
+    font.bold = true
+  end
+
+  def update
+    refresh
+  end
+
+  def refresh
+    return if @sprite.nil? || @sprite.disposed?
+    bitmap = @sprite.bitmap
+    return if bitmap.nil?
+
+    bitmap.clear
+
+    if $fo_target.nil? || $fo_target_type != :boss ||
+       !$fo_target.respond_to?(:fo_hp)
+      @sprite.visible = false
+      return
+    end
+
+    @sprite.visible = true
+
+    hp    = $fo_target.fo_hp.to_i
+    maxhp = [$fo_target.fo_maxhp.to_i, 1].max
+    rate  = hp.to_f / maxhp
+
+    filled_width = (500 * rate).to_i
+
+    bitmap.fill_rect(70, 26, 500, 16, Color.new(40, 40, 40))
+    bitmap.fill_rect(70, 26, filled_width, 16, Color.new(220, 50, 50))
+
+    bitmap.font.color = Color.new(255, 255, 255)
+    bitmap.draw_text(0, 0,  640, 24, $fo_target_name.to_s, 1)
+    bitmap.draw_text(0, 22, 640, 20, "#{hp} / #{maxhp}", 1)
+
+    @sprite.x = 0
+    @sprite.y = 10
+  end
+
+  def dispose
+    return if @sprite.nil?
+    @sprite.bitmap.dispose unless @sprite.bitmap.nil?
+    @sprite.dispose
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_target_bossbar_main_v11   main
+  alias fo_target_bossbar_update_v11 update
+
+  def main
+    @fo_target_bossbar = FO_Target_BossBar.new
+    fo_target_bossbar_main_v11
+    @fo_target_bossbar.dispose if @fo_target_bossbar
+  end
+
+  def update
+    fo_target_bossbar_update_v11
+    @fo_target_bossbar.update if @fo_target_bossbar
+  end
+
+end

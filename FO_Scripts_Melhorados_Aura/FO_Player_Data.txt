@@ -1,0 +1,104 @@
+#==============================================================================
+# ■ FO_Player_Data
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor....: ChatGPT + Caio
+# Versão...: 1.1
+# Data.....: 17/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema de dados do jogador do Fields Online.
+# CHANGELOG v1.1:
+# - check_level_up usa while — encadeia múltiplos level-ups corretamente
+# - EXP overflow preservado (exp restante não é perdida)
+# - Removido código de teste do initialize da Engine
+#==============================================================================
+
+class FO_Player_Data
+
+  attr_accessor :name
+  attr_accessor :level
+  attr_accessor :hp
+  attr_accessor :mp
+  attr_accessor :exp
+  attr_accessor :gold
+  attr_accessor :player_class
+
+  def initialize
+    @name         = "Caio"
+    @level        = 1
+    @hp           = 100
+    @mp           = 30
+    @exp          = 0
+    @gold         = 500
+    @player_class = "Aventureiro"
+    FO_CORE.debug("FO_Player_Data iniciado")
+    show_player_data
+  end
+
+  def show_player_data
+    FO_CORE.debug("==============================")
+    FO_CORE.debug("PLAYER DATA")
+    FO_CORE.debug("Nome...: #{@name}")
+    FO_CORE.debug("Level..: #{@level}")
+    FO_CORE.debug("HP.....: #{@hp}")
+    FO_CORE.debug("MP.....: #{@mp}")
+    FO_CORE.debug("EXP....: #{@exp}")
+    FO_CORE.debug("Gold...: #{@gold}")
+    FO_CORE.debug("Classe.: #{@player_class}")
+    FO_CORE.debug("==============================")
+  end
+
+  def gain_exp(amount)
+    return if amount <= 0
+    @exp += amount
+    FO_CORE.debug("#{@name} ganhou #{amount} EXP")
+    check_level_up
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Verifica level up — while encadeia múltiplos levels
+  #--------------------------------------------------------------------------
+  def check_level_up
+    while @exp >= required_exp
+      @exp   -= required_exp   # preserva overflow em vez de zerar
+      @level += 1
+      @hp    += 20
+      @mp    += 10
+      FO_CORE.debug("LEVEL UP!")
+      FO_CORE.debug("#{@name} agora está no nível #{@level}")
+    end
+  end
+
+  #--------------------------------------------------------------------------
+  # ● EXP necessária para o próximo nível
+  #--------------------------------------------------------------------------
+  def required_exp
+    @level * 100
+  end
+
+end
+
+#==============================================================================
+# ■ FO_Engine
+#==============================================================================
+
+class FO_Engine
+
+  alias fo_player_initialize initialize
+
+  def initialize
+    fo_player_initialize
+    @player_data = FO_Player_Data.new
+    # Remova linhas de teste abaixo em produção:
+    # @player_data.gain_exp(100)
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_CORE.debug("FO_Player_Data carregado com sucesso")

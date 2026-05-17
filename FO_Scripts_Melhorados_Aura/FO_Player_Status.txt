@@ -1,0 +1,118 @@
+#==============================================================================
+# ■ FO_Player_Status
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor....: ChatGPT + Caio
+# Versão...: 1.1
+# Data.....: 17/05/2026
+#------------------------------------------------------------------------------
+# CHANGELOG v1.1:
+# - Guards nil em @player_stats para evitar NoMethodError
+# - Removido código de teste do initialize da Engine
+# - Adicionado método revive
+#==============================================================================
+
+class FO_Player_Status
+
+  attr_accessor :current_hp
+  attr_accessor :current_mp
+  attr_accessor :dead
+
+  def initialize(player_stats)
+    @player_stats = player_stats
+    @current_hp   = @player_stats ? @player_stats.max_hp : 100
+    @current_mp   = @player_stats ? @player_stats.max_mp : 30
+    @dead         = false
+    FO_CORE.debug("FO_Player_Status iniciado")
+    show_status
+  end
+
+  def show_status
+    FO_CORE.debug("==============================")
+    FO_CORE.debug("PLAYER STATUS")
+    FO_CORE.debug("HP Atual.: #{@current_hp}")
+    FO_CORE.debug("MP Atual.: #{@current_mp}")
+    FO_CORE.debug("Morto?...: #{@dead}")
+    FO_CORE.debug("==============================")
+  end
+
+  def take_damage(amount)
+    return if @dead
+    return if amount <= 0
+    @current_hp -= amount
+    @current_hp  = 0 if @current_hp < 0
+    FO_CORE.debug("Jogador recebeu #{amount} dano")
+    FO_CORE.debug("HP Atual: #{@current_hp}")
+    check_death
+  end
+
+  def heal(amount)
+    return if @dead
+    return if amount <= 0
+    max = @player_stats ? @player_stats.max_hp : @current_hp
+    @current_hp  = [@current_hp + amount, max].min
+    FO_CORE.debug("Jogador curou #{amount} HP — HP: #{@current_hp}")
+  end
+
+  def spend_mp(amount)
+    return false if @current_mp < amount
+    @current_mp -= amount
+    FO_CORE.debug("Jogador gastou #{amount} MP — MP: #{@current_mp}")
+    true
+  end
+
+  def regenerate
+    return if @dead
+    return unless @player_stats
+    @current_hp = [@current_hp + 1, @player_stats.max_hp].min
+    @current_mp = [@current_mp + 1, @player_stats.max_mp].min
+    FO_CORE.debug("Regeneração automática")
+  end
+
+  def revive
+    return unless @dead
+    @dead       = false
+    @current_hp = @player_stats ? @player_stats.max_hp / 4 : 1
+    FO_CORE.debug("Jogador reviveu")
+  end
+
+  def check_death
+    if @current_hp <= 0
+      @dead = true
+      FO_CORE.debug("O jogador morreu")
+    end
+  end
+
+end
+
+#==============================================================================
+# ■ FO_Engine
+#==============================================================================
+
+class FO_Engine
+
+  alias fo_status_initialize    initialize
+  alias fo_status_update_second update_second
+
+  def initialize
+    fo_status_initialize
+    @player_status = FO_Player_Status.new(@player_stats)
+    # Remova testes abaixo em produção:
+    # @player_status.take_damage(30)
+    # @player_status.heal(10)
+    # @player_status.spend_mp(5)
+  end
+
+  def update_second
+    fo_status_update_second
+    @player_status.regenerate if @player_status
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_CORE.debug("FO_Player_Status carregado com sucesso")

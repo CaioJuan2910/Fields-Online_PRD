@@ -1,0 +1,52 @@
+#==============================================================================
+# ■ FO_Item_System
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor....: ChatGPT + Caio
+# Versão...: 1.1
+# Data.....: 17/05/2026
+#------------------------------------------------------------------------------
+# CHANGELOG v1.1:
+# - attr_reader nos campos do Item (dados de item são somente leitura)
+# - Itens são imutáveis após criação (sem risco de corrupção)
+#==============================================================================
+
+FO_CORE.debug("FO_Item_System carregado com sucesso")
+
+module FO_ItemSystem
+
+  class Item
+    attr_reader :id
+    attr_reader :name
+    attr_reader :type
+    attr_reader :rarity
+    attr_reader :attack
+    attr_reader :defense
+    attr_reader :price
+
+    def initialize(id, name, type, rarity, attack, defense, price)
+      @id      = id
+      @name    = name
+      @type    = type
+      @rarity  = rarity
+      @attack  = attack
+      @defense = defense
+      @price   = price
+    end
+  end
+
+  ITEMS = {
+    1 => Item.new(1, "Iron Sword",    :weapon,     :common, 10, 0,  100),
+    2 => Item.new(2, "Wood Shield",   :shield,     :common,  0, 5,   80),
+    3 => Item.new(3, "Health Potion", :consumable, :common,  0, 0,   25)
+  }
+
+  #--------------------------------------------------------------------------
+  # ● Buscar item por ID (retorna nil se não existir)
+  #--------------------------------------------------------------------------
+  def self.get_item(item_id)
+    ITEMS[item_id]
+  end
+
+end

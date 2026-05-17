@@ -1,0 +1,132 @@
+#==============================================================================
+# ■ FO_Player_Combat_v5
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor: ChatGPT + Caio
+# Versão: 5.2
+# Data: 17/05/2026
+#------------------------------------------------------------------------------
+# CHANGELOG v5.2:
+# - print("ERRO DROP") → FO_CORE.debug (log consistente)
+# - instance_variable_set(:@fo_failed_moves) → fo_failed_moves= (attr)
+# - Verificação dupla de fo_hp <= 0 removida (era redundante)
+# - gain_item usa API correta do RMXP ($game_party.gain_item)
+#==============================================================================
+
+module FO_Player_Combat
+  ATTACK_KEY  = Input::CTRL
+  BASE_DAMAGE = 25
+end
+
+class FO_Player_Combat_System
+
+  def self.update
+    update_attack_input
+  end
+
+  def self.update_attack_input
+    attack_target if Input.trigger?(FO_Player_Combat::ATTACK_KEY)
+  end
+
+  def self.attack_target
+    return if $fo_target.nil?
+    return unless $fo_target.respond_to?(:fo_combat_entity?)
+    return unless $fo_target.fo_combat_entity?
+    return if $fo_target.fo_dead?
+
+    roll        = rand(100)
+    damage      = 0
+    damage_type = :normal
+    text        = ""
+
+    if    roll < 10 then text = "MISS"; damage_type = :miss
+    elsif roll < 25 then damage = (FO_Player_Combat::BASE_DAMAGE * 0.10).to_i
+    elsif roll < 60 then damage = (FO_Player_Combat::BASE_DAMAGE * 0.50).to_i
+    elsif roll < 85 then damage = (FO_Player_Combat::BASE_DAMAGE * 0.80).to_i
+    elsif roll < 95 then damage = FO_Player_Combat::BASE_DAMAGE
+    else
+      critical_rate = rand(81) + 120
+      damage        = (FO_Player_Combat::BASE_DAMAGE * critical_rate / 100.0).to_i
+      damage_type   = :critical
+      text          = "CRITICAL"
+    end
+
+    text = damage.to_s if damage > 0 && text.empty?
+
+    if damage > 0
+      $fo_target.fo_in_combat   = true
+      $fo_target.fo_failed_moves = 0   # ← usa attr_accessor diretamente
+
+      $fo_target.fo_hp -= damage
+      $fo_target.fo_hp  = 0 if $fo_target.fo_hp < 0
+
+      # Morte
+      if $fo_target.fo_hp <= 0
+        dead_target = $fo_target
+
+        # Drop System
+        begin
+          map_id   = $game_map.map_id
+          event_id = dead_target.id
+
+          drop_result = FO_DropManager.generate_drop(map_id, event_id)
+
+          if drop_result
+            loot     = drop_result[0]
+            rarity   = drop_result[1]
+            loot_type = loot[0]
+            loot_id   = loot[1]
+
+            database = nil
+            case loot_type
+            when :item   then database = $data_items
+            when :weapon then database = $data_weapons
+            when :armor  then database = $data_armors
+            end
+
+            if database && database[loot_id]
+              item = database[loot_id]
+              # API correta do RMXP: gain_item(item_id, n)
+              $game_party.gain_item(loot_id, 1)
+
+              popup_text = case rarity
+              when :comum      then "+ #{item.name}"
+              when :raro       then "RARO! #{item.name}"
+              when :gold       then "GOLD! #{item.name}"
+              when :super_raro then "SUPER RARO! #{item.name}"
+              else                  item.name
+              end
+
+              FO_Loot_Popup.show(popup_text)
+            end
+          end
+        rescue => e
+          FO_CORE.debug("ERRO DROP: #{e.message}")  # ← era print()
+        end
+
+        FO_Floating_Damage.create(dead_target, text, damage_type)
+        dead_target.fo_kill
+        return
+      end
+    end
+
+    FO_Floating_Damage.create($fo_target, text, damage_type)
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_player_combat_update_v52 update
+
+  def update
+    fo_player_combat_update_v52
+    FO_Player_Combat_System.update
+  end
+
+end
