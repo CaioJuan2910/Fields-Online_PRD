@@ -1,28 +1,22 @@
 #==============================================================================
-# ■ FO_Timer_v4
+# ■ FO_Timer
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor....: ChatGPT + Caio
-# Versão...: 4.0
+# Versão...: 5.0
 # Data.....: 17/05/2026
 #------------------------------------------------------------------------------
 # DESCRIÇÃO:
-# Sistema moderno de timers MMORPG.
+# Sistema global de timers do Fields Online.
 # Compatível com RPG Maker XP ORIGINAL.
 #------------------------------------------------------------------------------
-# OBJETIVOS:
-# - Timer global
+# FUNÇÕES:
+# - Timers globais
 # - Delays
 # - Loops
 # - Cooldowns
 # - Eventos temporizados
-# - Integração com FO_ENGINE
-# - Arquitetura MMORPG moderna
-#------------------------------------------------------------------------------
-# SISTEMAS NECESSÁRIOS:
-# - FO_Core
-# - FO_Engine
 #==============================================================================
 
 #==============================================================================
@@ -30,10 +24,6 @@
 #==============================================================================
 
 module FO_TIMER
-
-  #--------------------------------------------------------------------------
-  # ● Configuração
-  #--------------------------------------------------------------------------
 
   ENABLE_DEBUG = false
 
@@ -52,7 +42,7 @@ class FO_Timer_Object
   attr_accessor :name
   attr_accessor :duration
   attr_accessor :remaining
-  attr_accessor :loop
+  attr_accessor :looped
   attr_accessor :callback
   attr_accessor :finished
 
@@ -62,23 +52,17 @@ class FO_Timer_Object
 
   def initialize(name, duration, looped = false, &block)
 
-    @name =
-      name
+    @name = name
 
-    @duration =
-      duration
+    @duration = duration
 
-    @remaining =
-      duration
+    @remaining = duration
 
-    @loop =
-      looped
+    @looped = looped
 
-    @callback =
-      block
+    @callback = block
 
-    @finished =
-      false
+    @finished = false
 
   end
 
@@ -108,25 +92,17 @@ class FO_Timer_Object
 
     begin
 
-      @callback.call if @callback
+      @callback.call if @callback != nil
 
     rescue => e
 
-      if defined?(FO_DEBUG)
-
-        FO_DEBUG.error(
-          "[TIMER ERROR] #{@name} => #{e}"
-        )
-
-      end
+      FO_Core.error(
+        "[FO_Timer] " + e.to_s
+      )
 
     end
 
-    #--------------------------------------------------------------------------
-    # ● Loop
-    #--------------------------------------------------------------------------
-
-    if @loop
+    if @looped
 
       reset
 
@@ -144,8 +120,7 @@ class FO_Timer_Object
 
   def reset
 
-    @remaining =
-      @duration
+    @remaining = @duration
 
   end
 
@@ -168,7 +143,7 @@ end
 module FO_Timer
 
   #--------------------------------------------------------------------------
-  # ■ Timers
+  # ● Timers
   #--------------------------------------------------------------------------
 
   @timers = []
@@ -193,7 +168,7 @@ module FO_Timer
 
     for timer in @timers
 
-      next if timer.nil?
+      next if timer == nil
 
       timer.update
 
@@ -223,13 +198,12 @@ module FO_Timer
 
     return nil if duration <= 0
 
-    timer =
-      FO_Timer_Object.new(
-        name,
-        duration,
-        false,
-        &block
-      )
+    timer = FO_Timer_Object.new(
+      name,
+      duration,
+      false,
+      &block
+    )
 
     @timers.push(timer)
 
@@ -243,17 +217,16 @@ module FO_Timer
   # ● Add Loop
   #--------------------------------------------------------------------------
 
-  def self.add_looFO_Core.logname, duration, &block)
+  def self.add_loop(name, duration, &block)
 
     return nil if duration <= 0
 
-    timer =
-      FO_Timer_Object.new(
-        name,
-        duration,
-        true,
-        &block
-      )
+    timer = FO_Timer_Object.new(
+      name,
+      duration,
+      true,
+      &block
+    )
 
     @timers.push(timer)
 
@@ -285,7 +258,7 @@ module FO_Timer
 
     for timer in @timers
 
-      next if timer.nil?
+      next if timer == nil
 
       return true if timer.name == name
 
@@ -303,7 +276,7 @@ module FO_Timer
 
     for timer in @timers
 
-      next if timer.nil?
+      next if timer == nil
 
       return timer if timer.name == name
 
@@ -314,30 +287,28 @@ module FO_Timer
   end
 
   #--------------------------------------------------------------------------
-  # ● Remaining Time
+  # ● Remaining
   #--------------------------------------------------------------------------
 
   def self.remaining(name)
 
-    timer =
-      get_timer(name)
+    timer = get_timer(name)
 
-    return 0 if timer.nil?
+    return 0 if timer == nil
 
     return timer.remaining
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Reset Timer
+  # ● Reset
   #--------------------------------------------------------------------------
 
   def self.reset(name)
 
-    timer =
-      get_timer(name)
+    timer = get_timer(name)
 
-    return if timer.nil?
+    return if timer == nil
 
     timer.reset
 
@@ -369,31 +340,15 @@ module FO_Timer
 
   def self.debug_add(name, duration)
 
-    return unless defined?(FO_DEBUG)
-
     return unless FO_TIMER::ENABLE_DEBUG
 
-    FO_DEBUG.log(
-      "[TIMER ADD] #{name} (#{duration})"
+    FO_Core.debug(
+      "[FO_Timer] " +
+      name.to_s +
+      " (" +
+      duration.to_s +
+      ")"
     )
-
-  end
-
-end
-
-#==============================================================================
-# ■ Registro no FO_ENGINE
-#==============================================================================
-
-if defined?(FO_ENGINE)
-
-  begin
-
-    FO_ENGINE.register_system(
-      FO_Timer
-    )
-
-  rescue
 
   end
 
@@ -403,10 +358,4 @@ end
 # ■ Inicialização
 #==============================================================================
 
-if defined?(FO_DEBUG)
-
-  FO_DEBUG.log(
-    "FO_Timer_v4 carregado com sucesso"
-  )
-
-end
+FO_Core.log("FO_Timer v5 inicializado")

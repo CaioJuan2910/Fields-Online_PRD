@@ -1,30 +1,15 @@
 #==============================================================================
-# ■ FO_Player_HUD_v4
+# ■ FO_Player_HUD
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor....: ChatGPT + Caio
-# Versão...: 4.0
+# Versão...: 5.0
 # Data.....: 17/05/2026
 #------------------------------------------------------------------------------
 # DESCRIÇÃO:
 # HUD principal do jogador MMORPG.
 # Compatível com RPG Maker XP ORIGINAL.
-#------------------------------------------------------------------------------
-# OBJETIVOS:
-# - Mostrar HP
-# - Mostrar MP
-# - Mostrar Level
-# - Mostrar EXP
-# - Mostrar Gold
-# - Integrar com FO_Player_Data
-# - Integrar com FO_Player_Status
-# - Layout MMORPG
-#------------------------------------------------------------------------------
-# SISTEMAS NECESSÁRIOS:
-# - FO_Core
-# - FO_Player_Data
-# - FO_Player_Status
 #==============================================================================
 
 #==============================================================================
@@ -40,7 +25,7 @@ module FO_PLAYER_HUD
   X = 12
   Y = 12
 
-  WIDTH = 260
+  WIDTH  = 260
   HEIGHT = 110
 
   Z = 99999
@@ -49,11 +34,11 @@ module FO_PLAYER_HUD
   # ● Barras
   #--------------------------------------------------------------------------
 
-  BAR_WIDTH = 180
+  BAR_WIDTH  = 180
   BAR_HEIGHT = 14
 
-  HP_BAR_Y = 34
-  MP_BAR_Y = 58
+  HP_BAR_Y  = 34
+  MP_BAR_Y  = 58
   EXP_BAR_Y = 82
 
   #--------------------------------------------------------------------------
@@ -95,7 +80,7 @@ end
 module FO_Player_HUD
 
   #--------------------------------------------------------------------------
-  # ■ Variáveis
+  # ● Variáveis
   #--------------------------------------------------------------------------
 
   @sprite = nil
@@ -106,7 +91,7 @@ module FO_Player_HUD
 
   def self.update
 
-    create_sprite if @sprite.nil?
+    create_sprite if @sprite == nil
 
     refresh
 
@@ -120,8 +105,7 @@ module FO_Player_HUD
 
     dispose
 
-    @sprite =
-      Sprite.new
+    @sprite = Sprite.new
 
     @sprite.bitmap =
       Bitmap.new(
@@ -129,14 +113,9 @@ module FO_Player_HUD
         FO_PLAYER_HUD::HEIGHT
       )
 
-    @sprite.x =
-      FO_PLAYER_HUD::X
-
-    @sprite.y =
-      FO_PLAYER_HUD::Y
-
-    @sprite.z =
-      FO_PLAYER_HUD::Z
+    @sprite.x = FO_PLAYER_HUD::X
+    @sprite.y = FO_PLAYER_HUD::Y
+    @sprite.z = FO_PLAYER_HUD::Z
 
   end
 
@@ -146,20 +125,19 @@ module FO_Player_HUD
 
   def self.refresh
 
-    return if @sprite.nil?
+    return if @sprite == nil
 
-    bitmap =
-      @sprite.bitmap
+    bitmap = @sprite.bitmap
 
     bitmap.clear
 
     draw_background(bitmap)
 
-    draw_hFO_Core.logbitmap)
+    draw_hp(bitmap)
 
-    draw_mFO_Core.logbitmap)
+    draw_mp(bitmap)
 
-    draw_exFO_Core.logbitmap)
+    draw_exp(bitmap)
 
     draw_info(bitmap)
 
@@ -189,14 +167,11 @@ module FO_Player_HUD
 
   def self.draw_border(bitmap)
 
-    color =
-      FO_PLAYER_HUD::BORDER_COLOR
+    color  = FO_PLAYER_HUD::BORDER_COLOR
 
-    width =
-      FO_PLAYER_HUD::WIDTH
+    width  = FO_PLAYER_HUD::WIDTH
 
-    height =
-      FO_PLAYER_HUD::HEIGHT
+    height = FO_PLAYER_HUD::HEIGHT
 
     # Top
     bitmap.fill_rect(
@@ -240,15 +215,12 @@ module FO_Player_HUD
   # ● Draw HP
   #--------------------------------------------------------------------------
 
-  def self.draw_hFO_Core.logbitmap)
+  def self.draw_hp(bitmap)
 
     return unless defined?(FO_Player_Data)
 
-    hp =
-      FO_Player_Data.hp
-
-    maxhp =
-      FO_Player_Data.maxhp
+    hp    = FO_Player_Data.hp
+    maxhp = FO_Player_Data.maxhp
 
     return if maxhp <= 0
 
@@ -288,7 +260,7 @@ module FO_Player_HUD
 
     draw_text(
       bitmap,
-      "#{hp}/#{maxhp}",
+      hp.to_s + "/" + maxhp.to_s,
       120,
       FO_PLAYER_HUD::HP_BAR_Y - 2
     )
@@ -299,15 +271,12 @@ module FO_Player_HUD
   # ● Draw MP
   #--------------------------------------------------------------------------
 
-  def self.draw_mFO_Core.logbitmap)
+  def self.draw_mp(bitmap)
 
     return unless defined?(FO_Player_Data)
 
-    mp =
-      FO_Player_Data.mp
-
-    maxmp =
-      FO_Player_Data.maxmp
+    mp    = FO_Player_Data.mp
+    maxmp = FO_Player_Data.maxmp
 
     return if maxmp <= 0
 
@@ -347,7 +316,7 @@ module FO_Player_HUD
 
     draw_text(
       bitmap,
-      "#{mp}/#{maxmp}",
+      mp.to_s + "/" + maxmp.to_s,
       120,
       FO_PLAYER_HUD::MP_BAR_Y - 2
     )
@@ -358,15 +327,12 @@ module FO_Player_HUD
   # ● Draw EXP
   #--------------------------------------------------------------------------
 
-  def self.draw_exFO_Core.logbitmap)
+  def self.draw_exp(bitmap)
 
     return unless defined?(FO_Player_Data)
 
-    exp =
-      FO_Player_Data.exp
-
-    next_exp =
-      FO_Player_Data.next_exp
+    exp      = FO_Player_Data.exp
+    next_exp = FO_Player_Data.next_exp
 
     return if next_exp <= 0
 
@@ -406,7 +372,7 @@ module FO_Player_HUD
 
     draw_text(
       bitmap,
-      "#{exp}/#{next_exp}",
+      exp.to_s + "/" + next_exp.to_s,
       120,
       FO_PLAYER_HUD::EXP_BAR_Y - 2
     )
@@ -428,21 +394,20 @@ module FO_Player_HUD
 
     if defined?(FO_Inventory)
 
-      gold =
-        FO_Inventory.gold
+      gold = FO_Inventory.gold
 
     end
 
     draw_text(
       bitmap,
-      "LV #{level}",
+      "LV " + level.to_s,
       10,
       6
     )
 
     draw_text(
       bitmap,
-      "#{gold} Gold",
+      gold.to_s + " Gold",
       150,
       6
     )
@@ -455,8 +420,7 @@ module FO_Player_HUD
 
   def self.draw_text(bitmap, text, x, y)
 
-    font =
-      bitmap.font
+    font = bitmap.font
 
     font.name =
       FO_PLAYER_HUD::FONT_NAME
@@ -485,7 +449,7 @@ module FO_Player_HUD
 
   def self.dispose
 
-    return if @sprite.nil?
+    return if @sprite == nil
 
     if @sprite.bitmap != nil
 
@@ -502,31 +466,9 @@ module FO_Player_HUD
 end
 
 #==============================================================================
-# ■ Registro no FO_ENGINE
-#==============================================================================
-
-if defined?(FO_ENGINE)
-
-  begin
-
-    FO_ENGINE.register_system(
-      FO_Player_HUD
-    )
-
-  rescue
-
-  end
-
-end
-
-#==============================================================================
 # ■ Inicialização
 #==============================================================================
 
-if defined?(FO_DEBUG)
-
-  FO_DEBUG.log(
-    "FO_Player_HUD_v4 carregado com sucesso"
-  )
-
-end
+FO_Core.log(
+  "FO_Player_HUD v5 inicializado"
+)

@@ -1,28 +1,15 @@
 #==============================================================================
-# ■ FO_Spawn_System_v4
+# ■ FO_Spawn_System
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor....: ChatGPT + Caio
-# Versão...: 4.0
+# Versão...: 5.0
 # Data.....: 17/05/2026
 #------------------------------------------------------------------------------
 # DESCRIÇÃO:
 # Sistema moderno de Spawn MMORPG.
 # Compatível com RPG Maker XP ORIGINAL.
-#------------------------------------------------------------------------------
-# OBJETIVOS:
-# - Spawn automático de entidades
-# - Clonagem segura de eventos
-# - Compatível com Enemy System
-# - Compatível com Respawn
-# - Organização MMORPG
-# - Eliminar conflitos antigos
-#------------------------------------------------------------------------------
-# SISTEMAS NECESSÁRIOS:
-# - FO_Core
-# - FO_Target_Status
-# - FO_Enemy_System
 #==============================================================================
 
 #==============================================================================
@@ -32,25 +19,10 @@
 module FO_SPAWN_SYSTEM
 
   #--------------------------------------------------------------------------
-  # ● Configuração dos Spawns
-  #--------------------------------------------------------------------------
-  #
-  # MAP_ID => [
-  #
-  #   {
-  #     :template_event_id => ID,
-  #     :amount => QUANTIDADE
-  #   }
-  #
-  # ]
-  #
+  # ● Configuração de Spawns
   #--------------------------------------------------------------------------
 
   SPAWNS = {
-
-    #--------------------------------------------------------------------------
-    # ● Mapa 1
-    #--------------------------------------------------------------------------
 
     1 => [
 
@@ -85,7 +57,7 @@ end
 module FO_Spawn_Manager
 
   #--------------------------------------------------------------------------
-  # ■ Variáveis
+  # ● Variáveis
   #--------------------------------------------------------------------------
 
   @spawned_maps = {}
@@ -96,12 +68,11 @@ module FO_Spawn_Manager
 
   def self.setup_map_spawns
 
-    return if $game_map.nil?
+    return if $game_map == nil
 
-    map_id =
-      $game_map.map_id
+    map_id = $game_map.map_id
 
-    return if map_id.nil?
+    return if map_id == nil
 
     #--------------------------------------------------------------------------
     # ● Evita duplicação
@@ -109,14 +80,10 @@ module FO_Spawn_Manager
 
     return if @spawned_maps[map_id]
 
-    #--------------------------------------------------------------------------
-    # ● Configuração
-    #--------------------------------------------------------------------------
-
     spawn_data =
       FO_SPAWN_SYSTEM::SPAWNS[map_id]
 
-    return if spawn_data.nil?
+    return if spawn_data == nil
 
     #--------------------------------------------------------------------------
     # ● Cria grupos
@@ -124,7 +91,7 @@ module FO_Spawn_Manager
 
     for data in spawn_data
 
-      next if data.nil?
+      next if data == nil
 
       template_event_id =
         data[:template_event_id]
@@ -132,7 +99,7 @@ module FO_Spawn_Manager
       amount =
         data[:amount]
 
-      create_spawn_grouFO_Core.log
+      create_spawn_group(
         template_event_id,
         amount
       )
@@ -145,17 +112,10 @@ module FO_Spawn_Manager
 
     @spawned_maps[map_id] = true
 
-    #--------------------------------------------------------------------------
-    # ● Debug
-    #--------------------------------------------------------------------------
-
-    if defined?(FO_DEBUG)
-
-      FO_DEBUG.log(
-        "[SPAWN MAP SETUP] #{map_id}"
-      )
-
-    end
+    FO_Core.debug(
+      "[SPAWN MAP SETUP] " +
+      map_id.to_s
+    )
 
   end
 
@@ -163,17 +123,17 @@ module FO_Spawn_Manager
   # ● Create Spawn Group
   #--------------------------------------------------------------------------
 
-  def self.create_spawn_grouFO_Core.logtemplate_id, amount)
+  def self.create_spawn_group(template_id, amount)
 
-    return if $game_map.nil?
+    return if $game_map == nil
 
     template =
       $game_map.events[template_id]
 
-    return if template.nil?
+    return if template == nil
 
     #--------------------------------------------------------------------------
-    # ● Esconde template
+    # ● Template invisível
     #--------------------------------------------------------------------------
 
     template.transparent = true
@@ -198,25 +158,16 @@ module FO_Spawn_Manager
 
   def self.create_clone(template)
 
-    return if template.nil?
+    return if template == nil
 
-    #--------------------------------------------------------------------------
-    # ● Novo ID
-    #--------------------------------------------------------------------------
-
-    new_id =
-      next_event_id
-
-    #--------------------------------------------------------------------------
-    # ● Evento original
-    #--------------------------------------------------------------------------
+    new_id = next_event_id
 
     original_event =
       template.instance_variable_get(
         :@event
       )
 
-    return if original_event.nil?
+    return if original_event == nil
 
     #--------------------------------------------------------------------------
     # ● Clone seguro
@@ -224,13 +175,13 @@ module FO_Spawn_Manager
 
     event_data =
       Marshal.load(
-        Marshal.dumFO_Core.logoriginal_event)
+        Marshal.dump(original_event)
       )
 
     event_data.id = new_id
 
     #--------------------------------------------------------------------------
-    # ● Cria Game_Event
+    # ● Cria evento
     #--------------------------------------------------------------------------
 
     cloned_event =
@@ -240,35 +191,31 @@ module FO_Spawn_Manager
       )
 
     #--------------------------------------------------------------------------
-    # ● Spawn Position
+    # ● Posição
     #--------------------------------------------------------------------------
 
-    x, y =
+    pos =
       random_spawn_position(
         template.x,
         template.y
       )
 
+    x = pos[0]
+    y = pos[1]
+
     cloned_event.moveto(x, y)
 
     #--------------------------------------------------------------------------
-    # ● Adiciona mapa
+    # ● Adiciona no mapa
     #--------------------------------------------------------------------------
 
     $game_map.events[new_id] =
       cloned_event
 
-    #--------------------------------------------------------------------------
-    # ● Debug
-    #--------------------------------------------------------------------------
-
-    if defined?(FO_DEBUG)
-
-      FO_DEBUG.log(
-        "[SPAWN CLONE] #{new_id}"
-      )
-
-    end
+    FO_Core.debug(
+      "[SPAWN CLONE] " +
+      new_id.to_s
+    )
 
   end
 
@@ -322,10 +269,6 @@ module FO_Spawn_Manager
 
     end
 
-    #--------------------------------------------------------------------------
-    # ● Fallback
-    #--------------------------------------------------------------------------
-
     return [origin_x, origin_y]
 
   end
@@ -352,8 +295,7 @@ module FO_Spawn_Manager
 
   def self.next_event_id
 
-    ids =
-      $game_map.events.keys
+    ids = $game_map.events.keys
 
     return 1 if ids.empty?
 
@@ -365,7 +307,7 @@ module FO_Spawn_Manager
   # ● Reset Map
   #--------------------------------------------------------------------------
 
-  def self.reset_maFO_Core.logmap_id)
+  def self.reset_map(map_id)
 
     @spawned_maps.delete(map_id)
 
@@ -383,7 +325,7 @@ class Scene_Map
   # ● Alias
   #--------------------------------------------------------------------------
 
-  alias fo_spawn_system_main_v4 main
+  alias fo_spawn_system_main_v5 main
 
   #--------------------------------------------------------------------------
   # ● Main
@@ -391,17 +333,9 @@ class Scene_Map
 
   def main
 
-    #--------------------------------------------------------------------------
-    # ● Setup Spawn
-    #--------------------------------------------------------------------------
-
     FO_Spawn_Manager.setup_map_spawns
 
-    #--------------------------------------------------------------------------
-    # ● Original
-    #--------------------------------------------------------------------------
-
-    fo_spawn_system_main_v4
+    fo_spawn_system_main_v5
 
   end
 
@@ -411,10 +345,6 @@ end
 # ■ Inicialização
 #==============================================================================
 
-if defined?(FO_DEBUG)
-
-  FO_DEBUG.log(
-    "FO_Spawn_System_v4 carregado com sucesso"
-  )
-
-end
+FO_Core.log(
+  "FO_Spawn_System v5 inicializado"
+)

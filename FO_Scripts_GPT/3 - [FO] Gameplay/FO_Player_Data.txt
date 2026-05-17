@@ -1,29 +1,15 @@
 #==============================================================================
-# ■ FO_Player_Data_v4
+# ■ FO_Player_Data
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor....: ChatGPT + Caio
-# Versão...: 4.0
+# Versão...: 5.0
 # Data.....: 17/05/2026
 #------------------------------------------------------------------------------
 # DESCRIÇÃO:
 # Sistema central de dados persistentes do jogador.
 # Compatível com RPG Maker XP ORIGINAL.
-#------------------------------------------------------------------------------
-# OBJETIVOS:
-# - Save / Load
-# - HP / MP
-# - EXP / Level
-# - Position
-# - Gold
-# - Dados MMORPG
-# - Compatível com Inventory
-# - Compatível com HUD
-#------------------------------------------------------------------------------
-# SISTEMAS NECESSÁRIOS:
-# - FO_Core
-# - FO_Inventory
 #==============================================================================
 
 #==============================================================================
@@ -32,11 +18,9 @@
 
 module FO_PLAYER_DATA
 
-  SAVE_FILE =
-    "FO_Player_Data.rxdata"
+  SAVE_FILE = "FO_Player_Data.rxdata"
 
-  AUTO_SAVE_INTERVAL =
-    60 * Graphics.frame_rate
+  AUTO_SAVE_INTERVAL = 60 * Graphics.frame_rate
 
 end
 
@@ -47,7 +31,7 @@ end
 module FO_Player_Data
 
   #--------------------------------------------------------------------------
-  # ■ Accessors
+  # ● Accessors
   #--------------------------------------------------------------------------
 
   class << self
@@ -74,7 +58,7 @@ module FO_Player_Data
   end
 
   #--------------------------------------------------------------------------
-  # ■ Variáveis
+  # ● Variáveis
   #--------------------------------------------------------------------------
 
   @auto_save_timer = 0
@@ -85,35 +69,23 @@ module FO_Player_Data
 
   def self.setup
 
-    @name =
-      "Player"
+    @name = "Player"
 
-    @level =
-      1
+    @level = 1
 
-    @exp =
-      0
+    @exp = 0
 
-    @next_exp =
-      100
+    @next_exp = 100
 
-    @maxhp =
-      100
+    @maxhp = 100
+    @hp = @maxhp
 
-    @hp =
-      @maxhp
+    @maxmp = 50
+    @mp = @maxmp
 
-    @maxmp =
-      50
+    @dead = false
 
-    @mp =
-      @maxmp
-
-    @dead =
-      false
-
-    @map_id =
-      1
+    @map_id = 1
 
     @x = 0
     @y = 0
@@ -138,18 +110,14 @@ module FO_Player_Data
 
   def self.update_position
 
-    return if $game_player.nil?
+    return if $game_player == nil
 
-    return if $game_map.nil?
+    return if $game_map == nil
 
-    @map_id =
-      $game_map.map_id
+    @map_id = $game_map.map_id
 
-    @x =
-      $game_player.x
-
-    @y =
-      $game_player.y
+    @x = $game_player.x
+    @y = $game_player.y
 
   end
 
@@ -161,12 +129,13 @@ module FO_Player_Data
 
     @auto_save_timer += 1
 
-    return if @auto_save_timer <
-              FO_PLAYER_DATA::AUTO_SAVE_INTERVAL
+    if @auto_save_timer >= FO_PLAYER_DATA::AUTO_SAVE_INTERVAL
 
-    @auto_save_timer = 0
+      @auto_save_timer = 0
 
-    save
+      save
+
+    end
 
   end
 
@@ -174,7 +143,7 @@ module FO_Player_Data
   # ● Gain EXP
   #--------------------------------------------------------------------------
 
-  def self.gain_exFO_Core.logamount)
+  def self.gain_exp(amount)
 
     return if amount <= 0
 
@@ -208,34 +177,17 @@ module FO_Player_Data
 
     @exp -= @next_exp
 
-    @next_exp =
-      calculate_next_exp
-
-    #--------------------------------------------------------------------------
-    # ● Crescimento
-    #--------------------------------------------------------------------------
+    @next_exp = calculate_next_exp
 
     @maxhp += 15
-
     @maxmp += 8
 
-    @hp =
-      @maxhp
+    @hp = @maxhp
+    @mp = @maxmp
 
-    @mp =
-      @maxmp
-
-    #--------------------------------------------------------------------------
-    # ● Debug
-    #--------------------------------------------------------------------------
-
-    if defined?(FO_DEBUG)
-
-      FO_DEBUG.warning(
-        "[LEVEL UP] #{@level}"
-      )
-
-    end
+    FO_Core.debug(
+      "[LEVEL UP] " + @level.to_s
+    )
 
   end
 
@@ -245,10 +197,7 @@ module FO_Player_Data
 
   def self.calculate_next_exp
 
-    return (
-      100 +
-      (@level * 75)
-    )
+    return 100 + (@level * 75)
 
   end
 
@@ -286,55 +235,36 @@ module FO_Player_Data
       :dead     => @dead,
 
       :map_id   => @map_id,
+
       :x        => @x,
       :y        => @y
 
     }
 
-    #--------------------------------------------------------------------------
-    # ● Inventory
-    #--------------------------------------------------------------------------
-
     if defined?(FO_Inventory)
 
-      data[:inventory] =
-        FO_Inventory.save_data
+      data[:inventory] = FO_Inventory.save_data
 
     end
 
-    #--------------------------------------------------------------------------
-    # ● Save File
-    #--------------------------------------------------------------------------
-
     begin
 
-      file =
-        File.open(
-          FO_PLAYER_DATA::SAVE_FILE,
-          "wb"
-        )
+      file = File.open(
+        FO_PLAYER_DATA::SAVE_FILE,
+        "wb"
+      )
 
-      Marshal.dumFO_Core.logdata, file)
+      Marshal.dump(data, file)
 
       file.close
 
-      if defined?(FO_DEBUG)
-
-        FO_DEBUG.log(
-          "[PLAYER SAVE]"
-        )
-
-      end
+      FO_Core.debug("[PLAYER SAVE]")
 
     rescue => e
 
-      if defined?(FO_DEBUG)
-
-        FO_DEBUG.error(
-          "[SAVE ERROR] #{e}"
-        )
-
-      end
+      FO_Core.error(
+        "[SAVE ERROR] " + e.to_s
+      )
 
     end
 
@@ -354,93 +284,51 @@ module FO_Player_Data
 
     begin
 
-      file =
-        File.open(
-          FO_PLAYER_DATA::SAVE_FILE,
-          "rb"
-        )
+      file = File.open(
+        FO_PLAYER_DATA::SAVE_FILE,
+        "rb"
+      )
 
-      data =
-        Marshal.load(file)
+      data = Marshal.load(file)
 
       file.close
 
-      #--------------------------------------------------------------------------
-      # ● Dados
-      #--------------------------------------------------------------------------
+      @name = data[:name]
 
-      @name =
-        data[:name]
+      @level = data[:level]
 
-      @level =
-        data[:level]
+      @exp = data[:exp]
 
-      @exp =
-        data[:exp]
+      @next_exp = data[:next_exp]
 
-      @next_exp =
-        data[:next_exp]
+      @hp = data[:hp]
+      @maxhp = data[:maxhp]
 
-      @hp =
-        data[:hp]
+      @mp = data[:mp]
+      @maxmp = data[:maxmp]
 
-      @maxhp =
-        data[:maxhp]
+      @dead = data[:dead]
 
-      @mp =
-        data[:mp]
+      @map_id = data[:map_id]
 
-      @maxmp =
-        data[:maxmp]
-
-      @dead =
-        data[:dead]
-
-      @map_id =
-        data[:map_id]
-
-      @x =
-        data[:x]
-
-      @y =
-        data[:y]
-
-      #--------------------------------------------------------------------------
-      # ● Inventory
-      #--------------------------------------------------------------------------
+      @x = data[:x]
+      @y = data[:y]
 
       if defined?(FO_Inventory)
 
-        inventory_data =
-          data[:inventory]
-
         FO_Inventory.load_data(
-          inventory_data
+          data[:inventory]
         )
 
       end
 
-      #--------------------------------------------------------------------------
-      # ● Debug
-      #--------------------------------------------------------------------------
-
-      if defined?(FO_DEBUG)
-
-        FO_DEBUG.log(
-          "[PLAYER LOAD]"
-        )
-
-      end
+      FO_Core.debug("[PLAYER LOAD]")
 
     rescue => e
 
-      if defined?(FO_DEBUG)
-
-        FO_DEBUG.error(
-          "[LOAD ERROR] #{e}"
-        )
-
-      end
+      FO_Core.error(
+        "[LOAD ERROR] " + e.to_s
+      )
 
       setup
 
@@ -449,12 +337,12 @@ module FO_Player_Data
   end
 
   #--------------------------------------------------------------------------
-  # ● Teleport Player
+  # ● Transfer Player
   #--------------------------------------------------------------------------
 
   def self.transfer_player
 
-    return if $game_player.nil?
+    return if $game_player == nil
 
     $game_player.moveto(
       @x,
@@ -466,33 +354,11 @@ module FO_Player_Data
 end
 
 #==============================================================================
-# ■ Registro no FO_ENGINE
-#==============================================================================
-
-if defined?(FO_ENGINE)
-
-  begin
-
-    FO_ENGINE.register_system(
-      FO_Player_Data
-    )
-
-  rescue
-
-  end
-
-end
-
-#==============================================================================
 # ■ Inicialização
 #==============================================================================
 
 FO_Player_Data.load
 
-if defined?(FO_DEBUG)
-
-  FO_DEBUG.log(
-    "FO_Player_Data_v4 carregado com sucesso"
-  )
-
-end
+FO_Core.log(
+  "FO_Player_Data v5 inicializado"
+)

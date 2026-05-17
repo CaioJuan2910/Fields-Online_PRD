@@ -1,28 +1,15 @@
 #==============================================================================
-# ■ FO_DropSystem_v4
+# ■ FO_DropSystem
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor....: ChatGPT + Caio
-# Versão...: 4.0
+# Versão...: 5.0
 # Data.....: 17/05/2026
 #------------------------------------------------------------------------------
 # DESCRIÇÃO:
 # Sistema moderno de drops MMORPG.
 # Compatível com RPG Maker XP ORIGINAL.
-#------------------------------------------------------------------------------
-# OBJETIVOS:
-# - Drop aleatório
-# - Sistema de raridade
-# - Integração com Inventory
-# - Integração com Loot Popup
-# - Compatível com Combat Manager
-# - Estrutura escalável MMORPG
-#------------------------------------------------------------------------------
-# SISTEMAS NECESSÁRIOS:
-# - FO_Core
-# - FO_Inventory
-# - FO_Loot_Popup
 #==============================================================================
 
 #==============================================================================
@@ -35,44 +22,18 @@ module FO_DROPSYSTEM
   # ● Raridades
   #--------------------------------------------------------------------------
 
-  COMMON      = :common
-  RARE        = :rare
-  GOLD        = :gold
-  SUPER_RARE  = :super_rare
+  COMMON     = :common
+  RARE       = :rare
+  GOLD       = :gold
+  SUPER_RARE = :super_rare
 
   #--------------------------------------------------------------------------
   # ● Drop Tables
   #--------------------------------------------------------------------------
-  #
-  # MAP_ID => {
-  #
-  #   EVENT_ID => [
-  #
-  #     {
-  #       :type => :item,
-  #       :id => 1,
-  #       :amount => 1,
-  #       :chance => 50,
-  #       :rarity => :common
-  #     }
-  #
-  #   ]
-  #
-  # }
-  #
-  #--------------------------------------------------------------------------
 
   DROP_TABLES = {
 
-    #--------------------------------------------------------------------------
-    # ● MAPA 1
-    #--------------------------------------------------------------------------
-
     1 => {
-
-      #----------------------------------------------------------------------
-      # ● EVENTO 2
-      #----------------------------------------------------------------------
 
       2 => [
 
@@ -138,30 +99,26 @@ module FO_DropManager
 
     drops = []
 
-    #--------------------------------------------------------------------------
-    # ● Segurança
-    #--------------------------------------------------------------------------
-
-    return drops if map_id.nil?
-    return drops if event_id.nil?
+    return drops if map_id == nil
+    return drops if event_id == nil
 
     map_table =
       FO_DROPSYSTEM::DROP_TABLES[map_id]
 
-    return drops if map_table.nil?
+    return drops if map_table == nil
 
     event_table =
       map_table[event_id]
 
-    return drops if event_table.nil?
+    return drops if event_table == nil
 
     #--------------------------------------------------------------------------
-    # ● Processa drops
+    # ● Processa Drops
     #--------------------------------------------------------------------------
 
     for drop_data in event_table
 
-      next if drop_data.nil?
+      next if drop_data == nil
 
       chance =
         drop_data[:chance]
@@ -185,13 +142,13 @@ module FO_DropManager
 
   def self.deliver_drops(drops)
 
-    return if drops.nil?
+    return if drops == nil
 
     for drop in drops
 
-      next if drop.nil?
+      next if drop == nil
 
-      deliver_droFO_Core.logdrop)
+      deliver_drop(drop)
 
     end
 
@@ -201,7 +158,7 @@ module FO_DropManager
   # ● Deliver Drop
   #--------------------------------------------------------------------------
 
-  def self.deliver_droFO_Core.logdrop)
+  def self.deliver_drop(drop)
 
     type =
       drop[:type]
@@ -261,7 +218,7 @@ module FO_DropManager
       )
 
     #--------------------------------------------------------------------------
-    # ● Popup
+    # ● Loot Popup
     #--------------------------------------------------------------------------
 
     if defined?(FO_Loot_Popup_Manager)
@@ -274,17 +231,12 @@ module FO_DropManager
 
     end
 
-    #--------------------------------------------------------------------------
-    # ● Debug
-    #--------------------------------------------------------------------------
-
-    if defined?(FO_DEBUG)
-
-      FO_DEBUG.log(
-        "[DROP] #{name} x#{amount}"
-      )
-
-    end
+    FO_Core.debug(
+      "[DROP] " +
+      name.to_s +
+      " x" +
+      amount.to_s
+    )
 
   end
 
@@ -301,7 +253,7 @@ module FO_DropManager
       item =
         $data_items[id]
 
-      return "Unknown Item" if item.nil?
+      return "Unknown Item" if item == nil
 
       return item.name
 
@@ -310,7 +262,7 @@ module FO_DropManager
       weapon =
         $data_weapons[id]
 
-      return "Unknown Weapon" if weapon.nil?
+      return "Unknown Weapon" if weapon == nil
 
       return weapon.name
 
@@ -319,7 +271,7 @@ module FO_DropManager
       armor =
         $data_armors[id]
 
-      return "Unknown Armor" if armor.nil?
+      return "Unknown Armor" if armor == nil
 
       return armor.name
 
@@ -365,10 +317,6 @@ end
 # ■ Inicialização
 #==============================================================================
 
-if defined?(FO_DEBUG)
-
-  FO_DEBUG.log(
-    "FO_DropSystem_v4 carregado com sucesso"
-  )
-
-end
+FO_Core.log(
+  "FO_DropSystem v5 inicializado"
+)

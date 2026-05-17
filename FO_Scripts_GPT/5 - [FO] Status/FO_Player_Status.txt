@@ -1,30 +1,15 @@
 #==============================================================================
-# ■ FO_Player_Status_v4
+# ■ FO_Player_Status
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor....: ChatGPT + Caio
-# Versão...: 4.0
+# Versão...: 5.0
 # Data.....: 17/05/2026
 #------------------------------------------------------------------------------
 # DESCRIÇÃO:
 # Sistema moderno de status do jogador.
 # Compatível com RPG Maker XP ORIGINAL.
-#------------------------------------------------------------------------------
-# OBJETIVOS:
-# - Eliminar sistemas antigos
-# - Integrar com FO_Player_Data
-# - Integrar com FO_Player_Stats
-# - Centralizar HP/MP
-# - Centralizar regeneração
-# - Centralizar level up
-# - Preparar arquitetura MMORPG
-#------------------------------------------------------------------------------
-# SISTEMAS NECESSÁRIOS:
-# - FO_Core
-# - FO_Engine
-# - FO_Player_Data
-# - FO_Player_Stats
 #==============================================================================
 
 #==============================================================================
@@ -32,10 +17,6 @@
 #==============================================================================
 
 module FO_PLAYER_STATUS
-
-  #============================================================================
-  # ■ CONFIGURAÇÕES
-  #============================================================================
 
   #--------------------------------------------------------------------------
   # ● Regen
@@ -72,10 +53,11 @@ end
 module FO_Player_Status
 
   #--------------------------------------------------------------------------
-  # ■ Timers
+  # ● Timers
   #--------------------------------------------------------------------------
 
   @hp_regen_timer = 0
+
   @mp_regen_timer = 0
 
   #--------------------------------------------------------------------------
@@ -176,7 +158,7 @@ module FO_Player_Status
 
     end
 
-    recover_mFO_Core.logamount)
+    recover_mp(amount)
 
   end
 
@@ -204,7 +186,8 @@ module FO_Player_Status
 
     end
 
-    FO_Player_Data.hp = current_hp
+    FO_Player_Data.hp =
+      current_hp
 
   end
 
@@ -229,7 +212,8 @@ module FO_Player_Status
 
     end
 
-    FO_Player_Data.hp = current_hp
+    FO_Player_Data.hp =
+      current_hp
 
     check_death
 
@@ -239,7 +223,7 @@ module FO_Player_Status
   # ● Recover MP
   #--------------------------------------------------------------------------
 
-  def self.recover_mFO_Core.logamount)
+  def self.recover_mp(amount)
 
     return unless defined?(FO_Player_Data)
 
@@ -259,7 +243,8 @@ module FO_Player_Status
 
     end
 
-    FO_Player_Data.mp = current_mp
+    FO_Player_Data.mp =
+      current_mp
 
   end
 
@@ -267,7 +252,7 @@ module FO_Player_Status
   # ● Spend MP
   #--------------------------------------------------------------------------
 
-  def self.spend_mFO_Core.logamount)
+  def self.spend_mp(amount)
 
     return false unless defined?(FO_Player_Data)
 
@@ -286,7 +271,8 @@ module FO_Player_Status
 
     end
 
-    FO_Player_Data.mp = current_mp
+    FO_Player_Data.mp =
+      current_mp
 
     return true
 
@@ -367,44 +353,30 @@ module FO_Player_Status
 
     end
 
-    FO_Player_Data.hp = recover_hp
+    FO_Player_Data.hp =
+      recover_hp
 
-    FO_Player_Data.dead = false
+    FO_Player_Data.dead =
+      false
 
     FO_Player_Data.mp =
       FO_Player_Data.maxmp
 
-    if defined?(FO_DEBUG)
-
-      FO_DEBUG.warning(
-        "[PLAYER REVIVE] #{recover_hp} HP"
-      )
-
-    end
+    FO_Core.debug(
+      "[PLAYER REVIVE]"
+    )
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Player Death
+  # ● On Player Death
   #--------------------------------------------------------------------------
 
   def self.on_player_death
 
-    #--------------------------------------------------------------------------
-    # Debug
-    #--------------------------------------------------------------------------
-
-    if defined?(FO_DEBUG)
-
-      FO_DEBUG.error(
-        "[PLAYER DEAD]"
-      )
-
-    end
-
-    #--------------------------------------------------------------------------
-    # Limpa target
-    #--------------------------------------------------------------------------
+    FO_Core.error(
+      "[PLAYER DEAD]"
+    )
 
     if defined?(FO_Target_System)
 
@@ -461,31 +433,9 @@ module FO_Player_Status
 end
 
 #==============================================================================
-# ■ Registro no FO_ENGINE
-#==============================================================================
-
-if defined?(FO_ENGINE)
-
-  begin
-
-    FO_ENGINE.register_system(
-      FO_Player_Status
-    )
-
-  rescue
-
-  end
-
-end
-
-#==============================================================================
 # ■ Inicialização
 #==============================================================================
 
-if defined?(FO_DEBUG)
-
-  FO_DEBUG.log(
-    "FO_Player_Status_v4 carregado com sucesso"
-  )
-
-end
+FO_Core.log(
+  "FO_Player_Status v5 inicializado"
+)

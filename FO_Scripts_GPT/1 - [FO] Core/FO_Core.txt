@@ -1,23 +1,23 @@
 #==============================================================================
-# ■ FO_Core_v4
+# ■ FO_Core
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor....: ChatGPT + Caio
-# Versão...: 4.0
+# Versão...: 5.0
 # Data.....: 17/05/2026
 #------------------------------------------------------------------------------
 # DESCRIÇÃO:
 # Núcleo principal do Fields Online.
-# Compatível com RPG Maker XP ORIGINAL.
+# Compatível com RPG Maker XP ORIGINAL (Ruby 1.8).
 #------------------------------------------------------------------------------
-# OBJETIVOS:
-# - Base global do projeto
-# - Ferramentas utilitárias
-# - Segurança global
+# FUNÇÕES:
+# - Logging global
 # - Sistema de debug
-# - Helpers MMORPG
-# - Organização da arquitetura
+# - Utilitários MMORPG
+# - Helpers globais
+# - Segurança básica
+# - Organização central do projeto
 #------------------------------------------------------------------------------
 # ESTE SCRIPT DEVE FICAR NO TOPO DA LISTA.
 #==============================================================================
@@ -32,11 +32,9 @@ module FO_CORE
   # ● Projeto
   #--------------------------------------------------------------------------
 
-  PROJECT_NAME =
-    "Fields Online"
+  PROJECT_NAME = "Fields Online"
 
-  VERSION =
-    "4.0"
+  VERSION = "5.0"
 
   #--------------------------------------------------------------------------
   # ● Debug
@@ -46,27 +44,93 @@ module FO_CORE
 
   ENABLE_WARNINGS = true
 
-  ENABLE_ERROR_POPUPS = false
+  ENABLE_ERROR_LOG = true
+
+  ENABLE_POPUPS = false
+
+  #--------------------------------------------------------------------------
+  # ● Logs
+  #--------------------------------------------------------------------------
+
+  LOG_FOLDER = "Logs"
+
+  LOG_FILE = "Fields_Online_Log.txt"
 
 end
 
 #==============================================================================
-# ■ FO_DEBUG
+# ■ FO_Core
 #==============================================================================
 
-module FO_DEBUG
+module FO_Core
 
   #--------------------------------------------------------------------------
-  # ● Log
+  # ● Cria pasta de logs
+  #--------------------------------------------------------------------------
+
+  def self.create_log_folder
+
+    begin
+
+      if !FileTest.exist?(FO_CORE::LOG_FOLDER)
+        Dir.mkdir(FO_CORE::LOG_FOLDER)
+      end
+
+    rescue
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Caminho do log
+  #--------------------------------------------------------------------------
+
+  def self.log_path
+
+    return FO_CORE::LOG_FOLDER + "/" + FO_CORE::LOG_FILE
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Log principal
   #--------------------------------------------------------------------------
 
   def self.log(text)
 
+    return if text == nil
+
+    create_log_folder
+
+    begin
+
+      file = File.open(log_path, "a")
+
+      time = Time.now.strftime("%H:%M:%S")
+
+      file.write("[" + time + "] ")
+
+      file.write(text.to_s)
+
+      file.write("\n")
+
+      file.close
+
+    rescue
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Debug
+  #--------------------------------------------------------------------------
+
+  def self.debug(text)
+
     return unless FO_CORE::ENABLE_DEBUG
 
-    FO_Core.log
-      "[FO LOG] #{text}\n"
-    )
+    log("[DEBUG] " + text.to_s)
 
   end
 
@@ -78,9 +142,7 @@ module FO_DEBUG
 
     return unless FO_CORE::ENABLE_WARNINGS
 
-    FO_Core.log
-      "[FO WARNING] #{text}\n"
-    )
+    log("[WARNING] " + text.to_s)
 
   end
 
@@ -90,19 +152,25 @@ module FO_DEBUG
 
   def self.error(text)
 
-    FO_Core.log
-      "[FO ERROR] #{text}\n"
-    )
+    return unless FO_CORE::ENABLE_ERROR_LOG
 
-    if FO_CORE::ENABLE_ERROR_POPUPS
+    log("[ERROR] " + text.to_s)
 
-      begin
+  end
 
-        FO_Core.log(text)
+  #--------------------------------------------------------------------------
+  # ● Popup seguro
+  #--------------------------------------------------------------------------
 
-      rescue
+  def self.popup(text)
 
-      end
+    return unless FO_CORE::ENABLE_POPUPS
+
+    begin
+
+      msgbox(text.to_s)
+
+    rescue
 
     end
 
@@ -120,7 +188,7 @@ module FO_Utils
   # ● Clamp
   #--------------------------------------------------------------------------
 
-  def self.clamFO_Core.logvalue, min, max)
+  def self.clamp(value, min, max)
 
     return min if value < min
 
@@ -131,58 +199,51 @@ module FO_Utils
   end
 
   #--------------------------------------------------------------------------
-  # ● Distance
+  # ● Distância
   #--------------------------------------------------------------------------
 
   def self.distance(x1, y1, x2, y2)
 
-    dx =
-      (x2 - x1).abs
-
-    dy =
-      (y2 - y1).abs
+    dx = (x2 - x1).abs
+    dy = (y2 - y1).abs
 
     return dx + dy
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Percent
+  # ● Percentual
   #--------------------------------------------------------------------------
 
   def self.percent(current, maximum)
 
     return 0 if maximum <= 0
 
-    return (
-      current * 100 / maximum
-    ).to_i
+    return ((current * 100) / maximum).to_i
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Random Percent
+  # ● Chance %
   #--------------------------------------------------------------------------
 
   def self.random_percent(chance)
 
-    roll =
-      rand(100) + 1
+    roll = rand(100) + 1
 
     return roll <= chance
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Safe Name
+  # ● Nome seguro
   #--------------------------------------------------------------------------
 
   def self.safe_name(name)
 
-    return "" if name.nil?
+    return "" if name == nil
 
-    text =
-      name.clone
+    text = name.clone
 
     text.gsub!("$", "")
     text.gsub!("!", "")
@@ -196,29 +257,39 @@ module FO_Utils
 end
 
 #==============================================================================
+# ■ Compatibilidade Legacy
+#------------------------------------------------------------------------------
+# Mantém compatibilidade com scripts antigos
+#==============================================================================
+
+module FO_DEBUG
+
+  def self.log(text)
+
+    FO_Core.debug(text)
+
+  end
+
+  def self.warning(text)
+
+    FO_Core.warning(text)
+
+  end
+
+  def self.error(text)
+
+    FO_Core.error(text)
+
+  end
+
+end
+
+#==============================================================================
 # ■ Inicialização
 #==============================================================================
 
-if defined?(FO_DEBUG)
-
-  FO_DEBUG.log(
-    "=================================================="
-  )
-
-  FO_DEBUG.log(
-    "Fields Online MMORPG"
-  )
-
-  FO_DEBUG.log(
-    "Version #{FO_CORE::VERSION}"
-  )
-
-  FO_DEBUG.log(
-    "FO_Core_v4 carregado com sucesso"
-  )
-
-  FO_DEBUG.log(
-    "=================================================="
-  )
-
-end
+FO_Core.log("==================================================")
+FO_Core.log("Fields Online MMORPG")
+FO_Core.log("FO_Core v5 inicializado")
+FO_Core.log("Versão: " + FO_CORE::VERSION)
+FO_Core.log("==================================================")

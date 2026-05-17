@@ -1,0 +1,112 @@
+[16:09:50] ==================================================
+[16:09:50] Fields Online MMORPG
+[16:09:50] FO_Core v5 inicializado
+[16:09:50] Versão: 5.0
+[16:09:50] ==================================================
+[16:10:47] ==================================================
+[16:10:47] Fields Online MMORPG
+[16:10:47] FO_Core v5 inicializado
+[16:10:47] Versão: 5.0
+[16:10:47] ==================================================
+[16:10:47] FO_Timer v5 inicializado
+[16:11:52] ==================================================
+[16:11:52] Fields Online MMORPG
+[16:11:52] FO_Core v5 inicializado
+[16:11:52] Versão: 5.0
+[16:11:52] ==================================================
+[16:11:52] FO_Timer v5 inicializado
+[16:11:52] FO_Player_Data v5 inicializado
+[16:13:17] ==================================================
+[16:13:17] Fields Online MMORPG
+[16:13:17] FO_Core v5 inicializado
+[16:13:17] Versão: 5.0
+[16:13:17] ==================================================
+[16:13:17] FO_Timer v5 inicializado
+[16:13:17] FO_Player_Data v5 inicializado
+[16:13:17] FO_Combat_Manager v5 inicializado
+[16:14:16] ==================================================
+[16:14:16] Fields Online MMORPG
+[16:14:16] FO_Core v5 inicializado
+[16:14:16] Versão: 5.0
+[16:14:16] ==================================================
+[16:14:16] FO_Timer v5 inicializado
+[16:14:16] FO_Player_Data v5 inicializado
+[16:14:16] FO_Combat_Manager v5 inicializado
+[16:14:16] FO_Spawn_System v5 inicializado
+[16:15:11] ==================================================
+[16:15:11] Fields Online MMORPG
+[16:15:11] FO_Core v5 inicializado
+[16:15:11] Versão: 5.0
+[16:15:11] ==================================================
+[16:15:11] FO_Timer v5 inicializado
+[16:15:11] FO_Player_Data v5 inicializado
+[16:15:11] FO_Combat_Manager v5 inicializado
+[16:15:11] FO_Spawn_System v5 inicializado
+[16:15:11] FO_DropSystem v5 inicializado
+[16:16:06] ==================================================
+[16:16:06] Fields Online MMORPG
+[16:16:06] FO_Core v5 inicializado
+[16:16:06] Versão: 5.0
+[16:16:06] ==================================================
+[16:16:06] FO_Timer v5 inicializado
+[16:16:06] FO_Player_Data v5 inicializado
+[16:16:06] FO_Combat_Manager v5 inicializado
+[16:16:06] FO_Spawn_System v5 inicializado
+[16:16:07] FO_DropSystem v5 inicializado
+[16:16:07] FO_Player_HUD v5 inicializado
+[16:17:13] ==================================================
+[16:17:13] Fields Online MMORPG
+[16:17:13] FO_Core v5 inicializado
+[16:17:13] Versão: 5.0
+[16:17:13] ==================================================
+[16:17:13] FO_Timer v5 inicializado
+[16:17:13] FO_Player_Data v5 inicializado
+[16:17:13] FO_Combat_Manager v5 inicializado
+[16:17:13] FO_Spawn_System v5 inicializado
+[16:17:13] FO_DropSystem v5 inicializado
+[16:17:13] FO_Player_HUD v5 inicializado
+[16:17:13] FO_Player_Status v5 inicializado
+[16:18:48] ==================================================
+[16:18:48] Fields Online MMORPG
+[16:18:48] FO_Core v5 inicializado
+[16:18:48] Versão: 5.0
+[16:18:48] ==================================================
+[16:18:48] [WARNING] FO_System_Manager_v4_Compatibility carregado
+[16:18:48] [DEBUG] FO_Data_Manager_v4 carregado com sucesso
+[16:18:48] [DEBUG] FO_Boot_Manager_v1 carregado com sucesso
+[16:18:48] [DEBUG] FO_Engine_v4 carregado com sucesso
+[16:18:48] FO_Timer v5 inicializado
+[16:18:48] FO_Player_Data v5 inicializado
+[16:18:48] [DEBUG] FO_Player_Stats_v4 carregado com sucesso
+[16:18:48] [DEBUG] FO_Enemy_System_v4 carregado com sucesso
+[16:18:48] [DEBUG] FO_Target_Status_v4 carregado com sucesso
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_Entity_Manager
+[16:18:48] [DEBUG] FO_Entity_Manager_v4 carregado com sucesso
+[16:18:48] FO_Combat_Manager v5 inicializado
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_Player_Combat
+[16:18:48] [DEBUG] FO_Player_Combat_v4 carregado com sucesso
+[16:18:48] FO_Spawn_System v5 inicializado
+[16:18:48] FO_DropSystem v5 inicializado
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_UI_Manager
+[16:18:48] [DEBUG] FO_UI_Manager_v1 carregado com sucesso
+[16:18:48] FO_Player_HUD v5 inicializado
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_Loot_Popup_Manager
+[16:18:48] [DEBUG] FO_Loot_Popup_v4 carregado com sucesso
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_Floating_Damage
+[16:18:48] [DEBUG] FO_Floating_Damage_v4 carregado com sucesso
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_Aggro_Icon
+[16:18:48] [DEBUG] FO_Aggro_Icon_v4 carregado com sucesso
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_Target_NameTag
+[16:18:48] [DEBUG] FO_Target_NameTag_v4 carregado com sucesso
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_Target_BossBar
+[16:18:48] [DEBUG] FO_Target_BossBar_v4 carregado com sucesso
+[16:18:48] FO_Player_Status v5 inicializado
+[16:18:48] [DEBUG] FO_Inventory_v4 carregado com sucesso
+[16:18:48] [DEBUG] FO_Item_System carregado com sucesso
+[16:18:48] [DEBUG] FO_Inventory_Manager_v2 carregado com sucesso
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_Target_System
+[16:18:48] [DEBUG] FO_Target_System_v4 carregado com sucesso
+[16:18:48] [DEBUG] [SYSTEM REGISTERED] FO_Target_Highlight
+[16:18:48] [DEBUG] FO_Target_Highlight_v4 carregado com sucesso
+[16:18:49] [DEBUG] [ENEMY SETUP] $Slime
+[16:18:49] [DEBUG] [ENEMY SETUP] $Fantasma
