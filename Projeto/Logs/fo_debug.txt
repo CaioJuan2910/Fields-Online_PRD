@@ -29382,3 +29382,359 @@
 [17/05/2026 13:44:44] FO_Engine executando update global
 [17/05/2026 13:44:45] FO_Engine executando update global
 [17/05/2026 13:44:46] FO_Engine executando update global
+[17/05/2026 13:50:39] ===================================
+[17/05/2026 13:50:39] Fields Online iniciado
+[17/05/2026 13:50:39] Versão: 0.1 Alpha
+[17/05/2026 13:50:39] FO_Core carregado com sucesso
+[17/05/2026 13:50:39] ===================================
+[17/05/2026 13:50:39] FO_System_Manager_v1 carregado com sucesso
+[17/05/2026 13:50:39] FO_Engine carregada com sucesso
+[17/05/2026 13:50:39] FO_Timer carregado com sucesso
+[17/05/2026 13:50:39] FO_Player_Data carregado com sucesso
+[17/05/2026 13:50:39] FO_Player_Stats_v2 carregado com sucesso
+[17/05/2026 13:50:39] FO_Player_Status_v2 carregado com sucesso
+[17/05/2026 13:50:39] FO_Inventory carregado com sucesso
+[17/05/2026 13:50:39] FO_Item_System carregado com sucesso
+[17/05/2026 13:50:39] FO_Inventory_Manager_v1 carregado com sucesso
+[17/05/2026 13:50:39] FO_Loot_Popup_v2 carregado com sucesso
+[17/05/2026 13:50:39] FO_Player_Combat_v6 carregado com sucesso
+[17/05/2026 13:50:39] FO_DropSystem_v5 carregado com sucesso
+[17/05/2026 13:50:39] FO_Enemy_System_v1 carregado com sucesso
+[17/05/2026 13:50:40] [PLAYER STATS] Inicializados
+[17/05/2026 13:50:40] [PLAYER STATS] Inicializados
+[17/05/2026 13:50:40] [PLAYER STATS] Inicializados
+[17/05/2026 13:50:40] [PLAYER STATS] Inicializados
+[17/05/2026 13:50:40] [ENEMY LOAD] $Slime => Slime
+[17/05/2026 13:50:40] [ENEMY LOAD] !Dragão => Dragão
+[17/05/2026 13:50:40] [ENEMY LOAD] $Fantasma => Fantasma
+[17/05/2026 13:50:40] [ENEMY LOAD] $Slime => Slime
+[17/05/2026 13:50:40] [ENEMY LOAD] $Slime => Slime
+[17/05/2026 13:50:40] [ENEMY LOAD] $Slime => Slime
+[17/05/2026 13:50:40] [ENEMY LOAD] $Fantasma => Fantasma
+[17/05/2026 13:50:40] [ENEMY LOAD] $Fantasma => Fantasma
+[17/05/2026 13:50:40] [ENEMY LOAD] $Fantasma => Fantasma
+[17/05/2026 13:50:40] FO_Engine iniciada
+[17/05/2026 13:50:40] FO_Timer iniciado
+[17/05/2026 13:50:40] Timer criado: teste_skill (10s)
+[17/05/2026 13:50:40] FO_Player_Data iniciado
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] PLAYER DATA
+[17/05/2026 13:50:40] Nome...: Caio
+[17/05/2026 13:50:40] Level..: 1
+[17/05/2026 13:50:40] HP.....: 100
+[17/05/2026 13:50:40] MP.....: 30
+[17/05/2026 13:50:40] EXP....: 0
+[17/05/2026 13:50:40] Gold...: 500
+[17/05/2026 13:50:40] Classe.: Aventureiro
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] Caio ganhou 100 EXP
+[17/05/2026 13:50:40] LEVEL UP!
+[17/05/2026 13:50:40] Caio agora está no nível 2
+[17/05/2026 13:50:40] FO_Player_Status_v2 iniciado
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] PLAYER STATUS
+[17/05/2026 13:50:40] HP Atual.: 741
+[17/05/2026 13:50:40] HP Máximo: 741
+[17/05/2026 13:50:40] MP Atual.: 534
+[17/05/2026 13:50:40] MP Máximo: 534
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] FO_Inventory iniciado
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] INVENTÁRIO
+[17/05/2026 13:50:40] Inventário vazio
+[17/05/2026 13:50:40] Slots: 0/20
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] Item adicionado: Iron Sword
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] INVENTÁRIO
+[17/05/2026 13:50:40] --------------------
+[17/05/2026 13:50:40] ID......: 1
+[17/05/2026 13:50:40] Nome....: Iron Sword
+[17/05/2026 13:50:40] Tipo....: weapon
+[17/05/2026 13:50:40] Raridade: common
+[17/05/2026 13:50:40] Ataque..: 10
+[17/05/2026 13:50:40] Defesa..: 0
+[17/05/2026 13:50:40] Preço...: 100
+[17/05/2026 13:50:40] Slots: 1/20
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] Item adicionado: Wood Shield
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] INVENTÁRIO
+[17/05/2026 13:50:40] --------------------
+[17/05/2026 13:50:40] ID......: 1
+[17/05/2026 13:50:40] Nome....: Iron Sword
+[17/05/2026 13:50:40] Tipo....: weapon
+[17/05/2026 13:50:40] Raridade: common
+[17/05/2026 13:50:40] Ataque..: 10
+[17/05/2026 13:50:40] Defesa..: 0
+[17/05/2026 13:50:40] Preço...: 100
+[17/05/2026 13:50:40] --------------------
+[17/05/2026 13:50:40] ID......: 2
+[17/05/2026 13:50:40] Nome....: Wood Shield
+[17/05/2026 13:50:40] Tipo....: shield
+[17/05/2026 13:50:40] Raridade: common
+[17/05/2026 13:50:40] Ataque..: 0
+[17/05/2026 13:50:40] Defesa..: 5
+[17/05/2026 13:50:40] Preço...: 80
+[17/05/2026 13:50:40] Slots: 2/20
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] Item adicionado: Health Potion
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] INVENTÁRIO
+[17/05/2026 13:50:40] --------------------
+[17/05/2026 13:50:40] ID......: 1
+[17/05/2026 13:50:40] Nome....: Iron Sword
+[17/05/2026 13:50:40] Tipo....: weapon
+[17/05/2026 13:50:40] Raridade: common
+[17/05/2026 13:50:40] Ataque..: 10
+[17/05/2026 13:50:40] Defesa..: 0
+[17/05/2026 13:50:40] Preço...: 100
+[17/05/2026 13:50:40] --------------------
+[17/05/2026 13:50:40] ID......: 2
+[17/05/2026 13:50:40] Nome....: Wood Shield
+[17/05/2026 13:50:40] Tipo....: shield
+[17/05/2026 13:50:40] Raridade: common
+[17/05/2026 13:50:40] Ataque..: 0
+[17/05/2026 13:50:40] Defesa..: 5
+[17/05/2026 13:50:40] Preço...: 80
+[17/05/2026 13:50:40] --------------------
+[17/05/2026 13:50:40] ID......: 3
+[17/05/2026 13:50:40] Nome....: Health Potion
+[17/05/2026 13:50:40] Tipo....: consumable
+[17/05/2026 13:50:40] Raridade: common
+[17/05/2026 13:50:40] Ataque..: 0
+[17/05/2026 13:50:40] Defesa..: 0
+[17/05/2026 13:50:40] Preço...: 25
+[17/05/2026 13:50:40] Slots: 3/20
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] Item removido: Health Potion
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] INVENTÁRIO
+[17/05/2026 13:50:40] --------------------
+[17/05/2026 13:50:40] ID......: 1
+[17/05/2026 13:50:40] Nome....: Iron Sword
+[17/05/2026 13:50:40] Tipo....: weapon
+[17/05/2026 13:50:40] Raridade: common
+[17/05/2026 13:50:40] Ataque..: 10
+[17/05/2026 13:50:40] Defesa..: 0
+[17/05/2026 13:50:40] Preço...: 100
+[17/05/2026 13:50:40] --------------------
+[17/05/2026 13:50:40] ID......: 2
+[17/05/2026 13:50:40] Nome....: Wood Shield
+[17/05/2026 13:50:40] Tipo....: shield
+[17/05/2026 13:50:40] Raridade: common
+[17/05/2026 13:50:40] Ataque..: 0
+[17/05/2026 13:50:40] Defesa..: 5
+[17/05/2026 13:50:40] Preço...: 80
+[17/05/2026 13:50:40] Slots: 2/20
+[17/05/2026 13:50:40] ==============================
+[17/05/2026 13:50:40] FO_Engine conectada ao Scene_Map
+[17/05/2026 13:50:41] FO_Engine executando update global
+[17/05/2026 13:50:41] Timer teste_skill: 9s
+[17/05/2026 13:50:42] FO_Engine executando update global
+[17/05/2026 13:50:42] Timer teste_skill: 8s
+[17/05/2026 13:50:43] FO_Engine executando update global
+[17/05/2026 13:50:43] Timer teste_skill: 7s
+[17/05/2026 13:50:44] FO_Engine executando update global
+[17/05/2026 13:50:44] Timer teste_skill: 6s
+[17/05/2026 13:50:45] FO_Engine executando update global
+[17/05/2026 13:50:45] Timer teste_skill: 5s
+[17/05/2026 13:50:46] FO_Engine executando update global
+[17/05/2026 13:50:46] Timer teste_skill: 4s
+[17/05/2026 13:50:47] FO_Engine executando update global
+[17/05/2026 13:50:47] Timer teste_skill: 3s
+[17/05/2026 13:50:48] FO_Engine executando update global
+[17/05/2026 13:50:48] Timer teste_skill: 2s
+[17/05/2026 13:50:49] FO_Engine executando update global
+[17/05/2026 13:50:49] Timer teste_skill: 1s
+[17/05/2026 13:50:50] FO_Engine executando update global
+[17/05/2026 13:50:50] Timer teste_skill: 0s
+[17/05/2026 13:50:50] Timer finalizado: teste_skill
+[17/05/2026 13:50:50] Timer removido: teste_skill
+[17/05/2026 13:50:51] FO_Engine executando update global
+[17/05/2026 13:50:52] FO_Engine executando update global
+[17/05/2026 13:50:54] FO_Engine executando update global
+[17/05/2026 13:50:55] FO_Engine executando update global
+[17/05/2026 13:50:56] FO_Engine executando update global
+[17/05/2026 13:50:57] FO_Engine executando update global
+[17/05/2026 13:50:58] FO_Engine executando update global
+[17/05/2026 13:50:59] FO_Engine executando update global
+[17/05/2026 13:50:59] [KILL ERROR] undefined method `through=' for #<Game_Event:0x43a1d48>
+[17/05/2026 13:51:00] FO_Engine executando update global
+[17/05/2026 13:51:01] FO_Engine executando update global
+[17/05/2026 13:59:14] ===================================
+[17/05/2026 13:59:14] Fields Online iniciado
+[17/05/2026 13:59:14] Versão: 0.1 Alpha
+[17/05/2026 13:59:14] FO_Core carregado com sucesso
+[17/05/2026 13:59:14] ===================================
+[17/05/2026 13:59:14] FO_System_Manager_v1 carregado com sucesso
+[17/05/2026 13:59:14] FO_Engine carregada com sucesso
+[17/05/2026 13:59:14] FO_Timer carregado com sucesso
+[17/05/2026 13:59:14] FO_Player_Data carregado com sucesso
+[17/05/2026 13:59:14] FO_Player_Stats_v2 carregado com sucesso
+[17/05/2026 13:59:14] FO_Player_Status_v2 carregado com sucesso
+[17/05/2026 13:59:14] FO_Inventory carregado com sucesso
+[17/05/2026 13:59:14] FO_Item_System carregado com sucesso
+[17/05/2026 13:59:14] FO_Inventory_Manager_v1 carregado com sucesso
+[17/05/2026 13:59:14] [SYSTEM REGISTER] FO_Loot_Popup_Manager
+[17/05/2026 13:59:14] FO_Loot_Popup_v3 carregado com sucesso
+[17/05/2026 13:59:14] FO_Combat_Manager_v1 carregado com sucesso
+[17/05/2026 13:59:14] FO_Player_Combat_v6 carregado com sucesso
+[17/05/2026 13:59:14] FO_DropSystem_v5 carregado com sucesso
+[17/05/2026 13:59:14] FO_Enemy_System_v1 carregado com sucesso
+[17/05/2026 13:59:15] [PLAYER STATS] Inicializados
+[17/05/2026 13:59:15] [PLAYER STATS] Inicializados
+[17/05/2026 13:59:15] [PLAYER STATS] Inicializados
+[17/05/2026 13:59:15] [PLAYER STATS] Inicializados
+[17/05/2026 13:59:15] [ENEMY LOAD] $Slime => Slime
+[17/05/2026 13:59:15] [ENEMY LOAD] !Dragão => Dragão
+[17/05/2026 13:59:15] [ENEMY LOAD] $Fantasma => Fantasma
+[17/05/2026 13:59:15] [ENEMY LOAD] $Slime => Slime
+[17/05/2026 13:59:15] [ENEMY LOAD] $Slime => Slime
+[17/05/2026 13:59:15] [ENEMY LOAD] $Slime => Slime
+[17/05/2026 13:59:15] [ENEMY LOAD] $Fantasma => Fantasma
+[17/05/2026 13:59:15] [ENEMY LOAD] $Fantasma => Fantasma
+[17/05/2026 13:59:15] [ENEMY LOAD] $Fantasma => Fantasma
+[17/05/2026 13:59:15] FO_Engine iniciada
+[17/05/2026 13:59:15] FO_Timer iniciado
+[17/05/2026 13:59:15] Timer criado: teste_skill (10s)
+[17/05/2026 13:59:15] FO_Player_Data iniciado
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] PLAYER DATA
+[17/05/2026 13:59:15] Nome...: Caio
+[17/05/2026 13:59:15] Level..: 1
+[17/05/2026 13:59:15] HP.....: 100
+[17/05/2026 13:59:15] MP.....: 30
+[17/05/2026 13:59:15] EXP....: 0
+[17/05/2026 13:59:15] Gold...: 500
+[17/05/2026 13:59:15] Classe.: Aventureiro
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] Caio ganhou 100 EXP
+[17/05/2026 13:59:15] LEVEL UP!
+[17/05/2026 13:59:15] Caio agora está no nível 2
+[17/05/2026 13:59:15] FO_Player_Status_v2 iniciado
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] PLAYER STATUS
+[17/05/2026 13:59:15] HP Atual.: 741
+[17/05/2026 13:59:15] HP Máximo: 741
+[17/05/2026 13:59:15] MP Atual.: 534
+[17/05/2026 13:59:15] MP Máximo: 534
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] FO_Inventory iniciado
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] INVENTÁRIO
+[17/05/2026 13:59:15] Inventário vazio
+[17/05/2026 13:59:15] Slots: 0/20
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] Item adicionado: Iron Sword
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] INVENTÁRIO
+[17/05/2026 13:59:15] --------------------
+[17/05/2026 13:59:15] ID......: 1
+[17/05/2026 13:59:15] Nome....: Iron Sword
+[17/05/2026 13:59:15] Tipo....: weapon
+[17/05/2026 13:59:15] Raridade: common
+[17/05/2026 13:59:15] Ataque..: 10
+[17/05/2026 13:59:15] Defesa..: 0
+[17/05/2026 13:59:15] Preço...: 100
+[17/05/2026 13:59:15] Slots: 1/20
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] Item adicionado: Wood Shield
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] INVENTÁRIO
+[17/05/2026 13:59:15] --------------------
+[17/05/2026 13:59:15] ID......: 1
+[17/05/2026 13:59:15] Nome....: Iron Sword
+[17/05/2026 13:59:15] Tipo....: weapon
+[17/05/2026 13:59:15] Raridade: common
+[17/05/2026 13:59:15] Ataque..: 10
+[17/05/2026 13:59:15] Defesa..: 0
+[17/05/2026 13:59:15] Preço...: 100
+[17/05/2026 13:59:15] --------------------
+[17/05/2026 13:59:15] ID......: 2
+[17/05/2026 13:59:15] Nome....: Wood Shield
+[17/05/2026 13:59:15] Tipo....: shield
+[17/05/2026 13:59:15] Raridade: common
+[17/05/2026 13:59:15] Ataque..: 0
+[17/05/2026 13:59:15] Defesa..: 5
+[17/05/2026 13:59:15] Preço...: 80
+[17/05/2026 13:59:15] Slots: 2/20
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] Item adicionado: Health Potion
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] INVENTÁRIO
+[17/05/2026 13:59:15] --------------------
+[17/05/2026 13:59:15] ID......: 1
+[17/05/2026 13:59:15] Nome....: Iron Sword
+[17/05/2026 13:59:15] Tipo....: weapon
+[17/05/2026 13:59:15] Raridade: common
+[17/05/2026 13:59:15] Ataque..: 10
+[17/05/2026 13:59:15] Defesa..: 0
+[17/05/2026 13:59:15] Preço...: 100
+[17/05/2026 13:59:15] --------------------
+[17/05/2026 13:59:15] ID......: 2
+[17/05/2026 13:59:15] Nome....: Wood Shield
+[17/05/2026 13:59:15] Tipo....: shield
+[17/05/2026 13:59:15] Raridade: common
+[17/05/2026 13:59:15] Ataque..: 0
+[17/05/2026 13:59:15] Defesa..: 5
+[17/05/2026 13:59:15] Preço...: 80
+[17/05/2026 13:59:15] --------------------
+[17/05/2026 13:59:15] ID......: 3
+[17/05/2026 13:59:15] Nome....: Health Potion
+[17/05/2026 13:59:15] Tipo....: consumable
+[17/05/2026 13:59:15] Raridade: common
+[17/05/2026 13:59:15] Ataque..: 0
+[17/05/2026 13:59:15] Defesa..: 0
+[17/05/2026 13:59:15] Preço...: 25
+[17/05/2026 13:59:15] Slots: 3/20
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] Item removido: Health Potion
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] INVENTÁRIO
+[17/05/2026 13:59:15] --------------------
+[17/05/2026 13:59:15] ID......: 1
+[17/05/2026 13:59:15] Nome....: Iron Sword
+[17/05/2026 13:59:15] Tipo....: weapon
+[17/05/2026 13:59:15] Raridade: common
+[17/05/2026 13:59:15] Ataque..: 10
+[17/05/2026 13:59:15] Defesa..: 0
+[17/05/2026 13:59:15] Preço...: 100
+[17/05/2026 13:59:15] --------------------
+[17/05/2026 13:59:15] ID......: 2
+[17/05/2026 13:59:15] Nome....: Wood Shield
+[17/05/2026 13:59:15] Tipo....: shield
+[17/05/2026 13:59:15] Raridade: common
+[17/05/2026 13:59:15] Ataque..: 0
+[17/05/2026 13:59:15] Defesa..: 5
+[17/05/2026 13:59:15] Preço...: 80
+[17/05/2026 13:59:15] Slots: 2/20
+[17/05/2026 13:59:15] ==============================
+[17/05/2026 13:59:15] FO_Engine conectada ao Scene_Map
+[17/05/2026 13:59:16] FO_Engine executando update global
+[17/05/2026 13:59:16] Timer teste_skill: 9s
+[17/05/2026 13:59:17] FO_Engine executando update global
+[17/05/2026 13:59:17] Timer teste_skill: 8s
+[17/05/2026 13:59:18] FO_Engine executando update global
+[17/05/2026 13:59:18] Timer teste_skill: 7s
+[17/05/2026 13:59:19] FO_Engine executando update global
+[17/05/2026 13:59:19] Timer teste_skill: 6s
+[17/05/2026 13:59:20] FO_Engine executando update global
+[17/05/2026 13:59:20] Timer teste_skill: 5s
+[17/05/2026 13:59:21] FO_Engine executando update global
+[17/05/2026 13:59:21] Timer teste_skill: 4s
+[17/05/2026 13:59:22] FO_Engine executando update global
+[17/05/2026 13:59:22] Timer teste_skill: 3s
+[17/05/2026 13:59:23] FO_Engine executando update global
+[17/05/2026 13:59:23] Timer teste_skill: 2s
+[17/05/2026 13:59:24] FO_Engine executando update global
+[17/05/2026 13:59:24] Timer teste_skill: 1s
+[17/05/2026 13:59:25] FO_Engine executando update global
+[17/05/2026 13:59:25] Timer teste_skill: 0s
+[17/05/2026 13:59:25] Timer finalizado: teste_skill
+[17/05/2026 13:59:25] Timer removido: teste_skill
+[17/05/2026 13:59:26] [KILL ERROR] undefined method `through=' for #<Game_Event:0x439dba0>
+[17/05/2026 13:59:26] FO_Engine executando update global
+[17/05/2026 13:59:27] FO_Engine executando update global
+[17/05/2026 13:59:28] FO_Engine executando update global
+[17/05/2026 13:59:29] FO_Engine executando update global
