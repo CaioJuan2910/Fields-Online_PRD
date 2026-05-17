@@ -1,0 +1,117 @@
+#==============================================================================
+# ■ FO_Core
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor....: ChatGPT + Caio
+# Versão...: 1.2
+# Data.....: 16/05/2026
+# Hora.....: 16:00
+#------------------------------------------------------------------------------
+# Descrição:
+# Script principal do projeto Fields Online.
+# Responsável pelas configurações globais, debug e logs do jogo.
+#==============================================================================
+
+module FO_CORE
+
+  #===========================================================================
+  # ■ CONFIGURAÇÕES GERAIS
+  #===========================================================================
+
+  GAME_NAME = "Fields Online"
+  GAME_VERSION = "0.1 Alpha"
+
+  SCREEN_WIDTH  = 640
+  SCREEN_HEIGHT = 480
+
+  GAME_FPS = 60
+
+  #===========================================================================
+  # ■ CONFIGURAÇÕES DEBUG
+  #===========================================================================
+
+  DEBUG_MODE = true
+  ENABLE_LOGS = true
+
+  LOG_FILE_NAME = "Logs/fo_debug.txt"
+
+  # Mostrar popup de debug?
+  SHOW_POPUP_DEBUG = false
+
+  #===========================================================================
+  # ■ SISTEMA DE LOGS
+  #===========================================================================
+
+  #--------------------------------------------------------------------------
+  # ● Criar arquivo
+  #--------------------------------------------------------------------------
+  def self.create_log_file
+
+    unless FileTest.exist?("Logs")
+      Dir.mkdir("Logs")
+    end
+
+    unless FileTest.exist?(LOG_FILE_NAME)
+
+      file = File.new(LOG_FILE_NAME, "w")
+
+      file.puts("==============================")
+      file.puts(" Fields Online - Debug Log")
+      file.puts("==============================")
+
+      file.close
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Escrever log
+  #--------------------------------------------------------------------------
+  def self.write_log(message)
+
+    return unless ENABLE_LOGS
+
+    create_log_file
+
+    file = File.open(LOG_FILE_NAME, "a")
+
+    time = Time.now.strftime("%d/%m/%Y %H:%M:%S")
+
+    file.puts("[#{time}] #{message}")
+
+    file.close
+
+  end
+
+  #===========================================================================
+  # ■ DEBUG
+  #===========================================================================
+
+  #--------------------------------------------------------------------------
+  # ● Debug
+  #--------------------------------------------------------------------------
+  def self.debug(message)
+
+    return unless DEBUG_MODE
+
+    # Popup opcional
+    print("[FO_DEBUG] #{message}") if SHOW_POPUP_DEBUG
+
+    # Log
+    write_log(message)
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_CORE.debug("===================================")
+FO_CORE.debug("Fields Online iniciado")
+FO_CORE.debug("Versão: #{FO_CORE::GAME_VERSION}")
+FO_CORE.debug("FO_Core carregado com sucesso")
+FO_CORE.debug("===================================")

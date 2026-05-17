@@ -1,0 +1,180 @@
+#==============================================================================
+# ■ FO_Target_BossBar
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor: ChatGPT + Caio
+# Versão: 1.0
+# Data: 16/05/2026
+#------------------------------------------------------------------------------
+# Barra cinematográfica de Boss
+# Compatível com RPG Maker XP ORIGINAL
+#==============================================================================
+
+#==============================================================================
+# ■ FO_Target_BossBar
+#==============================================================================
+
+class FO_Target_BossBar
+
+  #--------------------------------------------------------------------------
+  # ● Inicialização
+  #--------------------------------------------------------------------------
+  def initialize
+
+    create_sprite
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Criar sprite
+  #--------------------------------------------------------------------------
+  def create_sprite
+
+    @sprite = Sprite.new
+
+    @sprite.bitmap = Bitmap.new(640, 64)
+
+    @sprite.z = 9999
+
+    font = @sprite.bitmap.font
+
+    font.name = "Arial"
+    font.size = 22
+    font.bold = true
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update
+  #--------------------------------------------------------------------------
+  def update
+
+    refresh
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Refresh
+  #--------------------------------------------------------------------------
+  def refresh
+
+    bitmap = @sprite.bitmap
+
+    bitmap.clear
+
+    # Apenas boss
+    if $fo_target == nil ||
+       $fo_target_type != :boss
+
+      @sprite.visible = false
+
+      return
+
+    end
+
+    @sprite.visible = true
+
+    hp     = $fo_target.fo_hp
+    maxhp  = $fo_target.fo_maxhp
+
+    maxhp = 1 if maxhp <= 0
+
+    rate = hp.to_f / maxhp.to_f
+
+    filled_width = (500 * rate).to_i
+
+    # Fundo
+    bitmap.fill_rect(
+      70,
+      26,
+      500,
+      16,
+      Color.new(40,40,40)
+    )
+
+    # Barra
+    bitmap.fill_rect(
+      70,
+      26,
+      filled_width,
+      16,
+      Color.new(220,50,50)
+    )
+
+    # Nome
+    bitmap.font.color = Color.new(255,255,255)
+
+    bitmap.draw_text(
+      0,
+      0,
+      640,
+      24,
+      $fo_target_name,
+      1
+    )
+
+    # Texto HP
+    bitmap.draw_text(
+      0,
+      22,
+      640,
+      20,
+      "#{hp} / #{maxhp}",
+      1
+    )
+
+    # Posição
+    @sprite.x = 0
+    @sprite.y = 10
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Dispose
+  #--------------------------------------------------------------------------
+  def dispose
+
+    @sprite.bitmap.dispose
+    @sprite.dispose
+
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_target_bossbar_main_v10 main
+  alias fo_target_bossbar_update_v10 update
+
+  #--------------------------------------------------------------------------
+  # ● Main
+  #--------------------------------------------------------------------------
+  def main
+
+    @fo_target_bossbar = FO_Target_BossBar.new
+
+    fo_target_bossbar_main_v10
+
+    @fo_target_bossbar.dispose
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update
+  #--------------------------------------------------------------------------
+  def update
+
+    fo_target_bossbar_update_v10
+
+    if @fo_target_bossbar != nil
+      @fo_target_bossbar.update
+    end
+
+  end
+
+end

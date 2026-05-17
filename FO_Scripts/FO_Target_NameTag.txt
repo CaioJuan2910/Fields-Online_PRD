@@ -1,0 +1,242 @@
+#==============================================================================
+# ■ FO_Target_NameTag
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor: ChatGPT + Caio
+# Versão: 2.0
+# Data: 16/05/2026
+#------------------------------------------------------------------------------
+# NameTag + HP dos Mobs
+# Compatível com RPG Maker XP ORIGINAL
+#==============================================================================
+
+#==============================================================================
+# ■ FO_Target_NameTag
+#==============================================================================
+
+class FO_Target_NameTag
+
+  #--------------------------------------------------------------------------
+  # ● Inicialização
+  #--------------------------------------------------------------------------
+  def initialize
+
+    create_sprite
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Criar sprite
+  #--------------------------------------------------------------------------
+  def create_sprite
+
+    @sprite = Sprite.new
+
+    @sprite.bitmap = Bitmap.new(220, 64)
+
+    @sprite.z = 5000
+
+    font = @sprite.bitmap.font
+
+    font.name = "Arial"
+    font.size = 18
+    font.bold = true
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update
+  #--------------------------------------------------------------------------
+  def update
+
+    refresh
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Refresh
+  #--------------------------------------------------------------------------
+  def refresh
+
+    bitmap = @sprite.bitmap
+
+    bitmap.clear
+
+    # Sem target
+    if $fo_target.nil?
+
+      @sprite.visible = false
+
+      return
+
+    end
+
+    @sprite.visible = true
+
+    #--------------------------------------------------------------------------
+    # ● Cor
+    #--------------------------------------------------------------------------
+
+    color = Color.new(255,255,255)
+
+    case $fo_target_type
+
+    when :npc
+      color = Color.new(255,255,255)
+
+    when :mob
+      color = Color.new(100,255,100)
+
+    when :boss
+      color = Color.new(255,80,80)
+
+    when :quest
+      color = Color.new(255,220,80)
+
+    end
+
+    bitmap.font.color = color
+
+    #--------------------------------------------------------------------------
+    # ● Nome
+    #--------------------------------------------------------------------------
+
+    bitmap.draw_text(
+      0,
+      0,
+      220,
+      32,
+      $fo_target_name,
+      1
+    )
+
+    #--------------------------------------------------------------------------
+    # ● HP apenas para mobs
+    #--------------------------------------------------------------------------
+
+    if $fo_target_type == :mob
+
+      hp     = $fo_target.fo_hp
+      maxhp  = $fo_target.fo_maxhp
+
+      maxhp = 1 if maxhp <= 0
+
+      rate = hp.to_f / maxhp.to_f
+
+      bar_width = 120
+
+      filled_width = (bar_width * rate).to_i
+
+      # Fundo
+      bitmap.fill_rect(
+        50,
+        34,
+        bar_width,
+        8,
+        Color.new(60,60,60)
+      )
+
+      # Barra
+      bitmap.fill_rect(
+        50,
+        34,
+        filled_width,
+        8,
+        Color.new(0,220,0)
+      )
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● Posição dinâmica
+    #--------------------------------------------------------------------------
+
+    screen_x = $fo_target.screen_x
+    screen_y = $fo_target.screen_y
+
+    frame_height = 48
+
+    event_data = $fo_target.instance_variable_get(:@event)
+
+    if event_data != nil
+
+      page = event_data.pages[0]
+
+      if page != nil
+
+        graphic = page.graphic
+
+        charset_name = graphic.character_name
+        charset_hue  = graphic.character_hue
+
+        if charset_name != nil && charset_name != ""
+
+          charset = RPG::Cache.character(
+            charset_name,
+            charset_hue
+          )
+
+          frame_height = charset.height / 4
+
+        end
+
+      end
+
+    end
+
+    offset_y = frame_height + 42
+
+    @sprite.x = screen_x - 110
+    @sprite.y = screen_y - offset_y
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Dispose
+  #--------------------------------------------------------------------------
+  def dispose
+
+    @sprite.bitmap.dispose
+    @sprite.dispose
+
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_target_nametag_main_v20 main
+  alias fo_target_nametag_update_v20 update
+
+  #--------------------------------------------------------------------------
+  # ● Main
+  #--------------------------------------------------------------------------
+  def main
+
+    @fo_target_nametag = FO_Target_NameTag.new
+
+    fo_target_nametag_main_v20
+
+    @fo_target_nametag.dispose
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update
+  #--------------------------------------------------------------------------
+  def update
+
+    fo_target_nametag_update_v20
+
+    if @fo_target_nametag != nil
+      @fo_target_nametag.update
+    end
+
+  end
+
+end

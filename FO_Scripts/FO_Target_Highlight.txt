@@ -1,0 +1,278 @@
+#==============================================================================
+# ■ FO_Target_Highlight
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor: ChatGPT + Caio
+# Versão: 2.0
+# Data: 16/05/2026
+#------------------------------------------------------------------------------
+# Highlight visual do alvo (Mobs e Bosses)
+# Compatível com RPG Maker XP ORIGINAL
+#==============================================================================
+
+#==============================================================================
+# ■ FO_Target_Highlight
+#==============================================================================
+
+class FO_Target_Highlight
+
+  #--------------------------------------------------------------------------
+  # ● Inicialização
+  #--------------------------------------------------------------------------
+  def initialize
+
+    @viewport_assigned = false
+
+    create_sprite
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Criar sprite
+  #--------------------------------------------------------------------------
+  def create_sprite
+
+    # Sprite temporário
+    @sprite = Sprite.new
+
+    # Imagem
+    @sprite.bitmap = RPG::Cache.picture("target_circle")
+
+    #--------------------------------------------------------------------------
+    # ● Centro da rotação
+    #--------------------------------------------------------------------------
+
+    @sprite.ox = @sprite.bitmap.width / 2
+    @sprite.oy = @sprite.bitmap.height / 2
+
+    #--------------------------------------------------------------------------
+    # ● Configurações visuais MMORPG
+    #--------------------------------------------------------------------------
+
+    # Opacidade
+    @fade_min_opacity = 220
+    @fade_max_opacity = 255
+
+    # Velocidade fade
+    @fade_speed = 2
+
+    # Rotação suave
+    @rotation_speed = 0.2
+
+    # Opacidade inicial
+    @sprite.opacity = @fade_max_opacity
+
+    # Controle animação
+    @opacity_direction = -@fade_speed
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Configurar viewport correta
+  #--------------------------------------------------------------------------
+  def setup_viewport
+
+    return if @viewport_assigned
+
+    return unless $scene.is_a?(Scene_Map)
+
+    spriteset = $scene.instance_variable_get(:@spriteset)
+
+    return if spriteset.nil?
+
+    viewport1 = spriteset.instance_variable_get(:@viewport1)
+
+    return if viewport1.nil?
+
+    # Guarda dados atuais
+    x = @sprite.x
+    y = @sprite.y
+    opacity = @sprite.opacity
+    angle = @sprite.angle
+
+    bitmap = @sprite.bitmap
+
+    # Remove sprite antigo
+    @sprite.dispose
+
+    # Recria sprite na viewport correta
+    @sprite = Sprite.new(viewport1)
+
+    @sprite.bitmap = bitmap
+
+    #--------------------------------------------------------------------------
+    # ● Centro da rotação
+    #--------------------------------------------------------------------------
+
+    @sprite.ox = @sprite.bitmap.width / 2
+    @sprite.oy = @sprite.bitmap.height / 2
+
+    #--------------------------------------------------------------------------
+    # ● Restaura dados
+    #--------------------------------------------------------------------------
+
+    @sprite.x = x
+    @sprite.y = y
+    @sprite.opacity = opacity
+    @sprite.angle = angle
+
+    @viewport_assigned = true
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update
+  #--------------------------------------------------------------------------
+  def update
+
+    setup_viewport
+
+    refresh
+
+    update_animation
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Refresh
+  #--------------------------------------------------------------------------
+  def refresh
+
+    return if @sprite.nil?
+
+    #--------------------------------------------------------------------------
+    # ● Sem target
+    #--------------------------------------------------------------------------
+
+    if $fo_target.nil?
+
+      @sprite.visible = false
+
+      return
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● Apenas mobs e bosses usam aura
+    #--------------------------------------------------------------------------
+
+    unless $fo_target_type == :mob || $fo_target_type == :boss
+
+      @sprite.visible = false
+
+      return
+
+    end
+
+    @sprite.visible = true
+
+    #--------------------------------------------------------------------------
+    # ● Posição
+    #--------------------------------------------------------------------------
+
+    screen_x = $fo_target.screen_x
+    screen_y = $fo_target.screen_y
+
+    # Centro do target
+    @sprite.x = screen_x + 2
+
+    # Ajuste vertical MMORPG
+    @sprite.y = screen_y - 8
+
+    #--------------------------------------------------------------------------
+    # ● Profundidade
+    #--------------------------------------------------------------------------
+    # Mantém atrás do personagem
+    #--------------------------------------------------------------------------
+
+    @sprite.z = $fo_target.screen_z - 1
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Animação
+  #--------------------------------------------------------------------------
+  def update_animation
+
+    return if @sprite.nil?
+    return if @sprite.visible == false
+
+    #--------------------------------------------------------------------------
+    # ● Fade suave
+    #--------------------------------------------------------------------------
+
+    @sprite.opacity += @opacity_direction
+
+    if @sprite.opacity <= @fade_min_opacity
+
+      @opacity_direction = @fade_speed
+
+    elsif @sprite.opacity >= @fade_max_opacity
+
+      @opacity_direction = -@fade_speed
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● Rotação suave
+    #--------------------------------------------------------------------------
+    # Evita deformação oval do RMXP
+    #--------------------------------------------------------------------------
+
+    @sprite.angle += @rotation_speed
+
+    # Reset seguro
+    if @sprite.angle >= 360
+      @sprite.angle = 0
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Dispose
+  #--------------------------------------------------------------------------
+  def dispose
+
+    @sprite.dispose if @sprite != nil
+
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_target_highlight_main_v20 main
+  alias fo_target_highlight_update_v20 update
+
+  #--------------------------------------------------------------------------
+  # ● Main
+  #--------------------------------------------------------------------------
+  def main
+
+    @fo_target_highlight = FO_Target_Highlight.new
+
+    fo_target_highlight_main_v20
+
+    @fo_target_highlight.dispose
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update
+  #--------------------------------------------------------------------------
+  def update
+
+    fo_target_highlight_update_v20
+
+    if @fo_target_highlight != nil
+      @fo_target_highlight.update
+    end
+
+  end
+
+end

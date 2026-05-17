@@ -1,0 +1,177 @@
+#==============================================================================
+# ■ FO_Inventory
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor....: ChatGPT + Caio
+# Versão...: 1.1
+# Data.....: 16/05/2026
+# Hora.....: 20:00
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema de inventário do Fields Online.
+# Agora integrado ao FO_Item_System.
+#==============================================================================
+
+class FO_Inventory
+
+  #===========================================================================
+  # ■ CONFIGURAÇÕES
+  #===========================================================================
+
+  MAX_ITEMS = 20
+
+  #===========================================================================
+  # ● Initialize
+  #===========================================================================
+  def initialize
+
+    # Lista de itens
+    @items = []
+
+    FO_CORE.debug("FO_Inventory iniciado")
+
+    show_inventory
+
+  end
+
+  #===========================================================================
+  # ● Adicionar item
+  #===========================================================================
+  def add_item(item_id)
+
+    # Verifica limite
+    if @items.size >= MAX_ITEMS
+
+      FO_CORE.debug("Inventário cheio")
+
+      return
+
+    end
+
+    # Busca item
+    item = FO_ItemSystem.get_item(item_id)
+
+    # Verifica item válido
+    if item.nil?
+
+      FO_CORE.debug("Item inválido: #{item_id}")
+
+      return
+
+    end
+
+    # Adiciona item
+    @items.push(item)
+
+    FO_CORE.debug("Item adicionado: #{item.name}")
+
+    show_inventory
+
+  end
+
+  #===========================================================================
+  # ● Remover item
+  #===========================================================================
+  def remove_item(item_id)
+
+    # Procura item
+    item = @items.find { |i| i.id == item_id }
+
+    # Verifica existência
+    if item.nil?
+
+      FO_CORE.debug("Item não encontrado: #{item_id}")
+
+      return
+
+    end
+
+    # Remove item
+    @items.delete(item)
+
+    FO_CORE.debug("Item removido: #{item.name}")
+
+    show_inventory
+
+  end
+
+  #===========================================================================
+  # ● Mostrar inventário
+  #===========================================================================
+  def show_inventory
+
+    FO_CORE.debug("==============================")
+    FO_CORE.debug("INVENTÁRIO")
+
+    # Inventário vazio
+    if @items.empty?
+
+      FO_CORE.debug("Inventário vazio")
+
+    else
+
+      # Lista itens
+      @items.each do |item|
+
+        FO_CORE.debug("--------------------")
+        FO_CORE.debug("ID......: #{item.id}")
+        FO_CORE.debug("Nome....: #{item.name}")
+        FO_CORE.debug("Tipo....: #{item.type}")
+        FO_CORE.debug("Raridade: #{item.rarity}")
+        FO_CORE.debug("Ataque..: #{item.attack}")
+        FO_CORE.debug("Defesa..: #{item.defense}")
+        FO_CORE.debug("Preço...: #{item.price}")
+
+      end
+
+    end
+
+    FO_CORE.debug("Slots: #{@items.size}/#{MAX_ITEMS}")
+    FO_CORE.debug("==============================")
+
+  end
+
+end
+
+#==============================================================================
+# ■ FO_Engine
+#------------------------------------------------------------------------------
+# Integra Inventário à Engine
+#==============================================================================
+
+class FO_Engine
+
+  #--------------------------------------------------------------------------
+  # ● Alias Initialize
+  #--------------------------------------------------------------------------
+  alias fo_inventory_initialize initialize
+
+  #--------------------------------------------------------------------------
+  # ● Initialize
+  #--------------------------------------------------------------------------
+  def initialize
+
+    # Original
+    fo_inventory_initialize
+
+    # Cria inventário
+    @inventory = FO_Inventory.new
+
+    # Testes
+    @inventory.add_item(1)
+    @inventory.add_item(2)
+    @inventory.add_item(3)
+
+    # Remove potion
+    @inventory.remove_item(3)
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_CORE.debug("FO_Inventory carregado com sucesso")
