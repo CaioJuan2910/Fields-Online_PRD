@@ -155,11 +155,11 @@ module FO_Player_HUD
 
     draw_background(bitmap)
 
-    draw_hp(bitmap)
+    draw_hFO_Core.logbitmap)
 
-    draw_mp(bitmap)
+    draw_mFO_Core.logbitmap)
 
-    draw_exp(bitmap)
+    draw_exFO_Core.logbitmap)
 
     draw_info(bitmap)
 
@@ -240,7 +240,7 @@ module FO_Player_HUD
   # ● Draw HP
   #--------------------------------------------------------------------------
 
-  def self.draw_hp(bitmap)
+  def self.draw_hFO_Core.logbitmap)
 
     return unless defined?(FO_Player_Data)
 
@@ -299,7 +299,7 @@ module FO_Player_HUD
   # ● Draw MP
   #--------------------------------------------------------------------------
 
-  def self.draw_mp(bitmap)
+  def self.draw_mFO_Core.logbitmap)
 
     return unless defined?(FO_Player_Data)
 
@@ -358,7 +358,7 @@ module FO_Player_HUD
   # ● Draw EXP
   #--------------------------------------------------------------------------
 
-  def self.draw_exp(bitmap)
+  def self.draw_exFO_Core.logbitmap)
 
     return unless defined?(FO_Player_Data)
 

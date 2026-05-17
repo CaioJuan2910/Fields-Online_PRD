@@ -331,7 +331,7 @@ module FO_Combat_Manager
     # ● EXP
     #--------------------------------------------------------------------------
 
-    give_exp(target)
+    give_exFO_Core.logtarget)
 
     #--------------------------------------------------------------------------
     # ● Drops
@@ -351,7 +351,7 @@ module FO_Combat_Manager
   # ● Give EXP
   #--------------------------------------------------------------------------
 
-  def self.give_exp(target)
+  def self.give_exFO_Core.logtarget)
 
     return unless defined?(FO_Player_Data)
 
@@ -364,7 +364,7 @@ module FO_Combat_Manager
 
     return if exp <= 0
 
-    FO_Player_Data.gain_exp(exp)
+    FO_Player_Data.gain_exFO_Core.logexp)
 
     if defined?(FO_DEBUG)
 

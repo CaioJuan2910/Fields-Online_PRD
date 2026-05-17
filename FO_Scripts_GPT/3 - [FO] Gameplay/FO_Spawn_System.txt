@@ -132,7 +132,7 @@ module FO_Spawn_Manager
       amount =
         data[:amount]
 
-      create_spawn_group(
+      create_spawn_grouFO_Core.log
         template_event_id,
         amount
       )
@@ -163,7 +163,7 @@ module FO_Spawn_Manager
   # ● Create Spawn Group
   #--------------------------------------------------------------------------
 
-  def self.create_spawn_group(template_id, amount)
+  def self.create_spawn_grouFO_Core.logtemplate_id, amount)
 
     return if $game_map.nil?
 
@@ -224,7 +224,7 @@ module FO_Spawn_Manager
 
     event_data =
       Marshal.load(
-        Marshal.dump(original_event)
+        Marshal.dumFO_Core.logoriginal_event)
       )
 
     event_data.id = new_id
@@ -365,7 +365,7 @@ module FO_Spawn_Manager
   # ● Reset Map
   #--------------------------------------------------------------------------
 
-  def self.reset_map(map_id)
+  def self.reset_maFO_Core.logmap_id)
 
     @spawned_maps.delete(map_id)
 

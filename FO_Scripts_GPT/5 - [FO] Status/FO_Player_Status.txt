@@ -176,7 +176,7 @@ module FO_Player_Status
 
     end
 
-    recover_mp(amount)
+    recover_mFO_Core.logamount)
 
   end
 
@@ -239,7 +239,7 @@ module FO_Player_Status
   # ● Recover MP
   #--------------------------------------------------------------------------
 
-  def self.recover_mp(amount)
+  def self.recover_mFO_Core.logamount)
 
     return unless defined?(FO_Player_Data)
 
@@ -267,7 +267,7 @@ module FO_Player_Status
   # ● Spend MP
   #--------------------------------------------------------------------------
 
-  def self.spend_mp(amount)
+  def self.spend_mFO_Core.logamount)
 
     return false unless defined?(FO_Player_Data)
 

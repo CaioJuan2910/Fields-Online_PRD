@@ -64,7 +64,7 @@ module FO_DEBUG
 
     return unless FO_CORE::ENABLE_DEBUG
 
-    print(
+    FO_Core.log
       "[FO LOG] #{text}\n"
     )
 
@@ -78,7 +78,7 @@ module FO_DEBUG
 
     return unless FO_CORE::ENABLE_WARNINGS
 
-    print(
+    FO_Core.log
       "[FO WARNING] #{text}\n"
     )
 
@@ -90,7 +90,7 @@ module FO_DEBUG
 
   def self.error(text)
 
-    print(
+    FO_Core.log
       "[FO ERROR] #{text}\n"
     )
 
@@ -98,7 +98,7 @@ module FO_DEBUG
 
       begin
 
-        msgbox(text)
+        FO_Core.log(text)
 
       rescue
 
@@ -120,7 +120,7 @@ module FO_Utils
   # ● Clamp
   #--------------------------------------------------------------------------
 
-  def self.clamp(value, min, max)
+  def self.clamFO_Core.logvalue, min, max)
 
     return min if value < min
 

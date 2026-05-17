@@ -243,7 +243,7 @@ module FO_Timer
   # ● Add Loop
   #--------------------------------------------------------------------------
 
-  def self.add_loop(name, duration, &block)
+  def self.add_looFO_Core.logname, duration, &block)
 
     return nil if duration <= 0
 

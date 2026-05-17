@@ -174,7 +174,7 @@ module FO_Player_Data
   # ● Gain EXP
   #--------------------------------------------------------------------------
 
-  def self.gain_exp(amount)
+  def self.gain_exFO_Core.logamount)
 
     return if amount <= 0
 
@@ -314,7 +314,7 @@ module FO_Player_Data
           "wb"
         )
 
-      Marshal.dump(data, file)
+      Marshal.dumFO_Core.logdata, file)
 
       file.close
 

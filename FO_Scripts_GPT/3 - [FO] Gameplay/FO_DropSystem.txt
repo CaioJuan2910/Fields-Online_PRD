@@ -191,7 +191,7 @@ module FO_DropManager
 
       next if drop.nil?
 
-      deliver_drop(drop)
+      deliver_droFO_Core.logdrop)
 
     end
 
@@ -201,7 +201,7 @@ module FO_DropManager
   # ● Deliver Drop
   #--------------------------------------------------------------------------
 
-  def self.deliver_drop(drop)
+  def self.deliver_droFO_Core.logdrop)
 
     type =
       drop[:type]
