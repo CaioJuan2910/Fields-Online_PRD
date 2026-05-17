@@ -1,230 +1,268 @@
 #==============================================================================
-# ■ FO_Target_Highlight
+# ■ FO_Target_Highlight_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 2.0
-# Data: 16/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# Highlight visual do alvo (Mobs e Bosses)
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# Sistema de destaque visual para alvo selecionado.
+# Compatível com RPG Maker XP ORIGINAL.
+#------------------------------------------------------------------------------
+# OBJETIVOS:
+# - Destacar target atual
+# - Visual MMORPG
+# - Compatível com Boss/Mob
+# - Atualização automática
+# - Sem variáveis globais
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Target_System
+# - FO_Core
 #==============================================================================
+
+#==============================================================================
+# ■ FO_TARGET_HIGHLIGHT
+#==============================================================================
+
+module FO_TARGET_HIGHLIGHT
+
+  #--------------------------------------------------------------------------
+  # ● Configurações
+  #--------------------------------------------------------------------------
+
+  OFFSET_X = -16
+
+  OFFSET_Y = -16
+
+  Z = 99998
+
+  #--------------------------------------------------------------------------
+  # ● Animação
+  #--------------------------------------------------------------------------
+
+  PULSE_SPEED = 8
+
+  MIN_OPACITY = 120
+
+  MAX_OPACITY = 255
+
+  #--------------------------------------------------------------------------
+  # ● Cor
+  #--------------------------------------------------------------------------
+
+  NORMAL_COLOR =
+    Color.new(255,255,255)
+
+  BOSS_COLOR =
+    Color.new(255,80,80)
+
+end
 
 #==============================================================================
 # ■ FO_Target_Highlight
 #==============================================================================
 
-class FO_Target_Highlight
+module FO_Target_Highlight
 
   #--------------------------------------------------------------------------
-  # ● Inicialização
+  # ■ Variáveis
   #--------------------------------------------------------------------------
-  def initialize
 
-    @viewport_assigned = false
+  @sprite = nil
 
-    create_sprite
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Criar sprite
-  #--------------------------------------------------------------------------
-  def create_sprite
-
-    # Sprite temporário
-    @sprite = Sprite.new
-
-    # Imagem
-    @sprite.bitmap = RPG::Cache.picture("target_circle")
-
-    #--------------------------------------------------------------------------
-    # ● Centro da rotação
-    #--------------------------------------------------------------------------
-
-    @sprite.ox = @sprite.bitmap.width / 2
-    @sprite.oy = @sprite.bitmap.height / 2
-
-    #--------------------------------------------------------------------------
-    # ● Configurações visuais MMORPG
-    #--------------------------------------------------------------------------
-
-    # Opacidade
-    @fade_min_opacity = 220
-    @fade_max_opacity = 255
-
-    # Velocidade fade
-    @fade_speed = 2
-
-    # Rotação suave
-    @rotation_speed = 0.2
-
-    # Opacidade inicial
-    @sprite.opacity = @fade_max_opacity
-
-    # Controle animação
-    @opacity_direction = -@fade_speed
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Configurar viewport correta
-  #--------------------------------------------------------------------------
-  def setup_viewport
-
-    return if @viewport_assigned
-
-    return unless $scene.is_a?(Scene_Map)
-
-    spriteset = $scene.instance_variable_get(:@spriteset)
-
-    return if spriteset.nil?
-
-    viewport1 = spriteset.instance_variable_get(:@viewport1)
-
-    return if viewport1.nil?
-
-    # Guarda dados atuais
-    x = @sprite.x
-    y = @sprite.y
-    opacity = @sprite.opacity
-    angle = @sprite.angle
-
-    bitmap = @sprite.bitmap
-
-    # Remove sprite antigo
-    @sprite.dispose
-
-    # Recria sprite na viewport correta
-    @sprite = Sprite.new(viewport1)
-
-    @sprite.bitmap = bitmap
-
-    #--------------------------------------------------------------------------
-    # ● Centro da rotação
-    #--------------------------------------------------------------------------
-
-    @sprite.ox = @sprite.bitmap.width / 2
-    @sprite.oy = @sprite.bitmap.height / 2
-
-    #--------------------------------------------------------------------------
-    # ● Restaura dados
-    #--------------------------------------------------------------------------
-
-    @sprite.x = x
-    @sprite.y = y
-    @sprite.opacity = opacity
-    @sprite.angle = angle
-
-    @viewport_assigned = true
-
-  end
+  @opacity_direction = -1
 
   #--------------------------------------------------------------------------
   # ● Update
   #--------------------------------------------------------------------------
-  def update
 
-    setup_viewport
+  def self.update
 
-    refresh
+    update_visibility
+
+    update_position
 
     update_animation
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Refresh
+  # ● Update Visibility
   #--------------------------------------------------------------------------
-  def refresh
 
-    return if @sprite.nil?
+  def self.update_visibility
 
-    #--------------------------------------------------------------------------
-    # ● Sem target
-    #--------------------------------------------------------------------------
+    target =
+      FO_Target_System.target
 
-    if $fo_target.nil?
+    if target.nil?
 
-      @sprite.visible = false
+      dispose
 
       return
 
     end
 
-    #--------------------------------------------------------------------------
-    # ● Apenas mobs e bosses usam aura
-    #--------------------------------------------------------------------------
+    if @sprite.nil?
 
-    unless $fo_target_type == :mob || $fo_target_type == :boss
-
-      @sprite.visible = false
-
-      return
+      create_sprite
 
     end
-
-    @sprite.visible = true
-
-    #--------------------------------------------------------------------------
-    # ● Posição
-    #--------------------------------------------------------------------------
-
-    screen_x = $fo_target.screen_x
-    screen_y = $fo_target.screen_y
-
-    # Centro do target
-    @sprite.x = screen_x + 2
-
-    # Ajuste vertical MMORPG
-    @sprite.y = screen_y - 8
-
-    #--------------------------------------------------------------------------
-    # ● Profundidade
-    #--------------------------------------------------------------------------
-    # Mantém atrás do personagem
-    #--------------------------------------------------------------------------
-
-    @sprite.z = $fo_target.screen_z - 1
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Animação
+  # ● Create Sprite
   #--------------------------------------------------------------------------
-  def update_animation
+
+  def self.create_sprite
+
+    dispose
+
+    @sprite =
+      Sprite.new
+
+    @sprite.bitmap =
+      Bitmap.new(64, 64)
+
+    @sprite.z =
+      FO_TARGET_HIGHLIGHT::Z
+
+    draw_highlight
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Draw Highlight
+  #--------------------------------------------------------------------------
+
+  def self.draw_highlight
 
     return if @sprite.nil?
-    return if @sprite.visible == false
+
+    bitmap =
+      @sprite.bitmap
+
+    bitmap.clear
 
     #--------------------------------------------------------------------------
-    # ● Fade suave
+    # ● Cor
     #--------------------------------------------------------------------------
 
-    @sprite.opacity += @opacity_direction
+    color =
+      FO_TARGET_HIGHLIGHT::NORMAL_COLOR
 
-    if @sprite.opacity <= @fade_min_opacity
+    if FO_Target_System.target_boss?
 
-      @opacity_direction = @fade_speed
-
-    elsif @sprite.opacity >= @fade_max_opacity
-
-      @opacity_direction = -@fade_speed
+      color =
+        FO_TARGET_HIGHLIGHT::BOSS_COLOR
 
     end
 
     #--------------------------------------------------------------------------
-    # ● Rotação suave
-    #--------------------------------------------------------------------------
-    # Evita deformação oval do RMXP
+    # ● Moldura
     #--------------------------------------------------------------------------
 
-    @sprite.angle += @rotation_speed
+    # Top
+    bitmap.fill_rect(
+      0,
+      0,
+      64,
+      2,
+      color
+    )
 
-    # Reset seguro
-    if @sprite.angle >= 360
-      @sprite.angle = 0
+    # Bottom
+    bitmap.fill_rect(
+      0,
+      62,
+      64,
+      2,
+      color
+    )
+
+    # Left
+    bitmap.fill_rect(
+      0,
+      0,
+      2,
+      64,
+      color
+    )
+
+    # Right
+    bitmap.fill_rect(
+      62,
+      0,
+      2,
+      64,
+      color
+    )
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Position
+  #--------------------------------------------------------------------------
+
+  def self.update_position
+
+    return if @sprite.nil?
+
+    target =
+      FO_Target_System.target
+
+    return if target.nil?
+
+    @sprite.x =
+      target.screen_x +
+      FO_TARGET_HIGHLIGHT::OFFSET_X
+
+    @sprite.y =
+      target.screen_y +
+      FO_TARGET_HIGHLIGHT::OFFSET_Y
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Animation
+  #--------------------------------------------------------------------------
+
+  def self.update_animation
+
+    return if @sprite.nil?
+
+    @sprite.opacity +=
+      (
+        FO_TARGET_HIGHLIGHT::PULSE_SPEED *
+        @opacity_direction
+      )
+
+    #--------------------------------------------------------------------------
+    # ● Limites
+    #--------------------------------------------------------------------------
+
+    if @sprite.opacity <=
+       FO_TARGET_HIGHLIGHT::MIN_OPACITY
+
+      @sprite.opacity =
+        FO_TARGET_HIGHLIGHT::MIN_OPACITY
+
+      @opacity_direction = 1
+
+    end
+
+    if @sprite.opacity >=
+       FO_TARGET_HIGHLIGHT::MAX_OPACITY
+
+      @sprite.opacity =
+        FO_TARGET_HIGHLIGHT::MAX_OPACITY
+
+      @opacity_direction = -1
+
     end
 
   end
@@ -232,47 +270,51 @@ class FO_Target_Highlight
   #--------------------------------------------------------------------------
   # ● Dispose
   #--------------------------------------------------------------------------
-  def dispose
 
-    @sprite.dispose if @sprite != nil
+  def self.dispose
+
+    return if @sprite.nil?
+
+    if @sprite.bitmap != nil
+
+      @sprite.bitmap.dispose
+
+    end
+
+    @sprite.dispose
+
+    @sprite = nil
 
   end
 
 end
 
 #==============================================================================
-# ■ Scene_Map
+# ■ Registro no FO_ENGINE
 #==============================================================================
 
-class Scene_Map
+if defined?(FO_ENGINE)
 
-  alias fo_target_highlight_main_v20 main
-  alias fo_target_highlight_update_v20 update
+  begin
 
-  #--------------------------------------------------------------------------
-  # ● Main
-  #--------------------------------------------------------------------------
-  def main
+    FO_ENGINE.register_system(
+      FO_Target_Highlight
+    )
 
-    @fo_target_highlight = FO_Target_Highlight.new
-
-    fo_target_highlight_main_v20
-
-    @fo_target_highlight.dispose
+  rescue
 
   end
 
-  #--------------------------------------------------------------------------
-  # ● Update
-  #--------------------------------------------------------------------------
-  def update
+end
 
-    fo_target_highlight_update_v20
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
 
-    if @fo_target_highlight != nil
-      @fo_target_highlight.update
-    end
+if defined?(FO_DEBUG)
 
-  end
+  FO_DEBUG.log(
+    "FO_Target_Highlight_v4 carregado com sucesso"
+  )
 
 end

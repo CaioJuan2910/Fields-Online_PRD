@@ -1,22 +1,44 @@
 #==============================================================================
-# ■ FO_Entity_Manager_v1
+# ■ FO_Entity_Manager_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 1.0
-# Data: 18/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# Gerenciador central de entidades MMORPG
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# Gerenciador central de entidades MMORPG.
+# Compatível com RPG Maker XP ORIGINAL.
 #------------------------------------------------------------------------------
-# RESPONSABILIDADES:
-# - Registro de entidades
-# - Remoção de entidades
-# - Busca de entidades
-# - Update centralizado
-# - Validação de entidades
+# OBJETIVOS:
+# - Centralizar entidades do mapa
+# - Cache automático
+# - Compatível com Enemy System
+# - Compatível com Spawn System
+# - Compatível com Target System
+# - Preparar multiplayer futuramente
+# - Organização MMORPG moderna
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Core
+# - FO_Enemy_System
 #==============================================================================
+
+#==============================================================================
+# ■ FO_ENTITY_MANAGER
+#==============================================================================
+
+module FO_ENTITY_MANAGER
+
+  #--------------------------------------------------------------------------
+  # ● Configurações
+  #--------------------------------------------------------------------------
+
+  AUTO_REFRESH_INTERVAL =
+    60
+
+end
 
 #==============================================================================
 # ■ FO_Entity_Manager
@@ -25,78 +47,152 @@
 module FO_Entity_Manager
 
   #--------------------------------------------------------------------------
-  # ■ Entities
+  # ■ Variáveis
   #--------------------------------------------------------------------------
 
   @entities = []
 
+  @combat_entities = []
+
+  @npc_entities = []
+
+  @quest_entities = []
+
+  @refresh_timer = 0
+
   #--------------------------------------------------------------------------
-  # ● Register Entity
+  # ● Update
   #--------------------------------------------------------------------------
-  def self.register(entity)
 
-    return if entity.nil?
+  def self.update
 
-    #--------------------------------------------------------------------------
-    # Combat Entity?
-    #--------------------------------------------------------------------------
-
-    return unless entity.respond_to?(
-      :fo_combat_entity?
-    )
-
-    return unless entity.fo_combat_entity?
-
-    #--------------------------------------------------------------------------
-    # Já registrado?
-    #--------------------------------------------------------------------------
-
-    return if @entities.include?(entity)
-
-    #--------------------------------------------------------------------------
-    # Registra
-    #--------------------------------------------------------------------------
-
-    @entities.push(entity)
-
-    #--------------------------------------------------------------------------
-    # Debug
-    #--------------------------------------------------------------------------
-
-    FO_CORE.debug(
-      "[ENTITY REGISTER] #{entity.event.name}"
-    )
+    update_refresh_timer
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Remove Entity
+  # ● Update Refresh Timer
   #--------------------------------------------------------------------------
-  def self.remove(entity)
 
-    return if entity.nil?
+  def self.update_refresh_timer
 
-    @entities.delete(entity)
+    @refresh_timer += 1
+
+    return if @refresh_timer <
+              FO_ENTITY_MANAGER::AUTO_REFRESH_INTERVAL
+
+    @refresh_timer = 0
+
+    refresh
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Refresh
+  #--------------------------------------------------------------------------
+
+  def self.refresh
+
+    clear
+
+    return if $game_map.nil?
+
+    for event in $game_map.events.values
+
+      next if event.nil?
+
+      register_entity(event)
+
+    end
 
     #--------------------------------------------------------------------------
-    # Debug
+    # ● Debug
     #--------------------------------------------------------------------------
 
-    begin
+    if defined?(FO_DEBUG)
 
-      FO_CORE.debug(
-        "[ENTITY REMOVE] #{entity.event.name}"
+      FO_DEBUG.log(
+        "[ENTITY REFRESH] #{@entities.size}"
       )
-
-    rescue
 
     end
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Entities
+  # ● Register Entity
   #--------------------------------------------------------------------------
+
+  def self.register_entity(entity)
+
+    return if entity.nil?
+
+    @entities.push(entity)
+
+    #--------------------------------------------------------------------------
+    # ● Combat
+    #--------------------------------------------------------------------------
+
+    if entity.respond_to?(:fo_combat_entity?)
+
+      if entity.fo_combat_entity?
+
+        @combat_entities.push(entity)
+
+      end
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● NPC
+    #--------------------------------------------------------------------------
+
+    if entity.respond_to?(:fo_npc?)
+
+      if entity.fo_npc?
+
+        @npc_entities.push(entity)
+
+      end
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● Quest
+    #--------------------------------------------------------------------------
+
+    if entity.respond_to?(:fo_quest?)
+
+      if entity.fo_quest?
+
+        @quest_entities.push(entity)
+
+      end
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Clear
+  #--------------------------------------------------------------------------
+
+  def self.clear
+
+    @entities.clear
+
+    @combat_entities.clear
+
+    @npc_entities.clear
+
+    @quest_entities.clear
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● All Entities
+  #--------------------------------------------------------------------------
+
   def self.entities
 
     return @entities
@@ -104,58 +200,70 @@ module FO_Entity_Manager
   end
 
   #--------------------------------------------------------------------------
-  # ● Valid?
+  # ● Combat Entities
   #--------------------------------------------------------------------------
-  def self.valid_entity?(entity)
 
-    return false if entity.nil?
+  def self.combat_entities
 
-    #--------------------------------------------------------------------------
-    # Morto?
-    #--------------------------------------------------------------------------
+    return @combat_entities
 
-    return false if entity.fo_dead?
+  end
 
-    #--------------------------------------------------------------------------
-    # HP
-    #--------------------------------------------------------------------------
+  #--------------------------------------------------------------------------
+  # ● NPC Entities
+  #--------------------------------------------------------------------------
 
-    return false if entity.fo_hp <= 0
+  def self.npc_entities
 
-    #--------------------------------------------------------------------------
-    # Existe?
-    #--------------------------------------------------------------------------
+    return @npc_entities
 
-    begin
+  end
 
-      entity.event
+  #--------------------------------------------------------------------------
+  # ● Quest Entities
+  #--------------------------------------------------------------------------
 
-    rescue
+  def self.quest_entities
 
-      return false
+    return @quest_entities
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Alive Combat Entities
+  #--------------------------------------------------------------------------
+
+  def self.alive_combat_entities
+
+    result = []
+
+    for entity in @combat_entities
+
+      next if entity.nil?
+
+      next if entity.fo_dead?
+
+      result.push(entity)
 
     end
 
-    return true
+    return result
 
   end
 
   #--------------------------------------------------------------------------
   # ● Find By Event ID
   #--------------------------------------------------------------------------
+
   def self.find_by_event_id(event_id)
+
+    return nil if event_id.nil?
 
     for entity in @entities
 
       next if entity.nil?
 
-      next unless valid_entity?(entity)
-
-      if entity.id == event_id
-
-        return entity
-
-      end
+      return entity if entity.id == event_id
 
     end
 
@@ -164,124 +272,179 @@ module FO_Entity_Manager
   end
 
   #--------------------------------------------------------------------------
-  # ● Find Bosses
+  # ● Nearest Combat Entity
   #--------------------------------------------------------------------------
-  def self.bosses
 
-    results = []
+  def self.nearest_combat_entity(range = 8)
 
-    for entity in @entities
+    player =
+      $game_player
+
+    return nil if player.nil?
+
+    nearest = nil
+
+    nearest_distance = nil
+
+    for entity in alive_combat_entities
 
       next if entity.nil?
 
-      next unless valid_entity?(entity)
+      distance =
+        calculate_distance(
+          player,
+          entity
+        )
 
-      #----------------------------------------------------------------------
-      # Boss tag
-      #----------------------------------------------------------------------
+      next if distance > range
 
-      begin
+      if nearest.nil?
 
-        if entity.event.name.include?("!")
+        nearest = entity
 
-          results.push(entity)
+        nearest_distance = distance
 
-        end
+        next
 
-      rescue
+      end
+
+      if distance < nearest_distance
+
+        nearest = entity
+
+        nearest_distance = distance
 
       end
 
     end
 
-    return results
+    return nearest
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Find Enemies
+  # ● Calculate Distance
   #--------------------------------------------------------------------------
-  def self.enemies
 
-    results = []
+  def self.calculate_distance(a, b)
+
+    return 999 unless a
+    return 999 unless b
+
+    dx =
+      (a.x - b.x).abs
+
+    dy =
+      (a.y - b.y).abs
+
+    return dx + dy
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Entities In Range
+  #--------------------------------------------------------------------------
+
+  def self.entities_in_range(x, y, range)
+
+    result = []
 
     for entity in @entities
 
       next if entity.nil?
 
-      next unless valid_entity?(entity)
+      dx =
+        (entity.x - x).abs
 
-      results.push(entity)
+      dy =
+        (entity.y - y).abs
+
+      distance =
+        dx + dy
+
+      if distance <= range
+
+        result.push(entity)
+
+      end
 
     end
 
-    return results
+    return result
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Update
+  # ● Remove Entity
   #--------------------------------------------------------------------------
-  def self.update
 
-    #--------------------------------------------------------------------------
-    # Remove inválidos
-    #--------------------------------------------------------------------------
+  def self.remove_entity(entity)
 
-    @entities.delete_if do |entity|
+    return if entity.nil?
 
-      !valid_entity?(entity)
+    @entities.delete(entity)
 
-    end
+    @combat_entities.delete(entity)
+
+    @npc_entities.delete(entity)
+
+    @quest_entities.delete(entity)
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Map Changed
+  #--------------------------------------------------------------------------
+
+  def self.map_changed
+
+    clear
+
+    refresh
 
   end
 
 end
 
 #==============================================================================
-# ■ Registro no System Manager
+# ■ Scene_Map
 #==============================================================================
 
-FO_System_Manager.register(
-  FO_Entity_Manager
-)
+class Scene_Map
+
+  #--------------------------------------------------------------------------
+  # ● Alias
+  #--------------------------------------------------------------------------
+
+  alias fo_entity_manager_transfer_player_v4 transfer_player
+
+  #--------------------------------------------------------------------------
+  # ● Transfer Player
+  #--------------------------------------------------------------------------
+
+  def transfer_player
+
+    fo_entity_manager_transfer_player_v4
+
+    FO_Entity_Manager.map_changed
+
+  end
+
+end
 
 #==============================================================================
-# ■ Game_Event
+# ■ Registro no FO_ENGINE
 #==============================================================================
 
-class Game_Event < Game_Character
+if defined?(FO_ENGINE)
 
-  #--------------------------------------------------------------------------
-  # Alias Setup Enemy
-  #--------------------------------------------------------------------------
+  begin
 
-  alias fo_entity_manager_setup_enemy_v1 setup_fo_enemy
-
-  #--------------------------------------------------------------------------
-  # ● Setup Enemy
-  #--------------------------------------------------------------------------
-  def setup_fo_enemy
-
-    #--------------------------------------------------------------------------
-    # Original
-    #--------------------------------------------------------------------------
-
-    fo_entity_manager_setup_enemy_v1
-
-    #--------------------------------------------------------------------------
-    # Enemy?
-    #--------------------------------------------------------------------------
-
-    return unless fo_enemy?
-
-    #--------------------------------------------------------------------------
-    # Registra entidade
-    #--------------------------------------------------------------------------
-
-    FO_Entity_Manager.register(
-      self
+    FO_ENGINE.register_system(
+      FO_Entity_Manager
     )
+
+  rescue
 
   end
 
@@ -291,6 +454,10 @@ end
 # ■ Inicialização
 #==============================================================================
 
-FO_CORE.debug(
-  "FO_Entity_Manager_v1 carregado com sucesso"
-)
+if defined?(FO_DEBUG)
+
+  FO_DEBUG.log(
+    "FO_Entity_Manager_v4 carregado com sucesso"
+  )
+
+end

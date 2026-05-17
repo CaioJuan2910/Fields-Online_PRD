@@ -1,180 +1,401 @@
 #==============================================================================
-# ■ FO_Target_BossBar
+# ■ FO_Target_BossBar_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 1.0
-# Data: 16/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# Barra cinematográfica de Boss
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# Barra de HP para Boss MMORPG.
+# Compatível com RPG Maker XP ORIGINAL.
+#------------------------------------------------------------------------------
+# OBJETIVOS:
+# - Mostrar HP do Boss
+# - Atualização automática
+# - Integração com Target System
+# - Visual MMORPG
+# - Sem variáveis globais
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Target_System
+# - FO_Core
 #==============================================================================
+
+#==============================================================================
+# ■ FO_TARGET_BOSSBAR
+#==============================================================================
+
+module FO_TARGET_BOSSBAR
+
+  #--------------------------------------------------------------------------
+  # ● Configurações
+  #--------------------------------------------------------------------------
+
+  WIDTH = 420
+
+  HEIGHT = 22
+
+  X = 110
+
+  Y = 20
+
+  Z = 99999
+
+  #--------------------------------------------------------------------------
+  # ● Cores
+  #--------------------------------------------------------------------------
+
+  BACK_COLOR =
+    Color.new(0,0,0)
+
+  HP_COLOR =
+    Color.new(220,40,40)
+
+  BORDER_COLOR =
+    Color.new(255,255,255)
+
+  TEXT_COLOR =
+    Color.new(255,255,255)
+
+  #--------------------------------------------------------------------------
+  # ● Fonte
+  #--------------------------------------------------------------------------
+
+  FONT_NAME = "Arial"
+
+  FONT_SIZE = 18
+
+end
 
 #==============================================================================
 # ■ FO_Target_BossBar
 #==============================================================================
 
-class FO_Target_BossBar
+module FO_Target_BossBar
 
   #--------------------------------------------------------------------------
-  # ● Inicialização
+  # ■ Variáveis
   #--------------------------------------------------------------------------
-  def initialize
 
-    create_sprite
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Criar sprite
-  #--------------------------------------------------------------------------
-  def create_sprite
-
-    @sprite = Sprite.new
-
-    @sprite.bitmap = Bitmap.new(640, 64)
-
-    @sprite.z = 9999
-
-    font = @sprite.bitmap.font
-
-    font.name = "Arial"
-    font.size = 22
-    font.bold = true
-
-  end
+  @sprite = nil
 
   #--------------------------------------------------------------------------
   # ● Update
   #--------------------------------------------------------------------------
-  def update
 
-    refresh
+  def self.update
+
+    update_visibility
+
+    update_bar
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Refresh
+  # ● Update Visibility
   #--------------------------------------------------------------------------
-  def refresh
 
-    bitmap = @sprite.bitmap
+  def self.update_visibility
 
-    bitmap.clear
+    target =
+      FO_Target_System.target
 
-    # Apenas boss
-    if $fo_target == nil ||
-       $fo_target_type != :boss
+    #--------------------------------------------------------------------------
+    # ● Sem target
+    #--------------------------------------------------------------------------
 
-      @sprite.visible = false
+    if target.nil?
+
+      dispose
 
       return
 
     end
 
-    @sprite.visible = true
+    #--------------------------------------------------------------------------
+    # ● Não é boss
+    #--------------------------------------------------------------------------
 
-    hp     = $fo_target.fo_hp
-    maxhp  = $fo_target.fo_maxhp
+    unless FO_Target_System.target_boss?
 
-    maxhp = 1 if maxhp <= 0
+      dispose
 
-    rate = hp.to_f / maxhp.to_f
+      return
 
-    filled_width = (500 * rate).to_i
+    end
 
-    # Fundo
+    #--------------------------------------------------------------------------
+    # ● Cria sprite
+    #--------------------------------------------------------------------------
+
+    if @sprite.nil?
+
+      create_sprite
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Create Sprite
+  #--------------------------------------------------------------------------
+
+  def self.create_sprite
+
+    dispose
+
+    @sprite =
+      Sprite.new
+
+    @sprite.bitmap =
+      Bitmap.new(
+        FO_TARGET_BOSSBAR::WIDTH,
+        48
+      )
+
+    @sprite.x =
+      FO_TARGET_BOSSBAR::X
+
+    @sprite.y =
+      FO_TARGET_BOSSBAR::Y
+
+    @sprite.z =
+      FO_TARGET_BOSSBAR::Z
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Bar
+  #--------------------------------------------------------------------------
+
+  def self.update_bar
+
+    return if @sprite.nil?
+
+    bitmap =
+      @sprite.bitmap
+
+    bitmap.clear
+
+    #--------------------------------------------------------------------------
+    # ● Dados
+    #--------------------------------------------------------------------------
+
+    hp =
+      FO_Target_System.target_hp
+
+    maxhp =
+      FO_Target_System.target_maxhp
+
+    name =
+      FO_Target_System.target_name
+
+    return if maxhp <= 0
+
+    #--------------------------------------------------------------------------
+    # ● Percentual
+    #--------------------------------------------------------------------------
+
+    percent =
+      hp.to_f / maxhp.to_f
+
+    fill_width =
+      (
+        (
+          FO_TARGET_BOSSBAR::WIDTH - 4
+        ) * percent
+      ).to_i
+
+    #--------------------------------------------------------------------------
+    # ● Fundo
+    #--------------------------------------------------------------------------
+
     bitmap.fill_rect(
-      70,
-      26,
-      500,
-      16,
-      Color.new(40,40,40)
-    )
-
-    # Barra
-    bitmap.fill_rect(
-      70,
-      26,
-      filled_width,
-      16,
-      Color.new(220,50,50)
-    )
-
-    # Nome
-    bitmap.font.color = Color.new(255,255,255)
-
-    bitmap.draw_text(
       0,
-      0,
-      640,
-      24,
-      $fo_target_name,
-      1
-    )
-
-    # Texto HP
-    bitmap.draw_text(
-      0,
-      22,
-      640,
       20,
-      "#{hp} / #{maxhp}",
+      FO_TARGET_BOSSBAR::WIDTH,
+      FO_TARGET_BOSSBAR::HEIGHT,
+      FO_TARGET_BOSSBAR::BACK_COLOR
+    )
+
+    #--------------------------------------------------------------------------
+    # ● HP
+    #--------------------------------------------------------------------------
+
+    bitmap.fill_rect(
+      2,
+      22,
+      fill_width,
+      FO_TARGET_BOSSBAR::HEIGHT - 4,
+      FO_TARGET_BOSSBAR::HP_COLOR
+    )
+
+    #--------------------------------------------------------------------------
+    # ● Bordas
+    #--------------------------------------------------------------------------
+
+    draw_border(bitmap)
+
+    #--------------------------------------------------------------------------
+    # ● Fonte
+    #--------------------------------------------------------------------------
+
+    font =
+      bitmap.font
+
+    font.name =
+      FO_TARGET_BOSSBAR::FONT_NAME
+
+    font.size =
+      FO_TARGET_BOSSBAR::FONT_SIZE
+
+    font.bold = true
+
+    font.color =
+      FO_TARGET_BOSSBAR::TEXT_COLOR
+
+    #--------------------------------------------------------------------------
+    # ● Nome
+    #--------------------------------------------------------------------------
+
+    clean =
+      clean_name(name)
+
+    bitmap.draw_text(
+      0,
+      0,
+      FO_TARGET_BOSSBAR::WIDTH,
+      20,
+      clean,
       1
     )
 
-    # Posição
-    @sprite.x = 0
-    @sprite.y = 10
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Draw Border
+  #--------------------------------------------------------------------------
+
+  def self.draw_border(bitmap)
+
+    color =
+      FO_TARGET_BOSSBAR::BORDER_COLOR
+
+    width =
+      FO_TARGET_BOSSBAR::WIDTH
+
+    height =
+      FO_TARGET_BOSSBAR::HEIGHT
+
+    y = 20
+
+    # Top
+    bitmap.fill_rect(
+      0,
+      y,
+      width,
+      1,
+      color
+    )
+
+    # Bottom
+    bitmap.fill_rect(
+      0,
+      y + height - 1,
+      width,
+      1,
+      color
+    )
+
+    # Left
+    bitmap.fill_rect(
+      0,
+      y,
+      1,
+      height,
+      color
+    )
+
+    # Right
+    bitmap.fill_rect(
+      width - 1,
+      y,
+      1,
+      height,
+      color
+    )
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Clean Name
+  #--------------------------------------------------------------------------
+
+  def self.clean_name(name)
+
+    return "" if name.nil?
+
+    text = name.clone
+
+    text.gsub!("!", "")
+    text.gsub!("$", "")
+    text.gsub!("@", "")
+    text.gsub!("?", "")
+
+    return text
 
   end
 
   #--------------------------------------------------------------------------
   # ● Dispose
   #--------------------------------------------------------------------------
-  def dispose
 
-    @sprite.bitmap.dispose
+  def self.dispose
+
+    return if @sprite.nil?
+
+    if @sprite.bitmap != nil
+
+      @sprite.bitmap.dispose
+
+    end
+
     @sprite.dispose
+
+    @sprite = nil
 
   end
 
 end
 
 #==============================================================================
-# ■ Scene_Map
+# ■ Registro no FO_ENGINE
 #==============================================================================
 
-class Scene_Map
+if defined?(FO_ENGINE)
 
-  alias fo_target_bossbar_main_v10 main
-  alias fo_target_bossbar_update_v10 update
+  begin
 
-  #--------------------------------------------------------------------------
-  # ● Main
-  #--------------------------------------------------------------------------
-  def main
+    FO_ENGINE.register_system(
+      FO_Target_BossBar
+    )
 
-    @fo_target_bossbar = FO_Target_BossBar.new
-
-    fo_target_bossbar_main_v10
-
-    @fo_target_bossbar.dispose
+  rescue
 
   end
 
-  #--------------------------------------------------------------------------
-  # ● Update
-  #--------------------------------------------------------------------------
-  def update
+end
 
-    fo_target_bossbar_update_v10
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
 
-    if @fo_target_bossbar != nil
-      @fo_target_bossbar.update
-    end
+if defined?(FO_DEBUG)
 
-  end
+  FO_DEBUG.log(
+    "FO_Target_BossBar_v4 carregado com sucesso"
+  )
 
 end

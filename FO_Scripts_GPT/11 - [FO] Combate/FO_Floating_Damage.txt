@@ -1,22 +1,71 @@
 #==============================================================================
-# ■ FO_Floating_Damage_v2
+# ■ FO_Floating_Damage_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 2.0
-# Data: 18/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# Floating Damage MMORPG
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# Sistema de Floating Damage MMORPG.
+# Compatível com RPG Maker XP ORIGINAL.
 #------------------------------------------------------------------------------
-# RESPONSABILIDADES:
-# - Floating damage visual
-# - Critical damage
-# - Miss
+# OBJETIVOS:
+# - Mostrar dano flutuante
+# - Mostrar critical
+# - Mostrar miss
 # - Fade automático
-# - Integração com System Manager
+# - Movimento vertical
+# - Compatível com Player e Enemies
+# - Integrado ao FO_ENGINE
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Core
+# - FO_Engine
 #==============================================================================
+
+#==============================================================================
+# ■ FO_FLOATING_DAMAGE
+#==============================================================================
+
+module FO_FLOATING_DAMAGE
+
+  #--------------------------------------------------------------------------
+  # ● Configurações
+  #--------------------------------------------------------------------------
+
+  FONT_NAME = "Arial"
+
+  FONT_SIZE = 22
+
+  FONT_BOLD = true
+
+  START_OFFSET_Y = -48
+
+  FLOAT_SPEED = 1
+
+  FADE_SPEED = 5
+
+  Z = 99999
+
+  #--------------------------------------------------------------------------
+  # ● Cores
+  #--------------------------------------------------------------------------
+
+  NORMAL_COLOR =
+    Color.new(255,255,255)
+
+  CRITICAL_COLOR =
+    Color.new(255,80,80)
+
+  MISS_COLOR =
+    Color.new(180,180,180)
+
+  PLAYER_DAMAGE_COLOR =
+    Color.new(255,120,120)
+
+end
 
 #==============================================================================
 # ■ FO_Floating_Damage_Object
@@ -27,12 +76,14 @@ class FO_Floating_Damage_Object
   #--------------------------------------------------------------------------
   # ● Initialize
   #--------------------------------------------------------------------------
-  def initialize(target, text, type)
+
+  def initialize(x, y, text, type)
 
     @finished = false
 
     create_sprite(
-      target,
+      x,
+      y,
       text,
       type
     )
@@ -40,122 +91,96 @@ class FO_Floating_Damage_Object
   end
 
   #--------------------------------------------------------------------------
-  # ● Criar sprite
+  # ● Create Sprite
   #--------------------------------------------------------------------------
-  def create_sprite(target, text, type)
 
-    #--------------------------------------------------------------------------
-    # Segurança
-    #--------------------------------------------------------------------------
-
-    return if target.nil?
-
-    #--------------------------------------------------------------------------
-    # Sprite
-    #--------------------------------------------------------------------------
+  def create_sprite(x, y, text, type)
 
     @sprite =
       Sprite.new
 
-    #--------------------------------------------------------------------------
-    # Bitmap
-    #--------------------------------------------------------------------------
-
     @sprite.bitmap =
-      Bitmap.new(120, 32)
+      Bitmap.new(160, 32)
+
+    @sprite.z =
+      FO_FLOATING_DAMAGE::Z
 
     #--------------------------------------------------------------------------
-    # Fonte
+    # ● Fonte
     #--------------------------------------------------------------------------
 
     font =
       @sprite.bitmap.font
 
     font.name =
-      "Arial"
+      FO_FLOATING_DAMAGE::FONT_NAME
 
     font.size =
-      22
+      FO_FLOATING_DAMAGE::FONT_SIZE
 
     font.bold =
-      true
+      FO_FLOATING_DAMAGE::FONT_BOLD
 
     #--------------------------------------------------------------------------
-    # Cor
+    # ● Cor
     #--------------------------------------------------------------------------
-
-    font.color =
-      Color.new(255,255,255)
 
     case type
 
     when :critical
 
       font.color =
-        Color.new(255,80,80)
+        FO_FLOATING_DAMAGE::CRITICAL_COLOR
 
     when :miss
 
       font.color =
-        Color.new(180,180,180)
+        FO_FLOATING_DAMAGE::MISS_COLOR
+
+    when :player_damage
+
+      font.color =
+        FO_FLOATING_DAMAGE::PLAYER_DAMAGE_COLOR
+
+    else
+
+      font.color =
+        FO_FLOATING_DAMAGE::NORMAL_COLOR
 
     end
 
     #--------------------------------------------------------------------------
-    # Texto
+    # ● Texto
     #--------------------------------------------------------------------------
 
     @sprite.bitmap.draw_text(
       0,
       0,
-      120,
+      160,
       32,
       text,
       1
     )
 
     #--------------------------------------------------------------------------
-    # Posição
+    # ● Posição
     #--------------------------------------------------------------------------
-
-    screen_x =
-      target.screen_x
-
-    screen_y =
-      target.screen_y
 
     @sprite.x =
-      screen_x - 60
+      x - 80
 
     @sprite.y =
-      screen_y - 48
+      y +
+      FO_FLOATING_DAMAGE::START_OFFSET_Y
 
-    #--------------------------------------------------------------------------
-    # Z
-    #--------------------------------------------------------------------------
-
-    @sprite.z =
-      99999
-
-    #--------------------------------------------------------------------------
-    # Opacidade
-    #--------------------------------------------------------------------------
-
-    @sprite.opacity =
-      255
-
-    #--------------------------------------------------------------------------
-    # Movimento
-    #--------------------------------------------------------------------------
-
-    @move_speed =
-      1
+    @sprite.opacity = 255
 
   end
 
   #--------------------------------------------------------------------------
   # ● Update
   #--------------------------------------------------------------------------
+
   def update
 
     return if @finished
@@ -163,20 +188,21 @@ class FO_Floating_Damage_Object
     return if @sprite.nil?
 
     #--------------------------------------------------------------------------
-    # Movimento
+    # ● Movimento
     #--------------------------------------------------------------------------
 
     @sprite.y -=
-      @move_speed
+      FO_FLOATING_DAMAGE::FLOAT_SPEED
 
     #--------------------------------------------------------------------------
-    # Fade
+    # ● Fade
     #--------------------------------------------------------------------------
 
-    @sprite.opacity -= 5
+    @sprite.opacity -=
+      FO_FLOATING_DAMAGE::FADE_SPEED
 
     #--------------------------------------------------------------------------
-    # Finaliza
+    # ● Finaliza
     #--------------------------------------------------------------------------
 
     if @sprite.opacity <= 0
@@ -192,6 +218,7 @@ class FO_Floating_Damage_Object
   #--------------------------------------------------------------------------
   # ● Finished?
   #--------------------------------------------------------------------------
+
   def finished?
 
     return @finished
@@ -201,23 +228,16 @@ class FO_Floating_Damage_Object
   #--------------------------------------------------------------------------
   # ● Dispose
   #--------------------------------------------------------------------------
+
   def dispose
 
     return if @sprite.nil?
-
-    #--------------------------------------------------------------------------
-    # Bitmap
-    #--------------------------------------------------------------------------
 
     if @sprite.bitmap != nil
 
       @sprite.bitmap.dispose
 
     end
-
-    #--------------------------------------------------------------------------
-    # Sprite
-    #--------------------------------------------------------------------------
 
     @sprite.dispose
 
@@ -232,35 +252,16 @@ end
 module FO_Floating_Damage
 
   #--------------------------------------------------------------------------
-  # ■ Floating Objects
+  # ■ Objetos
   #--------------------------------------------------------------------------
 
   @objects = []
 
   #--------------------------------------------------------------------------
-  # ● Create
-  #--------------------------------------------------------------------------
-  def self.create(target, text, type = :normal)
-
-    object =
-      FO_Floating_Damage_Object.new(
-        target,
-        text,
-        type
-      )
-
-    @objects.push(object)
-
-  end
-
-  #--------------------------------------------------------------------------
   # ● Update
   #--------------------------------------------------------------------------
-  def self.update
 
-    #--------------------------------------------------------------------------
-    # Atualiza
-    #--------------------------------------------------------------------------
+  def self.update
 
     for object in @objects
 
@@ -269,10 +270,6 @@ module FO_Floating_Damage
       object.update
 
     end
-
-    #--------------------------------------------------------------------------
-    # Remove finalizados
-    #--------------------------------------------------------------------------
 
     @objects.delete_if do |object|
 
@@ -283,8 +280,52 @@ module FO_Floating_Damage
   end
 
   #--------------------------------------------------------------------------
+  # ● Create
+  #--------------------------------------------------------------------------
+
+  def self.create(target, text, type = :normal)
+
+    return if target.nil?
+
+    object =
+      FO_Floating_Damage_Object.new(
+        target.screen_x,
+        target.screen_y,
+        text,
+        type
+      )
+
+    @objects.push(object)
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Create Player
+  #--------------------------------------------------------------------------
+
+  def self.create_player(text, type = :player_damage)
+
+    player =
+      $game_player
+
+    return if player.nil?
+
+    object =
+      FO_Floating_Damage_Object.new(
+        player.screen_x,
+        player.screen_y,
+        text,
+        type
+      )
+
+    @objects.push(object)
+
+  end
+
+  #--------------------------------------------------------------------------
   # ● Clear
   #--------------------------------------------------------------------------
+
   def self.clear
 
     for object in @objects
@@ -302,17 +343,31 @@ module FO_Floating_Damage
 end
 
 #==============================================================================
-# ■ Registro no System Manager
+# ■ Registro no FO_ENGINE
 #==============================================================================
 
-FO_System_Manager.register(
-  FO_Floating_Damage
-)
+if defined?(FO_ENGINE)
+
+  begin
+
+    FO_ENGINE.register_system(
+      FO_Floating_Damage
+    )
+
+  rescue
+
+  end
+
+end
 
 #==============================================================================
 # ■ Inicialização
 #==============================================================================
 
-FO_CORE.debug(
-  "FO_Floating_Damage_v2 carregado com sucesso"
-)
+if defined?(FO_DEBUG)
+
+  FO_DEBUG.log(
+    "FO_Floating_Damage_v4 carregado com sucesso"
+  )
+
+end

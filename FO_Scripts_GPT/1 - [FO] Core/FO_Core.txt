@@ -1,588 +1,224 @@
 #==============================================================================
-# ■ FO_Core
+# ■ FO_Core_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: OpenAI + Caio Juan
-# Versão: 2.0
-# Data: 17/05/2026
-# RPG Maker XP / Ruby 1.8.1
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
 # DESCRIÇÃO:
-# Sistema principal do projeto Fields Online.
-#
-# Responsável por:
-# - Configurações globais
-# - Logs
-# - Debug
-# - Segurança básica
-# - Utilitários globais
-# - Fail Safe
-# - Helpers
-# - Compatibilidade futura MMORPG
+# Núcleo principal do Fields Online.
+# Compatível com RPG Maker XP ORIGINAL.
 #------------------------------------------------------------------------------
-# IMPORTANTE:
-# Este script deve ficar NO TOPO dos scripts FO_*
+# OBJETIVOS:
+# - Base global do projeto
+# - Ferramentas utilitárias
+# - Segurança global
+# - Sistema de debug
+# - Helpers MMORPG
+# - Organização da arquitetura
 #------------------------------------------------------------------------------
-# Ordem recomendada:
-#
-# FO_Core
-# FO_Engine
-# FO_Timer
-# ...
+# ESTE SCRIPT DEVE FICAR NO TOPO DA LISTA.
 #==============================================================================
 
 #==============================================================================
-# ■ [FO] Configurações Gerais
+# ■ FO_CORE
 #==============================================================================
-module FO_CORE_CONFIG
+
+module FO_CORE
 
   #--------------------------------------------------------------------------
-  # Nome do Projeto
+  # ● Projeto
   #--------------------------------------------------------------------------
-  GAME_NAME = "Fields Online"
+
+  PROJECT_NAME =
+    "Fields Online"
+
+  VERSION =
+    "4.0"
 
   #--------------------------------------------------------------------------
-  # Versão do Projeto
+  # ● Debug
   #--------------------------------------------------------------------------
-  GAME_VERSION = "0.1.0 Alpha"
 
-  #--------------------------------------------------------------------------
-  # Ativar logs
-  #--------------------------------------------------------------------------
-  ENABLE_LOGS = true
-
-  #--------------------------------------------------------------------------
-  # Ativar debug
-  #--------------------------------------------------------------------------
   ENABLE_DEBUG = true
 
-  #--------------------------------------------------------------------------
-  # Mostrar mensagens no console
-  #--------------------------------------------------------------------------
-  ENABLE_CONSOLE_OUTPUT = true
+  ENABLE_WARNINGS = true
 
-  #--------------------------------------------------------------------------
-  # Pasta de logs
-  #--------------------------------------------------------------------------
-  LOG_FOLDER = "Logs"
-
-  #--------------------------------------------------------------------------
-  # Nome do arquivo principal de log
-  #--------------------------------------------------------------------------
-  MAIN_LOG_FILE = "FO_Core_Log.txt"
-
-  #--------------------------------------------------------------------------
-  # Tamanho máximo do log (em linhas)
-  #--------------------------------------------------------------------------
-  MAX_LOG_LINES = 5000
-
-  #--------------------------------------------------------------------------
-  # Ativar sistema fail safe
-  #--------------------------------------------------------------------------
-  ENABLE_FAIL_SAFE = true
-
-  #--------------------------------------------------------------------------
-  # Ativar medidor simples de performance
-  #--------------------------------------------------------------------------
-  ENABLE_PERFORMANCE_MONITOR = true
-
-  #--------------------------------------------------------------------------
-  # Ativar hooks globais
-  #--------------------------------------------------------------------------
-  ENABLE_GLOBAL_HOOKS = true
+  ENABLE_ERROR_POPUPS = false
 
 end
 
 #==============================================================================
-# ■ [FO] Versionamento
+# ■ FO_DEBUG
 #==============================================================================
-module FO_VERSION
 
-  CORE_VERSION = "2.0"
-
-  BUILD_DATE = "17/05/2026"
-
-  ENGINE = "RPG Maker XP"
-
-  RUBY_VERSION_SUPPORTED = "Ruby 1.8.1"
-
-end
-
-#==============================================================================
-# ■ [FO] Segurança
-#==============================================================================
-module FO_SECURITY
-
-  #--------------------------------------------------------------------------
-  # Sanitiza texto simples
-  #--------------------------------------------------------------------------
-  def self.sanitize_text(text)
-    return "" if text.nil?
-
-    text = text.to_s
-
-    # Remove caracteres perigosos
-    text.gsub!(/\r\n/, " ")
-    text.gsub!(/\n/, " ")
-    text.gsub!(/\t/, " ")
-
-    return text
-  end
-
-  #--------------------------------------------------------------------------
-  # Validação simples de número
-  #--------------------------------------------------------------------------
-  def self.valid_number?(value)
-    return false if value.nil?
-
-    begin
-      Float(value)
-      return true
-    rescue
-      return false
-    end
-  end
-
-end
-
-#==============================================================================
-# ■ [FO] Sistema de Logs
-#==============================================================================
-module FO_LOG
-
-  @log_cache = []
-
-  #--------------------------------------------------------------------------
-  # Cria pasta de logs
-  #--------------------------------------------------------------------------
-  def self.create_log_folder
-
-    return unless FO_CORE_CONFIG::ENABLE_LOGS
-
-    begin
-
-      unless FileTest.exist?(FO_CORE_CONFIG::LOG_FOLDER)
-        Dir.mkdir(FO_CORE_CONFIG::LOG_FOLDER)
-      end
-
-    rescue
-
-      p "FO_Core: Não foi possível criar pasta Logs."
-
-    end
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Caminho do log
-  #--------------------------------------------------------------------------
-  def self.log_path
-
-    return "#{FO_CORE_CONFIG::LOG_FOLDER}/#{FO_CORE_CONFIG::MAIN_LOG_FILE}"
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Escreve no log
-  #--------------------------------------------------------------------------
-  def self.write(message)
-
-    return unless FO_CORE_CONFIG::ENABLE_LOGS
-
-    begin
-
-      create_log_folder
-
-      time = Time.now.strftime("%d/%m/%Y %H:%M:%S")
-
-      clean_message = FO_SECURITY.sanitize_text(message)
-
-      final_text = "[#{time}] #{clean_message}"
-
-      @log_cache << final_text
-
-      trim_log_cache
-
-      File.open(log_path, "a") do |file|
-        file.puts(final_text)
-      end
-
-      if FO_CORE_CONFIG::ENABLE_CONSOLE_OUTPUT
-        p final_text
-      end
-
-    rescue
-
-      p "FO_Core: Erro ao escrever log."
-
-    end
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Limita cache
-  #--------------------------------------------------------------------------
-  def self.trim_log_cache
-
-    while @log_cache.size > FO_CORE_CONFIG::MAX_LOG_LINES
-      @log_cache.shift
-    end
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Retorna cache
-  #--------------------------------------------------------------------------
-  def self.cache
-
-    return @log_cache
-
-  end
-
-end
-
-#==============================================================================
-# ■ [FO] Sistema de Debug
-#==============================================================================
 module FO_DEBUG
 
   #--------------------------------------------------------------------------
-  # Mensagem debug
+  # ● Log
   #--------------------------------------------------------------------------
-  def self.log(message)
 
-    return unless FO_CORE_CONFIG::ENABLE_DEBUG
+  def self.log(text)
 
-    FO_LOG.write("[DEBUG] #{message}")
+    return unless FO_CORE::ENABLE_DEBUG
+
+    print(
+      "[FO LOG] #{text}\n"
+    )
 
   end
 
   #--------------------------------------------------------------------------
-  # Erro debug
+  # ● Warning
   #--------------------------------------------------------------------------
-  def self.error(message)
 
-    FO_LOG.write("[ERROR] #{message}")
+  def self.warning(text)
+
+    return unless FO_CORE::ENABLE_WARNINGS
+
+    print(
+      "[FO WARNING] #{text}\n"
+    )
 
   end
 
   #--------------------------------------------------------------------------
-  # Warning debug
+  # ● Error
   #--------------------------------------------------------------------------
-  def self.warning(message)
 
-    FO_LOG.write("[WARNING] #{message}")
+  def self.error(text)
+
+    print(
+      "[FO ERROR] #{text}\n"
+    )
+
+    if FO_CORE::ENABLE_ERROR_POPUPS
+
+      begin
+
+        msgbox(text)
+
+      rescue
+
+      end
+
+    end
 
   end
 
 end
 
 #==============================================================================
-# ■ [FO] Utilitários Globais
+# ■ FO_Utils
 #==============================================================================
-module FO_UTILS
+
+module FO_Utils
 
   #--------------------------------------------------------------------------
-  # Clampa valor mínimo/máximo
+  # ● Clamp
   #--------------------------------------------------------------------------
+
   def self.clamp(value, min, max)
 
-    return [[value, min].max, max].min
+    return min if value < min
+
+    return max if value > max
+
+    return value
 
   end
 
   #--------------------------------------------------------------------------
-  # Valor aleatório entre mínimo/máximo
+  # ● Distance
   #--------------------------------------------------------------------------
-  def self.random(min, max)
 
-    return rand(max - min + 1) + min
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Distância entre dois pontos
-  #--------------------------------------------------------------------------
   def self.distance(x1, y1, x2, y2)
 
-    return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+    dx =
+      (x2 - x1).abs
+
+    dy =
+      (y2 - y1).abs
+
+    return dx + dy
 
   end
 
   #--------------------------------------------------------------------------
-  # Verifica nil ou vazio
+  # ● Percent
   #--------------------------------------------------------------------------
-  def self.blank?(value)
 
-    return true if value.nil?
-    return true if value == ""
+  def self.percent(current, maximum)
 
-    return false
+    return 0 if maximum <= 0
+
+    return (
+      current * 100 / maximum
+    ).to_i
 
   end
 
   #--------------------------------------------------------------------------
-  # Tempo em milissegundos
+  # ● Random Percent
   #--------------------------------------------------------------------------
-  def self.current_time_ms
 
-    return (Time.now.to_f * 1000).to_i
+  def self.random_percent(chance)
 
-  end
+    roll =
+      rand(100) + 1
 
-end
-
-#==============================================================================
-# ■ [FO] Helpers Globais
-#==============================================================================
-module FO_HELPERS
-
-  #--------------------------------------------------------------------------
-  # Retorna jogador seguro
-  #--------------------------------------------------------------------------
-  def self.player
-
-    return nil if $game_player.nil?
-
-    return $game_player
+    return roll <= chance
 
   end
 
   #--------------------------------------------------------------------------
-  # Retorna mapa seguro
+  # ● Safe Name
   #--------------------------------------------------------------------------
-  def self.map
 
-    return nil if $game_map.nil?
+  def self.safe_name(name)
 
-    return $game_map
+    return "" if name.nil?
 
-  end
+    text =
+      name.clone
 
-  #--------------------------------------------------------------------------
-  # Retorna eventos do mapa
-  #--------------------------------------------------------------------------
-  def self.events
+    text.gsub!("$", "")
+    text.gsub!("!", "")
+    text.gsub!("@", "")
+    text.gsub!("?", "")
 
-    return {} if map.nil?
-    return {} if map.events.nil?
-
-    return map.events
+    return text
 
   end
 
 end
 
 #==============================================================================
-# ■ [FO] Fail Safe
+# ■ Inicialização
 #==============================================================================
-module FO_FAIL_SAFE
 
-  #--------------------------------------------------------------------------
-  # Executa código protegido
-  #--------------------------------------------------------------------------
-  def self.safe_execute(method_name = "Unknown")
+if defined?(FO_DEBUG)
 
-    begin
+  FO_DEBUG.log(
+    "=================================================="
+  )
 
-      yield if block_given?
+  FO_DEBUG.log(
+    "Fields Online MMORPG"
+  )
 
-    rescue Exception => e
+  FO_DEBUG.log(
+    "Version #{FO_CORE::VERSION}"
+  )
 
-      FO_DEBUG.error("Fail Safe: #{method_name}")
-      FO_DEBUG.error(e.message)
+  FO_DEBUG.log(
+    "FO_Core_v4 carregado com sucesso"
+  )
 
-      if e.backtrace != nil
-        FO_DEBUG.error(e.backtrace.join("\n"))
-      end
-
-    end
-
-  end
-
-end
-
-#==============================================================================
-# ■ [FO] Hooks Globais
-#==============================================================================
-module FO_HOOKS
-
-  @hooks = {}
-
-  #--------------------------------------------------------------------------
-  # Registra hook
-  #--------------------------------------------------------------------------
-  def self.register(name, &block)
-
-    return if name.nil?
-    return unless block_given?
-
-    @hooks[name] = [] if @hooks[name].nil?
-
-    @hooks[name] << block
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Executa hook
-  #--------------------------------------------------------------------------
-  def self.call(name, *args)
-
-    return if @hooks[name].nil?
-
-    @hooks[name].each do |hook|
-
-      FO_FAIL_SAFE.safe_execute("Hook #{name}") do
-        hook.call(*args)
-      end
-
-    end
-
-  end
-
-end
-
-#==============================================================================
-# ■ [FO] Monitor de Performance
-#==============================================================================
-module FO_PERFORMANCE
-
-  @timers = {}
-
-  #--------------------------------------------------------------------------
-  # Inicia medição
-  #--------------------------------------------------------------------------
-  def self.start(name)
-
-    return unless FO_CORE_CONFIG::ENABLE_PERFORMANCE_MONITOR
-
-    @timers[name] = Time.now
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Finaliza medição
-  #--------------------------------------------------------------------------
-  def self.finish(name)
-
-    return unless FO_CORE_CONFIG::ENABLE_PERFORMANCE_MONITOR
-
-    return if @timers[name].nil?
-
-    elapsed = Time.now - @timers[name]
-
-    elapsed_ms = (elapsed * 1000.0).to_i
-
-    FO_DEBUG.log("#{name} levou #{elapsed_ms}ms")
-
-    @timers.delete(name)
-
-  end
-
-end
-
-#==============================================================================
-# ■ [FO] Compatibilidade RMXP
-#==============================================================================
-module FO_COMPATIBILITY
-
-  #--------------------------------------------------------------------------
-  # Verifica objetos RMXP
-  #--------------------------------------------------------------------------
-  def self.check_rmxp_objects
-
-    objects = []
-
-    objects << "$game_player" if defined?($game_player)
-    objects << "$game_map" if defined?($game_map)
-    objects << "$scene" if defined?($scene)
-    objects << "$game_system" if defined?($game_system)
-
-    FO_DEBUG.log("Objetos RMXP encontrados: #{objects.join(', ')}")
-
-  end
-
-end
-
-#==============================================================================
-# ■ [FO] Inicialização Principal
-#==============================================================================
-module FO_CORE
-
-  @initialized = false
-
-  #--------------------------------------------------------------------------
-  # Inicialização do sistema
-  #--------------------------------------------------------------------------
-  def self.initialize
-
-    return if @initialized
-
-    FO_LOG.create_log_folder
-
-    FO_LOG.write("==================================================")
-    FO_LOG.write("Inicializando #{FO_CORE_CONFIG::GAME_NAME}")
-    FO_LOG.write("Versão: #{FO_CORE_CONFIG::GAME_VERSION}")
-    FO_LOG.write("FO_Core v#{FO_VERSION::CORE_VERSION}")
-    FO_LOG.write("==================================================")
-
-    FO_COMPATIBILITY.check_rmxp_objects
-
-    validate_environment
-
-    load_global_hooks
-
-    @initialized = true
-
-    FO_LOG.write("FO_Core inicializado com sucesso.")
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Valida ambiente
-  #--------------------------------------------------------------------------
-  def self.validate_environment
-
-    FO_DEBUG.log("Validando ambiente...")
-
-    if RUBY_VERSION.nil?
-      FO_DEBUG.warning("Versão Ruby não identificada.")
-    else
-      FO_DEBUG.log("Ruby detectado.")
-    end
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Carrega hooks globais
-  #--------------------------------------------------------------------------
-  def self.load_global_hooks
-
-    return unless FO_CORE_CONFIG::ENABLE_GLOBAL_HOOKS
-
-    FO_DEBUG.log("Carregando hooks globais...")
-
-  end
-
-  #--------------------------------------------------------------------------
-  # Verifica se inicializou
-  #--------------------------------------------------------------------------
-  def self.initialized?
-
-    return @initialized
-
-  end
-
-end
-
-#==============================================================================
-# ■ [FO] Auto Inicialização
-#------------------------------------------------------------------------------
-# Inicializa automaticamente quando o jogo abrir
-#==============================================================================
-FO_FAIL_SAFE.safe_execute("FO_Core Initialize") do
-
-  FO_CORE.initialize
+  FO_DEBUG.log(
+    "=================================================="
+  )
 
 end

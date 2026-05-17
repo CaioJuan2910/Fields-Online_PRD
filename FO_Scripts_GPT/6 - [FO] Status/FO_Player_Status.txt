@@ -1,330 +1,478 @@
 #==============================================================================
-# ■ FO_Player_Status_v2
+# ■ FO_Player_Status_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 2.0
-# Data: 18/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# Sistema de status MMORPG do jogador
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# Sistema moderno de status do jogador.
+# Compatível com RPG Maker XP ORIGINAL.
+#------------------------------------------------------------------------------
+# OBJETIVOS:
+# - Eliminar sistemas antigos
+# - Integrar com FO_Player_Data
+# - Integrar com FO_Player_Stats
+# - Centralizar HP/MP
+# - Centralizar regeneração
+# - Centralizar level up
+# - Preparar arquitetura MMORPG
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Core
+# - FO_Engine
+# - FO_Player_Data
+# - FO_Player_Stats
 #==============================================================================
+
+#==============================================================================
+# ■ FO_PLAYER_STATUS
+#==============================================================================
+
+module FO_PLAYER_STATUS
+
+  #============================================================================
+  # ■ CONFIGURAÇÕES
+  #============================================================================
+
+  #--------------------------------------------------------------------------
+  # ● Regen
+  #--------------------------------------------------------------------------
+
+  HP_REGEN_INTERVAL =
+    3 * Graphics.frame_rate
+
+  MP_REGEN_INTERVAL =
+    2 * Graphics.frame_rate
+
+  #--------------------------------------------------------------------------
+  # ● Valores Base
+  #--------------------------------------------------------------------------
+
+  BASE_HP_REGEN = 2
+
+  BASE_MP_REGEN = 3
+
+  #--------------------------------------------------------------------------
+  # ● Multiplicadores
+  #--------------------------------------------------------------------------
+
+  VITALITY_HP_BONUS = 5
+
+  INTELLIGENCE_MP_BONUS = 4
+
+end
 
 #==============================================================================
 # ■ FO_Player_Status
 #==============================================================================
 
-class FO_Player_Status
+module FO_Player_Status
 
-  #===========================================================================
-  # ● Initialize
-  #===========================================================================
+  #--------------------------------------------------------------------------
+  # ■ Timers
+  #--------------------------------------------------------------------------
 
-  def initialize
+  @hp_regen_timer = 0
+  @mp_regen_timer = 0
 
-    #--------------------------------------------------------------------------
-    # Player Actor
-    #--------------------------------------------------------------------------
+  #--------------------------------------------------------------------------
+  # ● Update
+  #--------------------------------------------------------------------------
 
-    @player =
-      $game_party.actors[0]
+  def self.update
 
-    #--------------------------------------------------------------------------
-    # Segurança
-    #--------------------------------------------------------------------------
+    update_hp_regen
 
-    return if @player.nil?
+    update_mp_regen
 
-    #--------------------------------------------------------------------------
-    # HP/SP iniciais
-    #--------------------------------------------------------------------------
-
-    @player.hp =
-      @player.maxhp
-
-    @player.sp =
-      @player.maxsp
-
-    #--------------------------------------------------------------------------
-    # Dead
-    #--------------------------------------------------------------------------
-
-    @dead =
-      false
-
-    #--------------------------------------------------------------------------
-    # Debug
-    #--------------------------------------------------------------------------
-
-    FO_CORE.debug(
-      "FO_Player_Status_v2 iniciado"
-    )
-
-    show_status
+    update_dead_state
 
   end
 
-  #===========================================================================
-  # ● Show Status
-  #===========================================================================
+  #--------------------------------------------------------------------------
+  # ● Update HP Regen
+  #--------------------------------------------------------------------------
 
-  def show_status
+  def self.update_hp_regen
 
-    return if @player.nil?
+    return unless defined?(FO_Player_Data)
 
-    FO_CORE.debug("==============================")
-    FO_CORE.debug("PLAYER STATUS")
-    FO_CORE.debug("HP Atual.: #{@player.hp}")
-    FO_CORE.debug("HP Máximo: #{@player.maxhp}")
-    FO_CORE.debug("MP Atual.: #{@player.sp}")
-    FO_CORE.debug("MP Máximo: #{@player.maxsp}")
-    FO_CORE.debug("==============================")
+    return if FO_Player_Data.dead?
+
+    @hp_regen_timer += 1
+
+    return if @hp_regen_timer <
+              FO_PLAYER_STATUS::HP_REGEN_INTERVAL
+
+    @hp_regen_timer = 0
+
+    regenerate_hp
 
   end
 
-  #===========================================================================
-  # ● Take Damage
-  #===========================================================================
+  #--------------------------------------------------------------------------
+  # ● Update MP Regen
+  #--------------------------------------------------------------------------
 
-  def take_damage(amount)
+  def self.update_mp_regen
 
-    return if @player.nil?
+    return unless defined?(FO_Player_Data)
 
-    return if dead?
+    return if FO_Player_Data.dead?
 
-    #--------------------------------------------------------------------------
-    # Reduz HP
-    #--------------------------------------------------------------------------
+    @mp_regen_timer += 1
 
-    @player.hp -= amount
+    return if @mp_regen_timer <
+              FO_PLAYER_STATUS::MP_REGEN_INTERVAL
 
-    #--------------------------------------------------------------------------
-    # Segurança
-    #--------------------------------------------------------------------------
+    @mp_regen_timer = 0
 
-    if @player.hp < 0
+    regenerate_mp
 
-      @player.hp = 0
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Regenerate HP
+  #--------------------------------------------------------------------------
+
+  def self.regenerate_hp
+
+    amount =
+      FO_PLAYER_STATUS::BASE_HP_REGEN
+
+    if defined?(FO_Player_Stats)
+
+      amount +=
+        (
+          FO_Player_Stats.vit /
+          FO_PLAYER_STATUS::VITALITY_HP_BONUS
+        )
 
     end
 
-    #--------------------------------------------------------------------------
-    # Debug
-    #--------------------------------------------------------------------------
+    heal(amount)
 
-    FO_CORE.debug(
-      "[PLAYER DAMAGE] #{amount}"
-    )
+  end
 
-    #--------------------------------------------------------------------------
-    # Death
-    #--------------------------------------------------------------------------
+  #--------------------------------------------------------------------------
+  # ● Regenerate MP
+  #--------------------------------------------------------------------------
+
+  def self.regenerate_mp
+
+    amount =
+      FO_PLAYER_STATUS::BASE_MP_REGEN
+
+    if defined?(FO_Player_Stats)
+
+      amount +=
+        (
+          FO_Player_Stats.int /
+          FO_PLAYER_STATUS::INTELLIGENCE_MP_BONUS
+        )
+
+    end
+
+    recover_mp(amount)
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Heal
+  #--------------------------------------------------------------------------
+
+  def self.heal(amount)
+
+    return unless defined?(FO_Player_Data)
+
+    return if amount <= 0
+
+    current_hp =
+      FO_Player_Data.hp
+
+    max_hp =
+      FO_Player_Data.maxhp
+
+    current_hp += amount
+
+    if current_hp > max_hp
+
+      current_hp = max_hp
+
+    end
+
+    FO_Player_Data.hp = current_hp
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Damage
+  #--------------------------------------------------------------------------
+
+  def self.damage(amount)
+
+    return unless defined?(FO_Player_Data)
+
+    return if amount <= 0
+
+    current_hp =
+      FO_Player_Data.hp
+
+    current_hp -= amount
+
+    if current_hp < 0
+
+      current_hp = 0
+
+    end
+
+    FO_Player_Data.hp = current_hp
 
     check_death
 
   end
 
-  #===========================================================================
-  # ● Heal
-  #===========================================================================
+  #--------------------------------------------------------------------------
+  # ● Recover MP
+  #--------------------------------------------------------------------------
 
-  def heal(amount)
+  def self.recover_mp(amount)
 
-    return if @player.nil?
+    return unless defined?(FO_Player_Data)
 
-    return if dead?
+    return if amount <= 0
 
-    #--------------------------------------------------------------------------
-    # Cura
-    #--------------------------------------------------------------------------
+    current_mp =
+      FO_Player_Data.mp
 
-    @player.hp += amount
+    max_mp =
+      FO_Player_Data.maxmp
 
-    #--------------------------------------------------------------------------
-    # Limite
-    #--------------------------------------------------------------------------
+    current_mp += amount
 
-    if @player.hp > @player.maxhp
+    if current_mp > max_mp
 
-      @player.hp = @player.maxhp
+      current_mp = max_mp
 
     end
 
-    #--------------------------------------------------------------------------
-    # Debug
-    #--------------------------------------------------------------------------
-
-    FO_CORE.debug(
-      "[PLAYER HEAL] #{amount}"
-    )
+    FO_Player_Data.mp = current_mp
 
   end
 
-  #===========================================================================
+  #--------------------------------------------------------------------------
   # ● Spend MP
-  #===========================================================================
+  #--------------------------------------------------------------------------
 
-  def spend_mp(amount)
+  def self.spend_mp(amount)
 
-    return false if @player.nil?
+    return false unless defined?(FO_Player_Data)
 
-    #--------------------------------------------------------------------------
-    # MP insuficiente
-    #--------------------------------------------------------------------------
+    return false if amount <= 0
 
-    if @player.sp < amount
+    current_mp =
+      FO_Player_Data.mp
 
-      return false
+    return false if current_mp < amount
+
+    current_mp -= amount
+
+    if current_mp < 0
+
+      current_mp = 0
 
     end
 
-    #--------------------------------------------------------------------------
-    # Reduz
-    #--------------------------------------------------------------------------
-
-    @player.sp -= amount
-
-    #--------------------------------------------------------------------------
-    # Debug
-    #--------------------------------------------------------------------------
-
-    FO_CORE.debug(
-      "[PLAYER MP SPEND] #{amount}"
-    )
+    FO_Player_Data.mp = current_mp
 
     return true
 
   end
 
-  #===========================================================================
-  # ● Regenerate
-  #===========================================================================
+  #--------------------------------------------------------------------------
+  # ● Full Recover
+  #--------------------------------------------------------------------------
 
-  def regenerate
+  def self.full_recover
 
-    return if @player.nil?
+    return unless defined?(FO_Player_Data)
 
-    return if dead?
+    FO_Player_Data.hp =
+      FO_Player_Data.maxhp
 
-    #--------------------------------------------------------------------------
-    # HP
-    #--------------------------------------------------------------------------
-
-    @player.hp += 1
-
-    #--------------------------------------------------------------------------
-    # SP
-    #--------------------------------------------------------------------------
-
-    @player.sp += 1
-
-    #--------------------------------------------------------------------------
-    # Limites
-    #--------------------------------------------------------------------------
-
-    if @player.hp > @player.maxhp
-
-      @player.hp = @player.maxhp
-
-    end
-
-    if @player.sp > @player.maxsp
-
-      @player.sp = @player.maxsp
-
-    end
+    FO_Player_Data.mp =
+      FO_Player_Data.maxmp
 
   end
 
-  #===========================================================================
-  # ● Dead?
-  #===========================================================================
-
-  def dead?
-
-    return @dead
-
-  end
-
-  #===========================================================================
+  #--------------------------------------------------------------------------
   # ● Check Death
-  #===========================================================================
+  #--------------------------------------------------------------------------
 
-  def check_death
+  def self.check_death
 
-    return if @player.nil?
+    return unless defined?(FO_Player_Data)
 
-    #--------------------------------------------------------------------------
-    # HP <= 0
-    #--------------------------------------------------------------------------
+    if FO_Player_Data.hp <= 0
 
-    if @player.hp <= 0
+      FO_Player_Data.hp = 0
 
-      @dead = true
+      FO_Player_Data.dead = true
 
-      FO_CORE.debug(
-        "[PLAYER DEAD]"
+      on_player_death
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Dead State
+  #--------------------------------------------------------------------------
+
+  def self.update_dead_state
+
+    return unless defined?(FO_Player_Data)
+
+    if FO_Player_Data.hp > 0
+
+      FO_Player_Data.dead = false
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Revive
+  #--------------------------------------------------------------------------
+
+  def self.revive(hp_percent = 50)
+
+    return unless defined?(FO_Player_Data)
+
+    max_hp =
+      FO_Player_Data.maxhp
+
+    recover_hp =
+      (
+        max_hp *
+        hp_percent / 100.0
+      ).to_i
+
+    if recover_hp <= 0
+
+      recover_hp = 1
+
+    end
+
+    FO_Player_Data.hp = recover_hp
+
+    FO_Player_Data.dead = false
+
+    FO_Player_Data.mp =
+      FO_Player_Data.maxmp
+
+    if defined?(FO_DEBUG)
+
+      FO_DEBUG.warning(
+        "[PLAYER REVIVE] #{recover_hp} HP"
       )
 
     end
 
   end
 
-end
-
-#==============================================================================
-# ■ FO_Engine
-#==============================================================================
-
-class FO_Engine
-
   #--------------------------------------------------------------------------
-  # Alias Initialize
+  # ● Player Death
   #--------------------------------------------------------------------------
 
-  alias fo_player_status_v2_initialize initialize
-
-  #--------------------------------------------------------------------------
-  # ● Initialize
-  #--------------------------------------------------------------------------
-
-  def initialize
-
-    fo_player_status_v2_initialize
+  def self.on_player_death
 
     #--------------------------------------------------------------------------
-    # Player Status
+    # Debug
     #--------------------------------------------------------------------------
 
-    @player_status =
-      FO_Player_Status.new
+    if defined?(FO_DEBUG)
+
+      FO_DEBUG.error(
+        "[PLAYER DEAD]"
+      )
+
+    end
+
+    #--------------------------------------------------------------------------
+    # Limpa target
+    #--------------------------------------------------------------------------
+
+    if defined?(FO_Target_System)
+
+      FO_Target_System.clear_target
+
+    end
 
   end
 
   #--------------------------------------------------------------------------
-  # Alias Update Second
+  # ● HP Percent
   #--------------------------------------------------------------------------
 
-  alias fo_player_status_v2_update_second update_second
+  def self.hp_percent
+
+    return 0 unless defined?(FO_Player_Data)
+
+    max_hp =
+      FO_Player_Data.maxhp
+
+    return 0 if max_hp <= 0
+
+    hp =
+      FO_Player_Data.hp
+
+    return (
+      hp * 100 / max_hp
+    ).to_i
+
+  end
 
   #--------------------------------------------------------------------------
-  # ● Update Second
+  # ● MP Percent
   #--------------------------------------------------------------------------
 
-  def update_second
+  def self.mp_percent
 
-    fo_player_status_v2_update_second
+    return 0 unless defined?(FO_Player_Data)
 
-    #--------------------------------------------------------------------------
-    # Regen
-    #--------------------------------------------------------------------------
+    max_mp =
+      FO_Player_Data.maxmp
 
-    if @player_status != nil
+    return 0 if max_mp <= 0
 
-      @player_status.regenerate
+    mp =
+      FO_Player_Data.mp
 
-    end
+    return (
+      mp * 100 / max_mp
+    ).to_i
+
+  end
+
+end
+
+#==============================================================================
+# ■ Registro no FO_ENGINE
+#==============================================================================
+
+if defined?(FO_ENGINE)
+
+  begin
+
+    FO_ENGINE.register_system(
+      FO_Player_Status
+    )
+
+  rescue
 
   end
 
@@ -334,6 +482,10 @@ end
 # ■ Inicialização
 #==============================================================================
 
-FO_CORE.debug(
-  "FO_Player_Status_v2 carregado com sucesso"
-)
+if defined?(FO_DEBUG)
+
+  FO_DEBUG.log(
+    "FO_Player_Status_v4 carregado com sucesso"
+  )
+
+end

@@ -1,24 +1,52 @@
 #==============================================================================
-# ■ FO_Combat_Manager_v2
+# ■ FO_Combat_Manager_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 2.0
-# Data: 18/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# Gerenciador central de combate MMORPG
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# Gerenciador central de combate MMORPG.
+# Compatível com RPG Maker XP ORIGINAL.
 #------------------------------------------------------------------------------
-# RESPONSABILIDADES:
-# - Fluxo de combate
+# OBJETIVOS:
+# - Centralizar combate
 # - Fórmula de dano
-# - Miss
 # - Critical
+# - Miss
 # - Death Flow
 # - Drop Flow
-# - Integração com Data Manager
+# - Floating Damage
+# - Integração MMORPG
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Core
+# - FO_Player_Stats
+# - FO_Target_System
+# - FO_Target_Status
+# - FO_Floating_Damage
+# - FO_DropSystem
 #==============================================================================
+
+#==============================================================================
+# ■ FO_COMBAT_MANAGER
+#==============================================================================
+
+module FO_COMBAT_MANAGER
+
+  #--------------------------------------------------------------------------
+  # ● Configurações
+  #--------------------------------------------------------------------------
+
+  MIN_DAMAGE = 1
+
+  MAX_VARIANCE = 6
+
+  CRITICAL_MULTIPLIER = 1.5
+
+end
 
 #==============================================================================
 # ■ FO_Combat_Manager
@@ -29,36 +57,20 @@ module FO_Combat_Manager
   #--------------------------------------------------------------------------
   # ● Attack Target
   #--------------------------------------------------------------------------
+
   def self.attack_target(attacker, target)
 
     #--------------------------------------------------------------------------
-    # Segurança
+    # ● Segurança
     #--------------------------------------------------------------------------
 
     return if attacker.nil?
-
     return if target.nil?
 
-    #--------------------------------------------------------------------------
-    # Combat Entity?
-    #--------------------------------------------------------------------------
-
-    return unless target.respond_to?(
-      :fo_combat_entity?
-    )
-
-    return unless target.fo_combat_entity?
+    return unless valid_target?(target)
 
     #--------------------------------------------------------------------------
-    # Morto?
-    #--------------------------------------------------------------------------
-
-    return if target.fo_dead?
-
-    return if target.fo_hp <= 0
-
-    #--------------------------------------------------------------------------
-    # Calcula dano
+    # ● Resultado
     #--------------------------------------------------------------------------
 
     result =
@@ -66,10 +78,6 @@ module FO_Combat_Manager
         attacker,
         target
       )
-
-    #--------------------------------------------------------------------------
-    # Resultado
-    #--------------------------------------------------------------------------
 
     damage =
       result[:damage]
@@ -81,12 +89,12 @@ module FO_Combat_Manager
       result[:type]
 
     #--------------------------------------------------------------------------
-    # MISS
+    # ● MISS
     #--------------------------------------------------------------------------
 
     if damage <= 0
 
-      FO_Floating_Damage.create(
+      show_damage(
         target,
         text,
         damage_type
@@ -97,23 +105,16 @@ module FO_Combat_Manager
     end
 
     #--------------------------------------------------------------------------
-    # Combat State
+    # ● Combat State
     #--------------------------------------------------------------------------
 
-    target.fo_in_combat =
-      true
+    target.fo_in_combat = true
+
+    target.fo_combat_time =
+      FO_TARGET_STATUS::COMBAT_MEMORY_TIME
 
     #--------------------------------------------------------------------------
-    # Reseta movimento IA
-    #--------------------------------------------------------------------------
-
-    target.instance_variable_set(
-      :@fo_failed_moves,
-      0
-    )
-
-    #--------------------------------------------------------------------------
-    # Aplica dano
+    # ● Dano
     #--------------------------------------------------------------------------
 
     apply_damage(
@@ -122,17 +123,17 @@ module FO_Combat_Manager
     )
 
     #--------------------------------------------------------------------------
-    # Floating
+    # ● Floating Damage
     #--------------------------------------------------------------------------
 
-    FO_Floating_Damage.create(
+    show_damage(
       target,
       text,
       damage_type
     )
 
     #--------------------------------------------------------------------------
-    # Morte
+    # ● Morte
     #--------------------------------------------------------------------------
 
     if target.fo_hp <= 0
@@ -147,90 +148,107 @@ module FO_Combat_Manager
   end
 
   #--------------------------------------------------------------------------
+  # ● Valid Target?
+  #--------------------------------------------------------------------------
+
+  def self.valid_target?(target)
+
+    return false unless target.respond_to?(
+      :fo_combat_entity?
+    )
+
+    return false unless target.fo_combat_entity?
+
+    return false if target.fo_dead?
+
+    return false if target.fo_hp <= 0
+
+    return true
+
+  end
+
+  #--------------------------------------------------------------------------
   # ● Calculate Damage
   #--------------------------------------------------------------------------
-  def self.calculate_damage(attacker, target)
 
-    #--------------------------------------------------------------------------
-    # Resultado
-    #--------------------------------------------------------------------------
+  def self.calculate_damage(attacker, target)
 
     result = {
 
       :damage => 0,
-      :text => "",
-      :type => :normal
+      :text   => "",
+      :type   => :normal
 
     }
 
     #--------------------------------------------------------------------------
-    # Accuracy
+    # ● Accuracy
     #--------------------------------------------------------------------------
 
     accuracy =
       FO_Player_Stats.accuracy
 
-    accuracy_roll =
+    roll =
       rand(100)
 
-    #--------------------------------------------------------------------------
-    # MISS
-    #--------------------------------------------------------------------------
+    if roll > accuracy
 
-    if accuracy_roll > accuracy
+      result[:damage] = 0
 
-      result[:type] =
-        :miss
+      result[:text] = "MISS"
 
-      result[:text] =
-        "MISS"
+      result[:type] = :miss
 
       return result
 
     end
 
     #--------------------------------------------------------------------------
-    # Attack
+    # ● Attack
     #--------------------------------------------------------------------------
 
     attack =
       FO_Player_Stats.attack
 
     #--------------------------------------------------------------------------
-    # Defense
+    # ● Defense
     #--------------------------------------------------------------------------
 
     defense =
       target.fo_pdef
 
     #--------------------------------------------------------------------------
-    # Fórmula base
+    # ● Fórmula
     #--------------------------------------------------------------------------
 
     damage =
       attack - (defense / 2)
 
     #--------------------------------------------------------------------------
-    # Segurança
+    # ● Segurança
     #--------------------------------------------------------------------------
 
-    if damage < 1
+    if damage <
+       FO_COMBAT_MANAGER::MIN_DAMAGE
 
-      damage = 1
+      damage =
+        FO_COMBAT_MANAGER::MIN_DAMAGE
 
     end
 
     #--------------------------------------------------------------------------
-    # Variance
+    # ● Variance
     #--------------------------------------------------------------------------
 
     variance =
-      rand(6)
+      rand(
+        FO_COMBAT_MANAGER::MAX_VARIANCE
+      )
 
     damage += variance
 
     #--------------------------------------------------------------------------
-    # Critical
+    # ● Critical
     #--------------------------------------------------------------------------
 
     critical_rate =
@@ -242,7 +260,10 @@ module FO_Combat_Manager
     if critical_roll < critical_rate
 
       damage =
-        (damage * 1.5).to_i
+        (
+          damage *
+          FO_COMBAT_MANAGER::CRITICAL_MULTIPLIER
+        ).to_i
 
       result[:type] =
         :critical
@@ -257,10 +278,6 @@ module FO_Combat_Manager
 
     end
 
-    #--------------------------------------------------------------------------
-    # Resultado final
-    #--------------------------------------------------------------------------
-
     result[:damage] =
       damage
 
@@ -271,19 +288,12 @@ module FO_Combat_Manager
   #--------------------------------------------------------------------------
   # ● Apply Damage
   #--------------------------------------------------------------------------
+
   def self.apply_damage(target, damage)
 
     return if target.nil?
 
-    #--------------------------------------------------------------------------
-    # Reduz HP
-    #--------------------------------------------------------------------------
-
     target.fo_hp -= damage
-
-    #--------------------------------------------------------------------------
-    # Segurança
-    #--------------------------------------------------------------------------
 
     if target.fo_hp < 0
 
@@ -294,50 +304,99 @@ module FO_Combat_Manager
   end
 
   #--------------------------------------------------------------------------
+  # ● Show Damage
+  #--------------------------------------------------------------------------
+
+  def self.show_damage(target, text, type)
+
+    return unless defined?(FO_Floating_Damage)
+
+    FO_Floating_Damage.create(
+      target,
+      text,
+      type
+    )
+
+  end
+
+  #--------------------------------------------------------------------------
   # ● Process Death
   #--------------------------------------------------------------------------
+
   def self.process_death(attacker, target)
 
     return if target.nil?
 
     #--------------------------------------------------------------------------
-    # Drop Flow
+    # ● EXP
     #--------------------------------------------------------------------------
 
-    process_drops(
-      target
-    )
+    give_exp(target)
 
     #--------------------------------------------------------------------------
-    # Kill Flow
+    # ● Drops
     #--------------------------------------------------------------------------
 
-    process_kill(
-      target
-    )
+    process_drops(target)
+
+    #--------------------------------------------------------------------------
+    # ● Kill
+    #--------------------------------------------------------------------------
+
+    process_kill(target)
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Give EXP
+  #--------------------------------------------------------------------------
+
+  def self.give_exp(target)
+
+    return unless defined?(FO_Player_Data)
+
+    return unless target.respond_to?(:fo_exp)
+
+    exp =
+      target.fo_exp
+
+    return if exp.nil?
+
+    return if exp <= 0
+
+    FO_Player_Data.gain_exp(exp)
+
+    if defined?(FO_DEBUG)
+
+      FO_DEBUG.log(
+        "[GAIN EXP] #{exp}"
+      )
+
+    end
 
   end
 
   #--------------------------------------------------------------------------
   # ● Process Drops
   #--------------------------------------------------------------------------
+
   def self.process_drops(target)
+
+    return unless defined?(FO_DropManager)
 
     begin
 
-      #----------------------------------------------------------------------
-      # Drops
-      #----------------------------------------------------------------------
+      map_id =
+        $game_map.map_id
+
+      event_id =
+        target.id
 
       drops =
         FO_DropManager.generate_drops(
-          FO_Data_Manager.map_id,
-          target.id
+          map_id,
+          event_id
         )
-
-      #----------------------------------------------------------------------
-      # Entrega
-      #----------------------------------------------------------------------
 
       FO_DropManager.deliver_drops(
         drops
@@ -345,9 +404,13 @@ module FO_Combat_Manager
 
     rescue => e
 
-      FO_CORE.debug(
-        "[DROP ERROR] #{e}"
-      )
+      if defined?(FO_DEBUG)
+
+        FO_DEBUG.error(
+          "[DROP ERROR] #{e}"
+        )
+
+      end
 
     end
 
@@ -356,37 +419,26 @@ module FO_Combat_Manager
   #--------------------------------------------------------------------------
   # ● Process Kill
   #--------------------------------------------------------------------------
+
   def self.process_kill(target)
 
     begin
 
-      #----------------------------------------------------------------------
-      # Estado
-      #----------------------------------------------------------------------
-
       target.fo_kill
 
-      #----------------------------------------------------------------------
-      # Visual
-      #----------------------------------------------------------------------
+      target.transparent = true
 
-      target.transparent =
-        true
-
-      target.through =
-        true
-
-      #----------------------------------------------------------------------
-      # Remove mapa
-      #----------------------------------------------------------------------
-
-      target.erase
+      target.through = true
 
     rescue => e
 
-      FO_CORE.debug(
-        "[KILL ERROR] #{e}"
-      )
+      if defined?(FO_DEBUG)
+
+        FO_DEBUG.error(
+          "[KILL ERROR] #{e}"
+        )
+
+      end
 
     end
 
@@ -398,6 +450,10 @@ end
 # ■ Inicialização
 #==============================================================================
 
-FO_CORE.debug(
-  "FO_Combat_Manager_v2 carregado com sucesso"
-)
+if defined?(FO_DEBUG)
+
+  FO_DEBUG.log(
+    "FO_Combat_Manager_v4 carregado com sucesso"
+  )
+
+end

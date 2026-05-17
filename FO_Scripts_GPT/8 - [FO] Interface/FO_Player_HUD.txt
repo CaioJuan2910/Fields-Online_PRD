@@ -1,311 +1,480 @@
 #==============================================================================
-# ■ FO_HUD_v3
+# ■ FO_Player_HUD_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 3.0
-# Data: 18/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# HUD MMORPG
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# HUD principal do jogador MMORPG.
+# Compatível com RPG Maker XP ORIGINAL.
 #------------------------------------------------------------------------------
-# RESPONSABILIDADES:
-# - HP Bar
-# - MP Bar
-# - Level
-# - Nome do jogador
-# - Gold
-# - Integração com System Manager
-# - Integração com Data Manager
+# OBJETIVOS:
+# - Mostrar HP
+# - Mostrar MP
+# - Mostrar Level
+# - Mostrar EXP
+# - Mostrar Gold
+# - Integrar com FO_Player_Data
+# - Integrar com FO_Player_Status
+# - Layout MMORPG
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Core
+# - FO_Player_Data
+# - FO_Player_Status
 #==============================================================================
 
 #==============================================================================
-# ■ FO_HUD
+# ■ FO_PLAYER_HUD
 #==============================================================================
 
-module FO_HUD
+module FO_PLAYER_HUD
 
   #--------------------------------------------------------------------------
-  # ■ HUD
+  # ● Posição
+  #--------------------------------------------------------------------------
+
+  X = 12
+  Y = 12
+
+  WIDTH = 260
+  HEIGHT = 110
+
+  Z = 99999
+
+  #--------------------------------------------------------------------------
+  # ● Barras
+  #--------------------------------------------------------------------------
+
+  BAR_WIDTH = 180
+  BAR_HEIGHT = 14
+
+  HP_BAR_Y = 34
+  MP_BAR_Y = 58
+  EXP_BAR_Y = 82
+
+  #--------------------------------------------------------------------------
+  # ● Fonte
+  #--------------------------------------------------------------------------
+
+  FONT_NAME = "Arial"
+
+  FONT_SIZE = 16
+
+  #--------------------------------------------------------------------------
+  # ● Cores
+  #--------------------------------------------------------------------------
+
+  BACKGROUND_COLOR =
+    Color.new(0,0,0,160)
+
+  BORDER_COLOR =
+    Color.new(255,255,255)
+
+  HP_COLOR =
+    Color.new(220,60,60)
+
+  MP_COLOR =
+    Color.new(80,120,255)
+
+  EXP_COLOR =
+    Color.new(255,220,80)
+
+  TEXT_COLOR =
+    Color.new(255,255,255)
+
+end
+
+#==============================================================================
+# ■ FO_Player_HUD
+#==============================================================================
+
+module FO_Player_HUD
+
+  #--------------------------------------------------------------------------
+  # ■ Variáveis
   #--------------------------------------------------------------------------
 
   @sprite = nil
-  @bitmap = nil
 
   #--------------------------------------------------------------------------
-  # ■ Cache
+  # ● Update
   #--------------------------------------------------------------------------
 
-  @last_hp = nil
-  @last_mp = nil
-  @last_gold = nil
-  @last_level = nil
+  def self.update
 
-  #--------------------------------------------------------------------------
-  # ● Start
-  #--------------------------------------------------------------------------
-  def self.start
-
-    dispose
-
-    #--------------------------------------------------------------------------
-    # Sprite
-    #--------------------------------------------------------------------------
-
-    @sprite =
-      Sprite.new
-
-    @sprite.z =
-      9999
-
-    @sprite.x =
-      10
-
-    @sprite.y =
-      10
-
-    #--------------------------------------------------------------------------
-    # Bitmap
-    #--------------------------------------------------------------------------
-
-    @bitmap =
-      Bitmap.new(260, 90)
-
-    @sprite.bitmap =
-      @bitmap
-
-    #--------------------------------------------------------------------------
-    # Primeiro draw
-    #--------------------------------------------------------------------------
+    create_sprite if @sprite.nil?
 
     refresh
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Player
+  # ● Create Sprite
   #--------------------------------------------------------------------------
-  def self.player
 
-    return FO_Data_Manager.player
+  def self.create_sprite
 
-  end
+    dispose
 
-  #--------------------------------------------------------------------------
-  # ● Update
-  #--------------------------------------------------------------------------
-  def self.update
+    @sprite =
+      Sprite.new
 
-    return if player.nil?
+    @sprite.bitmap =
+      Bitmap.new(
+        FO_PLAYER_HUD::WIDTH,
+        FO_PLAYER_HUD::HEIGHT
+      )
 
-    #--------------------------------------------------------------------------
-    # Precisa atualizar?
-    #--------------------------------------------------------------------------
+    @sprite.x =
+      FO_PLAYER_HUD::X
 
-    if need_refresh?
+    @sprite.y =
+      FO_PLAYER_HUD::Y
 
-      refresh
-
-    end
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Need Refresh?
-  #--------------------------------------------------------------------------
-  def self.need_refresh?
-
-    return true if @last_hp != player.hp
-
-    return true if @last_mp != player.sp
-
-    return true if @last_gold != FO_Data_Manager.gold
-
-    return true if @last_level != player.level
-
-    return false
+    @sprite.z =
+      FO_PLAYER_HUD::Z
 
   end
 
   #--------------------------------------------------------------------------
   # ● Refresh
   #--------------------------------------------------------------------------
+
   def self.refresh
 
-    return if player.nil?
+    return if @sprite.nil?
 
-    #--------------------------------------------------------------------------
-    # Cache
-    #--------------------------------------------------------------------------
+    bitmap =
+      @sprite.bitmap
 
-    @last_hp =
-      player.hp
+    bitmap.clear
 
-    @last_mp =
-      player.sp
+    draw_background(bitmap)
 
-    @last_gold =
-      FO_Data_Manager.gold
+    draw_hp(bitmap)
 
-    @last_level =
-      player.level
+    draw_mp(bitmap)
 
-    #--------------------------------------------------------------------------
-    # Limpa bitmap
-    #--------------------------------------------------------------------------
+    draw_exp(bitmap)
 
-    @bitmap.clear
+    draw_info(bitmap)
 
-    #--------------------------------------------------------------------------
-    # Fundo
-    #--------------------------------------------------------------------------
+  end
 
-    @bitmap.fill_rect(
+  #--------------------------------------------------------------------------
+  # ● Draw Background
+  #--------------------------------------------------------------------------
+
+  def self.draw_background(bitmap)
+
+    bitmap.fill_rect(
       0,
       0,
-      260,
-      90,
-      Color.new(0,0,0,160)
+      FO_PLAYER_HUD::WIDTH,
+      FO_PLAYER_HUD::HEIGHT,
+      FO_PLAYER_HUD::BACKGROUND_COLOR
     )
 
-    #--------------------------------------------------------------------------
-    # Fonte
-    #--------------------------------------------------------------------------
+    draw_border(bitmap)
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Draw Border
+  #--------------------------------------------------------------------------
+
+  def self.draw_border(bitmap)
+
+    color =
+      FO_PLAYER_HUD::BORDER_COLOR
+
+    width =
+      FO_PLAYER_HUD::WIDTH
+
+    height =
+      FO_PLAYER_HUD::HEIGHT
+
+    # Top
+    bitmap.fill_rect(
+      0,
+      0,
+      width,
+      1,
+      color
+    )
+
+    # Bottom
+    bitmap.fill_rect(
+      0,
+      height - 1,
+      width,
+      1,
+      color
+    )
+
+    # Left
+    bitmap.fill_rect(
+      0,
+      0,
+      1,
+      height,
+      color
+    )
+
+    # Right
+    bitmap.fill_rect(
+      width - 1,
+      0,
+      1,
+      height,
+      color
+    )
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Draw HP
+  #--------------------------------------------------------------------------
+
+  def self.draw_hp(bitmap)
+
+    return unless defined?(FO_Player_Data)
+
+    hp =
+      FO_Player_Data.hp
+
+    maxhp =
+      FO_Player_Data.maxhp
+
+    return if maxhp <= 0
+
+    percent =
+      hp.to_f / maxhp.to_f
+
+    width =
+      (
+        FO_PLAYER_HUD::BAR_WIDTH *
+        percent
+      ).to_i
+
+    # Fundo
+    bitmap.fill_rect(
+      70,
+      FO_PLAYER_HUD::HP_BAR_Y,
+      FO_PLAYER_HUD::BAR_WIDTH,
+      FO_PLAYER_HUD::BAR_HEIGHT,
+      Color.new(40,40,40)
+    )
+
+    # Barra
+    bitmap.fill_rect(
+      70,
+      FO_PLAYER_HUD::HP_BAR_Y,
+      width,
+      FO_PLAYER_HUD::BAR_HEIGHT,
+      FO_PLAYER_HUD::HP_COLOR
+    )
+
+    draw_text(
+      bitmap,
+      "HP",
+      10,
+      FO_PLAYER_HUD::HP_BAR_Y - 2
+    )
+
+    draw_text(
+      bitmap,
+      "#{hp}/#{maxhp}",
+      120,
+      FO_PLAYER_HUD::HP_BAR_Y - 2
+    )
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Draw MP
+  #--------------------------------------------------------------------------
+
+  def self.draw_mp(bitmap)
+
+    return unless defined?(FO_Player_Data)
+
+    mp =
+      FO_Player_Data.mp
+
+    maxmp =
+      FO_Player_Data.maxmp
+
+    return if maxmp <= 0
+
+    percent =
+      mp.to_f / maxmp.to_f
+
+    width =
+      (
+        FO_PLAYER_HUD::BAR_WIDTH *
+        percent
+      ).to_i
+
+    # Fundo
+    bitmap.fill_rect(
+      70,
+      FO_PLAYER_HUD::MP_BAR_Y,
+      FO_PLAYER_HUD::BAR_WIDTH,
+      FO_PLAYER_HUD::BAR_HEIGHT,
+      Color.new(40,40,40)
+    )
+
+    # Barra
+    bitmap.fill_rect(
+      70,
+      FO_PLAYER_HUD::MP_BAR_Y,
+      width,
+      FO_PLAYER_HUD::BAR_HEIGHT,
+      FO_PLAYER_HUD::MP_COLOR
+    )
+
+    draw_text(
+      bitmap,
+      "MP",
+      10,
+      FO_PLAYER_HUD::MP_BAR_Y - 2
+    )
+
+    draw_text(
+      bitmap,
+      "#{mp}/#{maxmp}",
+      120,
+      FO_PLAYER_HUD::MP_BAR_Y - 2
+    )
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Draw EXP
+  #--------------------------------------------------------------------------
+
+  def self.draw_exp(bitmap)
+
+    return unless defined?(FO_Player_Data)
+
+    exp =
+      FO_Player_Data.exp
+
+    next_exp =
+      FO_Player_Data.next_exp
+
+    return if next_exp <= 0
+
+    percent =
+      exp.to_f / next_exp.to_f
+
+    width =
+      (
+        FO_PLAYER_HUD::BAR_WIDTH *
+        percent
+      ).to_i
+
+    # Fundo
+    bitmap.fill_rect(
+      70,
+      FO_PLAYER_HUD::EXP_BAR_Y,
+      FO_PLAYER_HUD::BAR_WIDTH,
+      FO_PLAYER_HUD::BAR_HEIGHT,
+      Color.new(40,40,40)
+    )
+
+    # Barra
+    bitmap.fill_rect(
+      70,
+      FO_PLAYER_HUD::EXP_BAR_Y,
+      width,
+      FO_PLAYER_HUD::BAR_HEIGHT,
+      FO_PLAYER_HUD::EXP_COLOR
+    )
+
+    draw_text(
+      bitmap,
+      "EXP",
+      10,
+      FO_PLAYER_HUD::EXP_BAR_Y - 2
+    )
+
+    draw_text(
+      bitmap,
+      "#{exp}/#{next_exp}",
+      120,
+      FO_PLAYER_HUD::EXP_BAR_Y - 2
+    )
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Draw Info
+  #--------------------------------------------------------------------------
+
+  def self.draw_info(bitmap)
+
+    return unless defined?(FO_Player_Data)
+
+    level =
+      FO_Player_Data.level
+
+    gold = 0
+
+    if defined?(FO_Inventory)
+
+      gold =
+        FO_Inventory.gold
+
+    end
+
+    draw_text(
+      bitmap,
+      "LV #{level}",
+      10,
+      6
+    )
+
+    draw_text(
+      bitmap,
+      "#{gold} Gold",
+      150,
+      6
+    )
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Draw Text
+  #--------------------------------------------------------------------------
+
+  def self.draw_text(bitmap, text, x, y)
 
     font =
-      @bitmap.font
+      bitmap.font
 
     font.name =
-      "Arial"
+      FO_PLAYER_HUD::FONT_NAME
 
     font.size =
-      18
+      FO_PLAYER_HUD::FONT_SIZE
 
-    font.bold =
-      true
+    font.bold = true
 
     font.color =
-      Color.new(255,255,255)
+      FO_PLAYER_HUD::TEXT_COLOR
 
-    #--------------------------------------------------------------------------
-    # Nome
-    #--------------------------------------------------------------------------
-
-    @bitmap.draw_text(
-      10,
-      5,
-      240,
+    bitmap.draw_text(
+      x,
+      y,
+      220,
       24,
-      player.name
-    )
-
-    #--------------------------------------------------------------------------
-    # Level
-    #--------------------------------------------------------------------------
-
-    @bitmap.draw_text(
-      180,
-      5,
-      70,
-      24,
-      "Lv #{player.level}",
-      2
-    )
-
-    #--------------------------------------------------------------------------
-    # HP Fundo
-    #--------------------------------------------------------------------------
-
-    @bitmap.fill_rect(
-      10,
-      35,
-      240,
-      14,
-      Color.new(60,60,60)
-    )
-
-    #--------------------------------------------------------------------------
-    # HP Rate
-    #--------------------------------------------------------------------------
-
-    hp_rate =
-      player.hp.to_f /
-      player.maxhp.to_f
-
-    hp_width =
-      (240 * hp_rate).to_i
-
-    #--------------------------------------------------------------------------
-    # HP Bar
-    #--------------------------------------------------------------------------
-
-    @bitmap.fill_rect(
-      10,
-      35,
-      hp_width,
-      14,
-      Color.new(220,60,60)
-    )
-
-    #--------------------------------------------------------------------------
-    # HP Texto
-    #--------------------------------------------------------------------------
-
-    @bitmap.draw_text(
-      10,
-      30,
-      240,
-      24,
-      "#{player.hp}/#{player.maxhp}",
-      1
-    )
-
-    #--------------------------------------------------------------------------
-    # MP Fundo
-    #--------------------------------------------------------------------------
-
-    @bitmap.fill_rect(
-      10,
-      60,
-      240,
-      10,
-      Color.new(60,60,60)
-    )
-
-    #--------------------------------------------------------------------------
-    # MP Rate
-    #--------------------------------------------------------------------------
-
-    mp_rate =
-      player.sp.to_f /
-      player.maxsp.to_f
-
-    mp_width =
-      (240 * mp_rate).to_i
-
-    #--------------------------------------------------------------------------
-    # MP Bar
-    #--------------------------------------------------------------------------
-
-    @bitmap.fill_rect(
-      10,
-      60,
-      mp_width,
-      10,
-      Color.new(60,120,255)
-    )
-
-    #--------------------------------------------------------------------------
-    # Gold
-    #--------------------------------------------------------------------------
-
-    @bitmap.draw_text(
-      10,
-      68,
-      240,
-      20,
-      "Gold: #{FO_Data_Manager.gold}"
+      text
     )
 
   end
@@ -313,54 +482,51 @@ module FO_HUD
   #--------------------------------------------------------------------------
   # ● Dispose
   #--------------------------------------------------------------------------
+
   def self.dispose
 
-    #--------------------------------------------------------------------------
-    # Bitmap
-    #--------------------------------------------------------------------------
+    return if @sprite.nil?
 
-    if @bitmap != nil
+    if @sprite.bitmap != nil
 
-      unless @bitmap.disposed?
-
-        @bitmap.dispose
-
-      end
+      @sprite.bitmap.dispose
 
     end
 
-    #--------------------------------------------------------------------------
-    # Sprite
-    #--------------------------------------------------------------------------
+    @sprite.dispose
 
-    if @sprite != nil
-
-      unless @sprite.disposed?
-
-        @sprite.dispose
-
-      end
-
-    end
+    @sprite = nil
 
   end
 
 end
 
 #==============================================================================
-# ■ Registro no System Manager
+# ■ Registro no FO_ENGINE
 #==============================================================================
 
-FO_System_Manager.register(
-  FO_HUD
-)
+if defined?(FO_ENGINE)
+
+  begin
+
+    FO_ENGINE.register_system(
+      FO_Player_HUD
+    )
+
+  rescue
+
+  end
+
+end
 
 #==============================================================================
 # ■ Inicialização
 #==============================================================================
 
-FO_HUD.start
+if defined?(FO_DEBUG)
 
-FO_CORE.debug(
-  "FO_HUD_v3 carregado com sucesso"
-)
+  FO_DEBUG.log(
+    "FO_Player_HUD_v4 carregado com sucesso"
+  )
+
+end

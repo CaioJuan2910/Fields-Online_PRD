@@ -1,21 +1,47 @@
 #==============================================================================
-# ■ FO_Target_System_v3
+# ■ FO_Target_System_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 3.0
-# Data: 18/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# Sistema de Target MMORPG
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# Sistema moderno de seleção de alvo MMORPG.
+# Compatível com RPG Maker XP ORIGINAL.
 #------------------------------------------------------------------------------
-# RESPONSABILIDADES:
-# - Seleção de target
-# - Limpeza automática
-# - Integração com Entity Manager
-# - Validação centralizada
+# OBJETIVOS:
+# - Eliminar variáveis globais antigas
+# - Centralizar seleção de target
+# - Validar entidades automaticamente
+# - Preparar PvP futuramente
+# - Integrar com HUD
+# - Integrar com Combat Manager
+# - Integrar com Enemy System
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Core
+# - FO_Enemy_System
+# - FO_Target_Status
 #==============================================================================
+
+#==============================================================================
+# ■ FO_TARGET_SYSTEM
+#==============================================================================
+
+module FO_TARGET_SYSTEM
+
+  #============================================================================
+  # ■ CONFIGURAÇÕES
+  #============================================================================
+
+  TARGET_KEY =
+    Input::SHIFT
+
+  TARGET_RANGE = 8
+
+end
 
 #==============================================================================
 # ■ FO_Target_System
@@ -24,14 +50,27 @@
 module FO_Target_System
 
   #--------------------------------------------------------------------------
-  # ■ Current Target
+  # ■ Variáveis
   #--------------------------------------------------------------------------
 
   @target = nil
 
   #--------------------------------------------------------------------------
+  # ● Update
+  #--------------------------------------------------------------------------
+
+  def self.update
+
+    update_target_input
+
+    update_target_validity
+
+  end
+
+  #--------------------------------------------------------------------------
   # ● Target
   #--------------------------------------------------------------------------
+
   def self.target
 
     return @target
@@ -41,57 +80,20 @@ module FO_Target_System
   #--------------------------------------------------------------------------
   # ● Set Target
   #--------------------------------------------------------------------------
+
   def self.set_target(target)
 
-    #--------------------------------------------------------------------------
-    # Segurança
-    #--------------------------------------------------------------------------
+    @target = target
 
-    return if target.nil?
+    if defined?(FO_DEBUG)
 
-    #--------------------------------------------------------------------------
-    # Combat Entity?
-    #--------------------------------------------------------------------------
+      if target != nil
 
-    return unless target.respond_to?(
-      :fo_combat_entity?
-    )
+        FO_DEBUG.log(
+          "[TARGET] #{target.event.name}"
+        )
 
-    return unless target.fo_combat_entity?
-
-    #--------------------------------------------------------------------------
-    # Entity válida?
-    #--------------------------------------------------------------------------
-
-    return unless FO_Entity_Manager.valid_entity?(
-      target
-    )
-
-    #--------------------------------------------------------------------------
-    # Define
-    #--------------------------------------------------------------------------
-
-    @target =
-      target
-
-    #--------------------------------------------------------------------------
-    # Compatibilidade temporária
-    #--------------------------------------------------------------------------
-
-    $fo_target =
-      target
-
-    #--------------------------------------------------------------------------
-    # Debug
-    #--------------------------------------------------------------------------
-
-    begin
-
-      FO_CORE.debug(
-        "[TARGET SET] #{target.event.name}"
-      )
-
-    rescue
+      end
 
     end
 
@@ -100,125 +102,233 @@ module FO_Target_System
   #--------------------------------------------------------------------------
   # ● Clear Target
   #--------------------------------------------------------------------------
+
   def self.clear_target
-
-    return if @target.nil?
-
-    #--------------------------------------------------------------------------
-    # Debug
-    #--------------------------------------------------------------------------
-
-    begin
-
-      FO_CORE.debug(
-        "[TARGET CLEAR] #{@target.event.name}"
-      )
-
-    rescue
-
-    end
-
-    #--------------------------------------------------------------------------
-    # Remove
-    #--------------------------------------------------------------------------
 
     @target = nil
 
-    #--------------------------------------------------------------------------
-    # Compatibilidade antiga
-    #--------------------------------------------------------------------------
+  end
 
-    $fo_target = nil
+  #--------------------------------------------------------------------------
+  # ● Has Target?
+  #--------------------------------------------------------------------------
+
+  def self.has_target?
+
+    return @target != nil
 
   end
 
   #--------------------------------------------------------------------------
   # ● Valid Target?
   #--------------------------------------------------------------------------
+
   def self.valid_target?
 
     return false if @target.nil?
 
-    #--------------------------------------------------------------------------
-    # Entity válida?
-    #--------------------------------------------------------------------------
-
-    unless FO_Entity_Manager.valid_entity?(
-      @target
+    return false unless @target.respond_to?(
+      :fo_combat_entity?
     )
 
-      clear_target
+    return false unless @target.fo_combat_entity?
 
-      return false
+    return false if @target.fo_dead?
 
-    end
+    return false if @target.transparent
 
     return true
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Target Dead?
+  # ● Update Input
   #--------------------------------------------------------------------------
-  def self.target_dead?
 
-    return true unless valid_target?
+  def self.update_target_input
 
-    return @target.fo_dead?
+    return unless Input.trigger?(
+      FO_TARGET_SYSTEM::TARGET_KEY
+    )
+
+    select_nearest_target
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Target HP
+  # ● Select Nearest Target
   #--------------------------------------------------------------------------
-  def self.target_hp
 
-    return 0 unless valid_target?
+  def self.select_nearest_target
 
-    return @target.fo_hp
+    return if $game_map.nil?
 
-  end
+    return if $game_player.nil?
 
-  #--------------------------------------------------------------------------
-  # ● Target MaxHP
-  #--------------------------------------------------------------------------
-  def self.target_maxhp
+    nearest_target = nil
 
-    return 0 unless valid_target?
+    nearest_distance = nil
 
-    return @target.fo_maxhp
+    #--------------------------------------------------------------------------
+    # ● Busca eventos
+    #--------------------------------------------------------------------------
 
-  end
+    for event in $game_map.events.values
 
-  #--------------------------------------------------------------------------
-  # ● Target Name
-  #--------------------------------------------------------------------------
-  def self.target_name
+      next if event.nil?
 
-    return "" unless valid_target?
+      next unless valid_event_target?(event)
 
-    begin
+      distance =
+        calculate_distance(event)
 
-      return @target.fo_enemy_data.name
+      next if distance >
+              FO_TARGET_SYSTEM::TARGET_RANGE
 
-    rescue
+      if nearest_target.nil?
 
-      return ""
+        nearest_target = event
+
+        nearest_distance = distance
+
+        next
+
+      end
+
+      if distance < nearest_distance
+
+        nearest_target = event
+
+        nearest_distance = distance
+
+      end
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● Resultado
+    #--------------------------------------------------------------------------
+
+    if nearest_target != nil
+
+      set_target(nearest_target)
+
+    else
+
+      clear_target
 
     end
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Update
+  # ● Valid Event Target?
   #--------------------------------------------------------------------------
-  def self.update
+
+  def self.valid_event_target?(event)
+
+    return false if event.nil?
+
+    return false unless event.respond_to?(
+      :fo_combat_entity?
+    )
+
+    return false unless event.fo_combat_entity?
+
+    return false if event.fo_dead?
+
+    return false if event.transparent
+
+    return true
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Calculate Distance
+  #--------------------------------------------------------------------------
+
+  def self.calculate_distance(target)
+
+    player = $game_player
+
+    return 999 unless player
+
+    dx = (target.x - player.x).abs
+    dy = (target.y - player.y).abs
+
+    return dx + dy
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Validity
+  #--------------------------------------------------------------------------
+
+  def self.update_target_validity
+
+    return if @target.nil?
 
     #--------------------------------------------------------------------------
-    # Target inválido
+    # ● Removido mapa
     #--------------------------------------------------------------------------
 
-    unless valid_target?
+    if $game_map.nil?
+
+      clear_target
+
+      return
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● Evento removido
+    #--------------------------------------------------------------------------
+
+    unless $game_map.events.values.include?(@target)
+
+      clear_target
+
+      return
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● Morto
+    #--------------------------------------------------------------------------
+
+    if @target.respond_to?(:fo_dead?)
+
+      if @target.fo_dead?
+
+        clear_target
+
+        return
+
+      end
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● Transparente
+    #--------------------------------------------------------------------------
+
+    if @target.transparent
+
+      clear_target
+
+      return
+
+    end
+
+    #--------------------------------------------------------------------------
+    # ● Distância
+    #--------------------------------------------------------------------------
+
+    distance =
+      calculate_distance(@target)
+
+    if distance >
+       FO_TARGET_SYSTEM::TARGET_RANGE
 
       clear_target
 
@@ -228,20 +338,112 @@ module FO_Target_System
 
   end
 
+  #--------------------------------------------------------------------------
+  # ● Target Name
+  #--------------------------------------------------------------------------
+
+  def self.target_name
+
+    return "" if @target.nil?
+
+    return "" unless @target.event
+
+    return @target.event.name
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Target HP
+  #--------------------------------------------------------------------------
+
+  def self.target_hp
+
+    return 0 if @target.nil?
+
+    return 0 unless @target.respond_to?(:fo_hp)
+
+    return @target.fo_hp
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Target MaxHP
+  #--------------------------------------------------------------------------
+
+  def self.target_maxhp
+
+    return 0 if @target.nil?
+
+    return 0 unless @target.respond_to?(:fo_maxhp)
+
+    return @target.fo_maxhp
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Target HP Percent
+  #--------------------------------------------------------------------------
+
+  def self.target_hp_percent
+
+    hp =
+      target_hp
+
+    maxhp =
+      target_maxhp
+
+    return 0 if maxhp <= 0
+
+    return (
+      hp * 100 / maxhp
+    ).to_i
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Boss?
+  #--------------------------------------------------------------------------
+
+  def self.target_boss?
+
+    return false if @target.nil?
+
+    return false unless @target.respond_to?(
+      :fo_boss?
+    )
+
+    return @target.fo_boss?
+
+  end
+
 end
 
 #==============================================================================
-# ■ Registro no System Manager
+# ■ Registro no FO_ENGINE
 #==============================================================================
 
-FO_System_Manager.register(
-  FO_Target_System
-)
+if defined?(FO_ENGINE)
+
+  begin
+
+    FO_ENGINE.register_system(
+      FO_Target_System
+    )
+
+  rescue
+
+  end
+
+end
 
 #==============================================================================
 # ■ Inicialização
 #==============================================================================
 
-FO_CORE.debug(
-  "FO_Target_System_v3 carregado com sucesso"
-)
+if defined?(FO_DEBUG)
+
+  FO_DEBUG.log(
+    "FO_Target_System_v4 carregado com sucesso"
+  )
+
+end

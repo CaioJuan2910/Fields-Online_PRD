@@ -1,224 +1,397 @@
 #==============================================================================
-# ■ FO_Aggro_Icon
+# ■ FO_Aggro_Icon_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 2.0
-# Data: 16/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# Ícone de Aggro MMORPG
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# Sistema de ícone de agressividade MMORPG.
+# Compatível com RPG Maker XP ORIGINAL.
+#------------------------------------------------------------------------------
+# OBJETIVOS:
+# - Mostrar inimigos agressivos
+# - Mostrar estado de combate
+# - Atualização automática
+# - Compatível com mobs e bosses
+# - Sem variáveis globais
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Target_Status
+# - FO_Core
 #==============================================================================
 
 #==============================================================================
-# ■ Sprite_Character
+# ■ FO_AGGRO_ICON
 #==============================================================================
 
-class Sprite_Character < RPG::Sprite
+module FO_AGGRO_ICON
 
   #--------------------------------------------------------------------------
-  # ● Alias
+  # ● Configurações
   #--------------------------------------------------------------------------
 
-  alias fo_aggro_icon_initialize_v20 initialize
-  alias fo_aggro_icon_update_v20 update
-  alias fo_aggro_icon_dispose_v20 dispose
+  ICON_SIZE = 20
+
+  OFFSET_X = 6
+
+  OFFSET_Y = -54
+
+  Z = 99998
+
+  #--------------------------------------------------------------------------
+  # ● Cores
+  #--------------------------------------------------------------------------
+
+  AGGRO_COLOR =
+    Color.new(255,60,60)
+
+  COMBAT_COLOR =
+    Color.new(255,180,60)
+
+end
+
+#==============================================================================
+# ■ FO_Aggro_Icon_Object
+#==============================================================================
+
+class FO_Aggro_Icon_Object
 
   #--------------------------------------------------------------------------
   # ● Initialize
   #--------------------------------------------------------------------------
-  def initialize(viewport, character = nil)
 
-    fo_aggro_icon_initialize_v20(viewport, character)
+  def initialize(target)
 
-    @fo_aggro_icon = nil
+    @target = target
 
-    create_fo_aggro_icon
+    create_sprite
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Criar ícone
+  # ● Create Sprite
   #--------------------------------------------------------------------------
-  def create_fo_aggro_icon
 
-    return if self.viewport.nil?
+  def create_sprite
 
-    @fo_aggro_icon = Sprite.new(self.viewport)
+    @sprite =
+      Sprite.new
 
-    @fo_aggro_icon.bitmap =
-      RPG::Cache.picture("IconFuria")
+    @sprite.bitmap =
+      Bitmap.new(
+        FO_AGGRO_ICON::ICON_SIZE,
+        FO_AGGRO_ICON::ICON_SIZE
+      )
 
-    @fo_aggro_icon.visible = false
-
-    @fo_aggro_icon.z = self.z + 50
+    @sprite.z =
+      FO_AGGRO_ICON::Z
 
   end
 
   #--------------------------------------------------------------------------
   # ● Update
   #--------------------------------------------------------------------------
+
   def update
 
-    fo_aggro_icon_update_v20
+    return if @target.nil?
 
-    update_fo_aggro_icon
+    return dispose if invalid_target?
+
+    update_position
+
+    refresh
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Update ícone
+  # ● Invalid Target?
   #--------------------------------------------------------------------------
-  def update_fo_aggro_icon
+
+  def invalid_target?
+
+    return true if @target.nil?
+
+    return true if @target.fo_dead?
+
+    return true if @target.transparent
+
+    return false
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Position
+  #--------------------------------------------------------------------------
+
+  def update_position
+
+    @sprite.x =
+      @target.screen_x +
+      FO_AGGRO_ICON::OFFSET_X
+
+    @sprite.y =
+      @target.screen_y +
+      FO_AGGRO_ICON::OFFSET_Y
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Refresh
+  #--------------------------------------------------------------------------
+
+  def refresh
+
+    bitmap =
+      @sprite.bitmap
+
+    bitmap.clear
 
     #--------------------------------------------------------------------------
-    # ● Sprite existe?
+    # ● Cor
     #--------------------------------------------------------------------------
 
-    return if @fo_aggro_icon.nil?
+    color =
+      FO_AGGRO_ICON::AGGRO_COLOR
 
-    #--------------------------------------------------------------------------
-    # ● Character existe?
-    #--------------------------------------------------------------------------
+    if @target.fo_in_combat
 
-    if @character.nil?
-
-      @fo_aggro_icon.visible = false
-
-      return
+      color =
+        FO_AGGRO_ICON::COMBAT_COLOR
 
     end
 
     #--------------------------------------------------------------------------
-    # ● Apenas eventos
+    # ● Desenha círculo
     #--------------------------------------------------------------------------
 
-    unless @character.is_a?(Game_Event)
+    draw_circle(
+      bitmap,
+      10,
+      10,
+      8,
+      color
+    )
 
-      @fo_aggro_icon.visible = false
+  end
 
-      return
+  #--------------------------------------------------------------------------
+  # ● Draw Circle
+  #--------------------------------------------------------------------------
 
-    end
+  def draw_circle(bitmap, cx, cy, radius, color)
 
-    #--------------------------------------------------------------------------
-    # ● Morto?
-    #--------------------------------------------------------------------------
+    for x in 0...bitmap.width
 
-    if @character.respond_to?(:fo_dead?)
+      for y in 0...bitmap.height
 
-      if @character.fo_dead?
+        dx = x - cx
+        dy = y - cy
 
-        @fo_aggro_icon.visible = false
+        distance =
+          Math.sqrt(
+            dx * dx + dy * dy
+          )
 
-        return
+        if distance <= radius
+
+          bitmap.set_pixel(
+            x,
+            y,
+            color
+          )
+
+        end
 
       end
 
     end
-
-    #--------------------------------------------------------------------------
-    # ● Evento invisível?
-    #--------------------------------------------------------------------------
-
-    if @character.transparent
-
-      @fo_aggro_icon.visible = false
-
-      return
-
-    end
-
-    #--------------------------------------------------------------------------
-    # ● Sprite invisível?
-    #--------------------------------------------------------------------------
-
-    if self.opacity <= 0
-
-      @fo_aggro_icon.visible = false
-
-      return
-
-    end
-
-#--------------------------------------------------------------------------
-# ● Possui agressividade?
-#--------------------------------------------------------------------------
-
-aggro = false
-
-if @character.instance_variables.include?("@fo_aggressive")
-
-  aggro =
-    @character.instance_variable_get(:@fo_aggressive)
-
-end
-
-    #--------------------------------------------------------------------------
-    # ● Sem aggro
-    #--------------------------------------------------------------------------
-
-    if !aggro
-
-      @fo_aggro_icon.visible = false
-
-      return
-
-    end
-
-    #--------------------------------------------------------------------------
-    # ● Mostra ícone
-    #--------------------------------------------------------------------------
-
-    @fo_aggro_icon.visible = true
-
-    #--------------------------------------------------------------------------
-    # ● Bitmap existe?
-    #--------------------------------------------------------------------------
-
-    return if @fo_aggro_icon.bitmap.nil?
-
-    #--------------------------------------------------------------------------
-    # ● Posição X
-    #--------------------------------------------------------------------------
-
-    @fo_aggro_icon.x =
-      self.x -
-      (@fo_aggro_icon.bitmap.width / 2)
-
-    #--------------------------------------------------------------------------
-    # ● Posição Y
-    #--------------------------------------------------------------------------
-
-    @fo_aggro_icon.y =
-      self.y -
-      self.oy -
-      42
-
-    #--------------------------------------------------------------------------
-    # ● Z
-    #--------------------------------------------------------------------------
-
-    @fo_aggro_icon.z = self.z + 50
 
   end
 
   #--------------------------------------------------------------------------
   # ● Dispose
   #--------------------------------------------------------------------------
+
   def dispose
 
-    fo_aggro_icon_dispose_v20
+    return if @sprite.nil?
 
-    if @fo_aggro_icon != nil
+    if @sprite.bitmap != nil
 
-      @fo_aggro_icon.dispose
+      @sprite.bitmap.dispose
 
-      @fo_aggro_icon = nil
+    end
+
+    @sprite.dispose
+
+    @sprite = nil
+
+  end
+
+end
+
+#==============================================================================
+# ■ FO_Aggro_Icon
+#==============================================================================
+
+module FO_Aggro_Icon
+
+  #--------------------------------------------------------------------------
+  # ■ Objetos
+  #--------------------------------------------------------------------------
+
+  @objects = []
+
+  #--------------------------------------------------------------------------
+  # ● Update
+  #--------------------------------------------------------------------------
+
+  def self.update
+
+    update_targets
+
+    update_objects
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Targets
+  #--------------------------------------------------------------------------
+
+  def self.update_targets
+
+    return if $game_map.nil?
+
+    for event in $game_map.events.values
+
+      next if event.nil?
+
+      next unless valid_target?(event)
+
+      unless already_exists?(event)
+
+        object =
+          FO_Aggro_Icon_Object.new(
+            event
+          )
+
+        @objects.push(object)
+
+      end
 
     end
 
   end
+
+  #--------------------------------------------------------------------------
+  # ● Valid Target?
+  #--------------------------------------------------------------------------
+
+  def self.valid_target?(event)
+
+    return false unless event.respond_to?(
+      :fo_combat_entity?
+    )
+
+    return false unless event.fo_combat_entity?
+
+    return false if event.fo_dead?
+
+    return false unless event.fo_aggressive
+
+    return true
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Already Exists?
+  #--------------------------------------------------------------------------
+
+  def self.already_exists?(target)
+
+    for object in @objects
+
+      next if object.nil?
+
+      current =
+        object.instance_variable_get(
+          :@target
+        )
+
+      return true if current == target
+
+    end
+
+    return false
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Objects
+  #--------------------------------------------------------------------------
+
+  def self.update_objects
+
+    for object in @objects
+
+      next if object.nil?
+
+      object.update
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Clear
+  #--------------------------------------------------------------------------
+
+  def self.clear
+
+    for object in @objects
+
+      next if object.nil?
+
+      object.dispose
+
+    end
+
+    @objects.clear
+
+  end
+
+end
+
+#==============================================================================
+# ■ Registro no FO_ENGINE
+#==============================================================================
+
+if defined?(FO_ENGINE)
+
+  begin
+
+    FO_ENGINE.register_system(
+      FO_Aggro_Icon
+    )
+
+  rescue
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+if defined?(FO_DEBUG)
+
+  FO_DEBUG.log(
+    "FO_Aggro_Icon_v4 carregado com sucesso"
+  )
 
 end

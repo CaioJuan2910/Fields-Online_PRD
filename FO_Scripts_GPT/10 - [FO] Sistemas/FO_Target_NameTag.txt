@@ -1,242 +1,302 @@
 #==============================================================================
-# ■ FO_Target_NameTag
+# ■ FO_Target_NameTag_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor: ChatGPT + Caio
-# Versão: 2.0
-# Data: 16/05/2026
+# Autor....: ChatGPT + Caio
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# NameTag + HP dos Mobs
-# Compatível com RPG Maker XP ORIGINAL
+# DESCRIÇÃO:
+# Sistema de NameTag MMORPG.
+# Compatível com RPG Maker XP ORIGINAL.
+#------------------------------------------------------------------------------
+# OBJETIVOS:
+# - Mostrar nome acima do alvo
+# - Atualização automática
+# - Integração com Target System
+# - Compatível com Boss/Mob
+# - Sem variáveis globais
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Target_System
+# - FO_Core
 #==============================================================================
+
+#==============================================================================
+# ■ FO_TARGET_NAMETAG
+#==============================================================================
+
+module FO_TARGET_NAMETAG
+
+  #--------------------------------------------------------------------------
+  # ● Configurações
+  #--------------------------------------------------------------------------
+
+  FONT_NAME = "Arial"
+
+  FONT_SIZE = 18
+
+  FONT_BOLD = true
+
+  FONT_OUTLINE = true
+
+  OFFSET_Y = -48
+
+  Z = 99999
+
+  #--------------------------------------------------------------------------
+  # ● Cores
+  #--------------------------------------------------------------------------
+
+  MOB_COLOR =
+    Color.new(255,255,255)
+
+  BOSS_COLOR =
+    Color.new(255,120,120)
+
+end
 
 #==============================================================================
 # ■ FO_Target_NameTag
 #==============================================================================
 
-class FO_Target_NameTag
+module FO_Target_NameTag
 
   #--------------------------------------------------------------------------
-  # ● Inicialização
+  # ■ Variáveis
   #--------------------------------------------------------------------------
-  def initialize
 
-    create_sprite
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Criar sprite
-  #--------------------------------------------------------------------------
-  def create_sprite
-
-    @sprite = Sprite.new
-
-    @sprite.bitmap = Bitmap.new(220, 64)
-
-    @sprite.z = 5000
-
-    font = @sprite.bitmap.font
-
-    font.name = "Arial"
-    font.size = 18
-    font.bold = true
-
-  end
+  @sprite = nil
 
   #--------------------------------------------------------------------------
   # ● Update
   #--------------------------------------------------------------------------
-  def update
 
-    refresh
+  def self.update
+
+    update_visibility
+
+    update_position
+
+    update_text
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Refresh
+  # ● Create Sprite
   #--------------------------------------------------------------------------
-  def refresh
 
-    bitmap = @sprite.bitmap
+  def self.create_sprite
 
-    bitmap.clear
+    dispose
 
-    # Sem target
-    if $fo_target.nil?
+    @sprite =
+      Sprite.new
 
-      @sprite.visible = false
+    @sprite.bitmap =
+      Bitmap.new(220, 32)
+
+    @sprite.z =
+      FO_TARGET_NAMETAG::Z
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Visibility
+  #--------------------------------------------------------------------------
+
+  def self.update_visibility
+
+    if FO_Target_System.target.nil?
+
+      dispose
 
       return
 
     end
 
-    @sprite.visible = true
+    if @sprite.nil?
+
+      create_sprite
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Position
+  #--------------------------------------------------------------------------
+
+  def self.update_position
+
+    return if @sprite.nil?
+
+    target =
+      FO_Target_System.target
+
+    return if target.nil?
+
+    @sprite.x =
+      target.screen_x - 110
+
+    @sprite.y =
+      target.screen_y +
+      FO_TARGET_NAMETAG::OFFSET_Y
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Update Text
+  #--------------------------------------------------------------------------
+
+  def self.update_text
+
+    return if @sprite.nil?
+
+    target =
+      FO_Target_System.target
+
+    return if target.nil?
+
+    bitmap =
+      @sprite.bitmap
+
+    bitmap.clear
+
+    #--------------------------------------------------------------------------
+    # ● Fonte
+    #--------------------------------------------------------------------------
+
+    font =
+      bitmap.font
+
+    font.name =
+      FO_TARGET_NAMETAG::FONT_NAME
+
+    font.size =
+      FO_TARGET_NAMETAG::FONT_SIZE
+
+    font.bold =
+      FO_TARGET_NAMETAG::FONT_BOLD
 
     #--------------------------------------------------------------------------
     # ● Cor
     #--------------------------------------------------------------------------
 
-    color = Color.new(255,255,255)
+    if FO_Target_System.target_boss?
 
-    case $fo_target_type
+      font.color =
+        FO_TARGET_NAMETAG::BOSS_COLOR
 
-    when :npc
-      color = Color.new(255,255,255)
+    else
 
-    when :mob
-      color = Color.new(100,255,100)
-
-    when :boss
-      color = Color.new(255,80,80)
-
-    when :quest
-      color = Color.new(255,220,80)
+      font.color =
+        FO_TARGET_NAMETAG::MOB_COLOR
 
     end
-
-    bitmap.font.color = color
 
     #--------------------------------------------------------------------------
     # ● Nome
     #--------------------------------------------------------------------------
+
+    name =
+      clean_name(
+        FO_Target_System.target_name
+      )
 
     bitmap.draw_text(
       0,
       0,
       220,
       32,
-      $fo_target_name,
+      name,
       1
     )
 
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Clean Name
+  #--------------------------------------------------------------------------
+
+  def self.clean_name(name)
+
+    return "" if name.nil?
+
+    text = name.clone
+
     #--------------------------------------------------------------------------
-    # ● HP apenas para mobs
+    # ● Remove tags
     #--------------------------------------------------------------------------
 
-    if $fo_target_type == :mob
+    text.gsub!("$", "")
+    text.gsub!("!", "")
+    text.gsub!("@", "")
+    text.gsub!("?", "")
 
-      hp     = $fo_target.fo_hp
-      maxhp  = $fo_target.fo_maxhp
+    #--------------------------------------------------------------------------
+    # ● Segurança
+    #--------------------------------------------------------------------------
 
-      maxhp = 1 if maxhp <= 0
+    if text.size <= 0
 
-      rate = hp.to_f / maxhp.to_f
-
-      bar_width = 120
-
-      filled_width = (bar_width * rate).to_i
-
-      # Fundo
-      bitmap.fill_rect(
-        50,
-        34,
-        bar_width,
-        8,
-        Color.new(60,60,60)
-      )
-
-      # Barra
-      bitmap.fill_rect(
-        50,
-        34,
-        filled_width,
-        8,
-        Color.new(0,220,0)
-      )
+      return "Unknown"
 
     end
 
-    #--------------------------------------------------------------------------
-    # ● Posição dinâmica
-    #--------------------------------------------------------------------------
-
-    screen_x = $fo_target.screen_x
-    screen_y = $fo_target.screen_y
-
-    frame_height = 48
-
-    event_data = $fo_target.instance_variable_get(:@event)
-
-    if event_data != nil
-
-      page = event_data.pages[0]
-
-      if page != nil
-
-        graphic = page.graphic
-
-        charset_name = graphic.character_name
-        charset_hue  = graphic.character_hue
-
-        if charset_name != nil && charset_name != ""
-
-          charset = RPG::Cache.character(
-            charset_name,
-            charset_hue
-          )
-
-          frame_height = charset.height / 4
-
-        end
-
-      end
-
-    end
-
-    offset_y = frame_height + 42
-
-    @sprite.x = screen_x - 110
-    @sprite.y = screen_y - offset_y
+    return text
 
   end
 
   #--------------------------------------------------------------------------
   # ● Dispose
   #--------------------------------------------------------------------------
-  def dispose
 
-    @sprite.bitmap.dispose
+  def self.dispose
+
+    return if @sprite.nil?
+
+    if @sprite.bitmap != nil
+
+      @sprite.bitmap.dispose
+
+    end
+
     @sprite.dispose
+
+    @sprite = nil
 
   end
 
 end
 
 #==============================================================================
-# ■ Scene_Map
+# ■ Registro no FO_ENGINE
 #==============================================================================
 
-class Scene_Map
+if defined?(FO_ENGINE)
 
-  alias fo_target_nametag_main_v20 main
-  alias fo_target_nametag_update_v20 update
+  begin
 
-  #--------------------------------------------------------------------------
-  # ● Main
-  #--------------------------------------------------------------------------
-  def main
+    FO_ENGINE.register_system(
+      FO_Target_NameTag
+    )
 
-    @fo_target_nametag = FO_Target_NameTag.new
-
-    fo_target_nametag_main_v20
-
-    @fo_target_nametag.dispose
+  rescue
 
   end
 
-  #--------------------------------------------------------------------------
-  # ● Update
-  #--------------------------------------------------------------------------
-  def update
+end
 
-    fo_target_nametag_update_v20
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
 
-    if @fo_target_nametag != nil
-      @fo_target_nametag.update
-    end
+if defined?(FO_DEBUG)
 
-  end
+  FO_DEBUG.log(
+    "FO_Target_NameTag_v4 carregado com sucesso"
+  )
 
 end

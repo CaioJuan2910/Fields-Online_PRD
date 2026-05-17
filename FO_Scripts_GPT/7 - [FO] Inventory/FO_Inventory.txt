@@ -1,170 +1,546 @@
 #==============================================================================
-# ■ FO_Inventory
+# ■ FO_Inventory_v4
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor....: ChatGPT + Caio
-# Versão...: 1.1
-# Data.....: 16/05/2026
-# Hora.....: 20:00
+# Versão...: 4.0
+# Data.....: 17/05/2026
 #------------------------------------------------------------------------------
-# Descrição:
-# Sistema de inventário do Fields Online.
-# Agora integrado ao FO_Item_System.
+# DESCRIÇÃO:
+# Sistema moderno de inventário MMORPG.
+# Compatível com RPG Maker XP ORIGINAL.
+#------------------------------------------------------------------------------
+# OBJETIVOS:
+# - Eliminar sistema antigo
+# - Centralizar inventário
+# - Integrar com FO_Inventory_Manager
+# - Integrar com FO_Item_System
+# - Integrar com RMXP
+# - Stack automático
+# - Gold integrado
+# - Preparar trade/storage/equipamentos
+#------------------------------------------------------------------------------
+# SISTEMAS NECESSÁRIOS:
+# - FO_Core
+# - FO_Player_Data
+# - FO_Item_System
+# - FO_Inventory_Manager
 #==============================================================================
 
-class FO_Inventory
+#==============================================================================
+# ■ FO_INVENTORY
+#==============================================================================
 
-  #===========================================================================
+module FO_INVENTORY
+
+  #============================================================================
   # ■ CONFIGURAÇÕES
-  #===========================================================================
+  #============================================================================
 
-  MAX_ITEMS = 20
+  MAX_SLOTS = 60
 
-  #===========================================================================
-  # ● Initialize
-  #===========================================================================
-  def initialize
+  MAX_STACK = 999
 
-    # Lista de itens
-    @items = []
+  INITIAL_GOLD = 0
 
-    FO_CORE.debug("FO_Inventory iniciado")
+end
 
-    show_inventory
+#==============================================================================
+# ■ FO_Inventory
+#==============================================================================
 
-  end
+module FO_Inventory
 
-  #===========================================================================
-  # ● Adicionar item
-  #===========================================================================
-  def add_item(item_id)
+  #--------------------------------------------------------------------------
+  # ■ Estrutura
+  #--------------------------------------------------------------------------
 
-    # Verifica limite
-    if @items.size >= MAX_ITEMS
+  @items = {}
+  @weapons = {}
+  @armors = {}
 
-      FO_CORE.debug("Inventário cheio")
+  @gold = FO_INVENTORY::INITIAL_GOLD
 
-      return
+  #--------------------------------------------------------------------------
+  # ● Setup
+  #--------------------------------------------------------------------------
 
-    end
+  def self.setup
 
-    # Busca item
-    item = FO_ItemSystem.get_item(item_id)
+    @items ||= {}
+    @weapons ||= {}
+    @armors ||= {}
 
-    # Verifica item válido
-    if item.nil?
-
-      FO_CORE.debug("Item inválido: #{item_id}")
-
-      return
-
-    end
-
-    # Adiciona item
-    @items.push(item)
-
-    FO_CORE.debug("Item adicionado: #{item.name}")
-
-    show_inventory
+    @gold ||= 0
 
   end
 
-  #===========================================================================
-  # ● Remover item
-  #===========================================================================
-  def remove_item(item_id)
+  #--------------------------------------------------------------------------
+  # ● Clear
+  #--------------------------------------------------------------------------
 
-    # Procura item
-    item = @items.find { |i| i.id == item_id }
+  def self.clear
 
-    # Verifica existência
-    if item.nil?
+    @items.clear
+    @weapons.clear
+    @armors.clear
 
-      FO_CORE.debug("Item não encontrado: #{item_id}")
-
-      return
-
-    end
-
-    # Remove item
-    @items.delete(item)
-
-    FO_CORE.debug("Item removido: #{item.name}")
-
-    show_inventory
+    @gold = 0
 
   end
 
-  #===========================================================================
-  # ● Mostrar inventário
-  #===========================================================================
-  def show_inventory
+  #--------------------------------------------------------------------------
+  # ● Items
+  #--------------------------------------------------------------------------
 
-    FO_CORE.debug("==============================")
-    FO_CORE.debug("INVENTÁRIO")
+  def self.items
 
-    # Inventário vazio
-    if @items.empty?
+    return @items
 
-      FO_CORE.debug("Inventário vazio")
+  end
 
-    else
+  #--------------------------------------------------------------------------
+  # ● Weapons
+  #--------------------------------------------------------------------------
 
-      # Lista itens
-      @items.each do |item|
+  def self.weapons
 
-        FO_CORE.debug("--------------------")
-        FO_CORE.debug("ID......: #{item.id}")
-        FO_CORE.debug("Nome....: #{item.name}")
-        FO_CORE.debug("Tipo....: #{item.type}")
-        FO_CORE.debug("Raridade: #{item.rarity}")
-        FO_CORE.debug("Ataque..: #{item.attack}")
-        FO_CORE.debug("Defesa..: #{item.defense}")
-        FO_CORE.debug("Preço...: #{item.price}")
+    return @weapons
 
-      end
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Armors
+  #--------------------------------------------------------------------------
+
+  def self.armors
+
+    return @armors
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Gold
+  #--------------------------------------------------------------------------
+
+  def self.gold
+
+    return @gold
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Gain Gold
+  #--------------------------------------------------------------------------
+
+  def self.gain_gold(amount)
+
+    return if amount <= 0
+
+    @gold += amount
+
+    if defined?(FO_DEBUG)
+
+      FO_DEBUG.log(
+        "[GAIN GOLD] #{amount}"
+      )
 
     end
 
-    FO_CORE.debug("Slots: #{@items.size}/#{MAX_ITEMS}")
-    FO_CORE.debug("==============================")
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Lose Gold
+  #--------------------------------------------------------------------------
+
+  def self.lose_gold(amount)
+
+    return if amount <= 0
+
+    @gold -= amount
+
+    if @gold < 0
+
+      @gold = 0
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Gain Item
+  #--------------------------------------------------------------------------
+
+  def self.gain_item(id, amount = 1)
+
+    setup
+
+    return if id.nil?
+    return if amount <= 0
+
+    @items[id] ||= 0
+
+    @items[id] += amount
+
+    if @items[id] > FO_INVENTORY::MAX_STACK
+
+      @items[id] =
+        FO_INVENTORY::MAX_STACK
+
+    end
+
+    if defined?(FO_DEBUG)
+
+      FO_DEBUG.log(
+        "[GAIN ITEM] ID #{id} x#{amount}"
+      )
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Gain Weapon
+  #--------------------------------------------------------------------------
+
+  def self.gain_weapon(id, amount = 1)
+
+    setup
+
+    return if id.nil?
+    return if amount <= 0
+
+    @weapons[id] ||= 0
+
+    @weapons[id] += amount
+
+    if @weapons[id] > FO_INVENTORY::MAX_STACK
+
+      @weapons[id] =
+        FO_INVENTORY::MAX_STACK
+
+    end
+
+    if defined?(FO_DEBUG)
+
+      FO_DEBUG.log(
+        "[GAIN WEAPON] ID #{id} x#{amount}"
+      )
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Gain Armor
+  #--------------------------------------------------------------------------
+
+  def self.gain_armor(id, amount = 1)
+
+    setup
+
+    return if id.nil?
+    return if amount <= 0
+
+    @armors[id] ||= 0
+
+    @armors[id] += amount
+
+    if @armors[id] > FO_INVENTORY::MAX_STACK
+
+      @armors[id] =
+        FO_INVENTORY::MAX_STACK
+
+    end
+
+    if defined?(FO_DEBUG)
+
+      FO_DEBUG.log(
+        "[GAIN ARMOR] ID #{id} x#{amount}"
+      )
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Lose Item
+  #--------------------------------------------------------------------------
+
+  def self.lose_item(id, amount = 1)
+
+    return if id.nil?
+    return if amount <= 0
+
+    return unless @items.has_key?(id)
+
+    @items[id] -= amount
+
+    if @items[id] <= 0
+
+      @items.delete(id)
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Lose Weapon
+  #--------------------------------------------------------------------------
+
+  def self.lose_weapon(id, amount = 1)
+
+    return if id.nil?
+    return if amount <= 0
+
+    return unless @weapons.has_key?(id)
+
+    @weapons[id] -= amount
+
+    if @weapons[id] <= 0
+
+      @weapons.delete(id)
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Lose Armor
+  #--------------------------------------------------------------------------
+
+  def self.lose_armor(id, amount = 1)
+
+    return if id.nil?
+    return if amount <= 0
+
+    return unless @armors.has_key?(id)
+
+    @armors[id] -= amount
+
+    if @armors[id] <= 0
+
+      @armors.delete(id)
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Item Amount
+  #--------------------------------------------------------------------------
+
+  def self.item_amount(id)
+
+    return 0 unless @items.has_key?(id)
+
+    return @items[id]
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Weapon Amount
+  #--------------------------------------------------------------------------
+
+  def self.weapon_amount(id)
+
+    return 0 unless @weapons.has_key?(id)
+
+    return @weapons[id]
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Armor Amount
+  #--------------------------------------------------------------------------
+
+  def self.armor_amount(id)
+
+    return 0 unless @armors.has_key?(id)
+
+    return @armors[id]
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Has Item?
+  #--------------------------------------------------------------------------
+
+  def self.has_item?(id)
+
+    return item_amount(id) > 0
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Has Weapon?
+  #--------------------------------------------------------------------------
+
+  def self.has_weapon?(id)
+
+    return weapon_amount(id) > 0
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Has Armor?
+  #--------------------------------------------------------------------------
+
+  def self.has_armor?(id)
+
+    return armor_amount(id) > 0
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Slot Count
+  #--------------------------------------------------------------------------
+
+  def self.slot_count
+
+    total = 0
+
+    total += @items.size
+    total += @weapons.size
+    total += @armors.size
+
+    return total
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Inventory Full?
+  #--------------------------------------------------------------------------
+
+  def self.full?
+
+    return slot_count >=
+           FO_INVENTORY::MAX_SLOTS
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Save Data
+  #--------------------------------------------------------------------------
+
+  def self.save_data
+
+    return {
+
+      :items   => @items,
+      :weapons => @weapons,
+      :armors  => @armors,
+      :gold    => @gold
+
+    }
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Load Data
+  #--------------------------------------------------------------------------
+
+  def self.load_data(data)
+
+    return if data.nil?
+
+    @items =
+      data[:items] || {}
+
+    @weapons =
+      data[:weapons] || {}
+
+    @armors =
+      data[:armors] || {}
+
+    @gold =
+      data[:gold] || 0
 
   end
 
 end
 
 #==============================================================================
-# ■ FO_Engine
-#------------------------------------------------------------------------------
-# Integra Inventário à Engine
+# ■ FO_Inventory_Manager
 #==============================================================================
 
-class FO_Engine
+module FO_Inventory_Manager
 
   #--------------------------------------------------------------------------
-  # ● Alias Initialize
+  # ● Gain Loot
   #--------------------------------------------------------------------------
-  alias fo_inventory_initialize initialize
+
+  def self.gain_loot(type, id, amount)
+
+    case type
+
+    when :item
+
+      FO_Inventory.gain_item(
+        id,
+        amount
+      )
+
+    when :weapon
+
+      FO_Inventory.gain_weapon(
+        id,
+        amount
+      )
+
+    when :armor
+
+      FO_Inventory.gain_armor(
+        id,
+        amount
+      )
+
+    when :gold
+
+      FO_Inventory.gain_gold(
+        amount
+      )
+
+    end
+
+  end
 
   #--------------------------------------------------------------------------
-  # ● Initialize
+  # ● Get Name
   #--------------------------------------------------------------------------
-  def initialize
 
-    # Original
-    fo_inventory_initialize
+  def self.get_name(type, id)
 
-    # Cria inventário
-    @inventory = FO_Inventory.new
+    case type
 
-    # Testes
-    @inventory.add_item(1)
-    @inventory.add_item(2)
-    @inventory.add_item(3)
+    when :item
 
-    # Remove potion
-    @inventory.remove_item(3)
+      item = $data_items[id]
+
+      return "Unknown Item" if item.nil?
+
+      return item.name
+
+    when :weapon
+
+      weapon = $data_weapons[id]
+
+      return "Unknown Weapon" if weapon.nil?
+
+      return weapon.name
+
+    when :armor
+
+      armor = $data_armors[id]
+
+      return "Unknown Armor" if armor.nil?
+
+      return armor.name
+
+    end
+
+    return "Unknown"
 
   end
 
@@ -174,4 +550,12 @@ end
 # ■ Inicialização
 #==============================================================================
 
-FO_CORE.debug("FO_Inventory carregado com sucesso")
+FO_Inventory.setup
+
+if defined?(FO_DEBUG)
+
+  FO_DEBUG.log(
+    "FO_Inventory_v4 carregado com sucesso"
+  )
+
+end
