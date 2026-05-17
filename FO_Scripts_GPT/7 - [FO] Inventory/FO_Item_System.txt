@@ -4,7 +4,7 @@
 # Fields Online MMORPG
 #========================================
 
-FO_CORE.debug("FO_Item_System carregado com sucesso")
+FO_DEBUG.log("FO_Item_System carregado com sucesso")
 
 module FO_ItemSystem
 

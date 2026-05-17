@@ -107,7 +107,7 @@ module FO_Inventory_Manager
     # Debug
     #--------------------------------------------------------------------------
 
-    FO_CORE.debug(
+    FO_DEBUG.log(
       "[ITEM GAIN] #{item.name} x#{amount}"
     )
 
@@ -148,7 +148,7 @@ module FO_Inventory_Manager
     # Debug
     #--------------------------------------------------------------------------
 
-    FO_CORE.debug(
+    FO_DEBUG.log(
       "[WEAPON GAIN] #{weapon.name} x#{amount}"
     )
 
@@ -189,7 +189,7 @@ module FO_Inventory_Manager
     # Debug
     #--------------------------------------------------------------------------
 
-    FO_CORE.debug(
+    FO_DEBUG.log(
       "[ARMOR GAIN] #{armor.name} x#{amount}"
     )
 
@@ -214,7 +214,7 @@ module FO_Inventory_Manager
     # Debug
     #--------------------------------------------------------------------------
 
-    FO_CORE.debug(
+    FO_DEBUG.log(
       "[GOLD GAIN] #{amount}"
     )
 
@@ -268,6 +268,6 @@ end
 # ■ Inicialização
 #==============================================================================
 
-FO_CORE.debug(
+FO_DEBUG.log(
   "FO_Inventory_Manager_v2 carregado com sucesso"
 )
