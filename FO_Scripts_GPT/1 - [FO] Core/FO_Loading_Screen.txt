@@ -1,501 +1,351 @@
 #==============================================================================
-# ■ FO_Loading_Screen_v1
+# ■ FO_Loading_Screen
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
+# Sistema profissional de Loading Screen
 #------------------------------------------------------------------------------
-# Autor....: ChatGPT + Caio
-# Versão...: 1.0
-# Data.....: 17/05/2026
-#------------------------------------------------------------------------------
-# DESCRIÇÃO:
-# Tela de loading MMORPG moderna.
-# Compatível com RPG Maker XP ORIGINAL.
-#------------------------------------------------------------------------------
-# OBJETIVOS:
-# - Loading Screen profissional
-# - Barra de progresso
-# - Status dinâmico
-# - Fade In / Fade Out
-# - Inicialização organizada
-# - Melhorar percepção de performance
-#------------------------------------------------------------------------------
-# SISTEMAS NECESSÁRIOS:
-# - FO_Core
-# - FO_Engine
-#==============================================================================
-
-#==============================================================================
-# ■ FO_LOADING_SCREEN
-#==============================================================================
-
-module FO_LOADING_SCREEN
-
-  #--------------------------------------------------------------------------
-  # ● Resolução
-  #--------------------------------------------------------------------------
-
-  WIDTH  = 640
-  HEIGHT = 480
-
-  #--------------------------------------------------------------------------
-  # ● Barra
-  #--------------------------------------------------------------------------
-
-  BAR_WIDTH  = 400
-  BAR_HEIGHT = 24
-
-  #--------------------------------------------------------------------------
-  # ● Posição
-  #--------------------------------------------------------------------------
-
-  BAR_X =
-    (WIDTH - BAR_WIDTH) / 2
-
-  BAR_Y =
-    320
-
-  #--------------------------------------------------------------------------
-  # ● Fonte
-  #--------------------------------------------------------------------------
-
-  FONT_NAME = "Arial"
-
-  TITLE_SIZE = 32
-
-  STATUS_SIZE = 18
-
-  #--------------------------------------------------------------------------
-  # ● Cores
-  #--------------------------------------------------------------------------
-
-  BACKGROUND_COLOR =
-    Color.new(0,0,0)
-
-  BAR_BG_COLOR =
-    Color.new(40,40,40)
-
-  BAR_FILL_COLOR =
-    Color.new(80,180,255)
-
-  TEXT_COLOR =
-    Color.new(255,255,255)
-
-end
-
-#==============================================================================
-# ■ FO_Loading_Screen
+# Autor: ChatGPT + Caio
+# Versão: 2.0
+# Data: 17/05/2026
+# Compatibilidade: RPG Maker XP
 #==============================================================================
 
 module FO_Loading_Screen
 
-  #--------------------------------------------------------------------------
-  # ■ Variáveis
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ CONFIGURAÇÕES
+  #===========================================================================
+
+  ENABLE_BACKGROUND = true
+
+  BACKGROUND_COLOR = Color.new(0, 0, 0)
+
+  BAR_WIDTH  = 400
+  BAR_HEIGHT = 24
+
+  BAR_COLOR_BG = Color.new(40, 40, 40)
+  BAR_COLOR    = Color.new(0, 180, 255)
+
+  TEXT_COLOR = Color.new(255, 255, 255)
+
+  FONT_NAME = "Arial"
+  FONT_SIZE = 22
+
+  SUB_FONT_SIZE = 18
+
+  FADE_SPEED = 15
+
+  #===========================================================================
+  # ■ Variáveis internas
+  #===========================================================================
 
   @viewport = nil
-
   @background = nil
-
-  @bar_sprite = nil
-
+  @bar_bg = nil
+  @bar_fill = nil
   @text_sprite = nil
-
-  @status_sprite = nil
+  @sub_text_sprite = nil
 
   @progress = 0
+  @visible = false
 
-  @status = "Initializing..."
+  #===========================================================================
+  # ■ show
+  #===========================================================================
 
-  @finished = false
+  def self.show(title = "Loading...")
 
-  #--------------------------------------------------------------------------
-  # ● Start
-  #--------------------------------------------------------------------------
+    return if @visible
 
-  def self.start
+    @visible = true
 
     create_viewport
-
     create_background
-
     create_bar
+    create_text(title)
 
-    create_texts
+    Graphics.update
 
-    refresh
+    fade_in
 
+    FO_Core.log("FO_Loading_Screen iniciado.")
   end
 
-  #--------------------------------------------------------------------------
-  # ● Create Viewport
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ update_progress
+  #===========================================================================
+
+  def self.update_progress(value, message = "")
+
+    return unless @visible
+
+    @progress = [[value, 0].max, 100].min
+
+    update_bar
+    update_message(message)
+
+    Graphics.update
+  end
+
+  #===========================================================================
+  # ■ finish
+  #===========================================================================
+
+  def self.finish
+
+    return unless @visible
+
+    update_progress(100, "Concluído")
+
+    fade_out
+
+    dispose_all
+
+    @visible = false
+
+    FO_Core.log("FO_Loading_Screen finalizado.")
+  end
+
+  #===========================================================================
+  # ■ create_viewport
+  #===========================================================================
 
   def self.create_viewport
 
-    @viewport =
-      Viewport.new(
-        0,
-        0,
-        Graphics.width,
-        Graphics.height
-      )
-
-    @viewport.z = 999999
-
+    @viewport = Viewport.new(0, 0, 640, 480)
+    @viewport.z = 99999
   end
 
-  #--------------------------------------------------------------------------
-  # ● Create Background
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ create_background
+  #===========================================================================
 
   def self.create_background
 
-    @background =
-      Sprite.new(@viewport)
-
-    @background.bitmap =
-      Bitmap.new(
-        Graphics.width,
-        Graphics.height
-      )
+    @background = Sprite.new(@viewport)
+    @background.bitmap = Bitmap.new(640, 480)
 
     @background.bitmap.fill_rect(
       0,
       0,
-      Graphics.width,
-      Graphics.height,
-      FO_LOADING_SCREEN::BACKGROUND_COLOR
+      640,
+      480,
+      BACKGROUND_COLOR
     )
 
+    @background.opacity = 0
   end
 
-  #--------------------------------------------------------------------------
-  # ● Create Bar
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ create_bar
+  #===========================================================================
 
   def self.create_bar
 
-    @bar_sprite =
-      Sprite.new(@viewport)
+    center_x = (640 - BAR_WIDTH) / 2
+    center_y = 300
 
-    @bar_sprite.bitmap =
-      Bitmap.new(
-        Graphics.width,
-        Graphics.height
-      )
+    #-----------------------------------------------------------------------
+    # Fundo da barra
+    #-----------------------------------------------------------------------
 
+    @bar_bg = Sprite.new(@viewport)
+    @bar_bg.bitmap = Bitmap.new(BAR_WIDTH, BAR_HEIGHT)
+
+    @bar_bg.bitmap.fill_rect(
+      0,
+      0,
+      BAR_WIDTH,
+      BAR_HEIGHT,
+      BAR_COLOR_BG
+    )
+
+    @bar_bg.x = center_x
+    @bar_bg.y = center_y
+    @bar_bg.opacity = 0
+
+    #-----------------------------------------------------------------------
+    # Barra preenchimento
+    #-----------------------------------------------------------------------
+
+    @bar_fill = Sprite.new(@viewport)
+    @bar_fill.bitmap = Bitmap.new(BAR_WIDTH, BAR_HEIGHT)
+
+    @bar_fill.x = center_x
+    @bar_fill.y = center_y
+    @bar_fill.opacity = 0
+
+    refresh_fill_bar
   end
 
-  #--------------------------------------------------------------------------
-  # ● Create Texts
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ create_text
+  #===========================================================================
 
-  def self.create_texts
+  def self.create_text(title)
 
-    #--------------------------------------------------------------------------
-    # ● Title
-    #--------------------------------------------------------------------------
+    #-----------------------------------------------------------------------
+    # Texto principal
+    #-----------------------------------------------------------------------
 
-    @text_sprite =
-      Sprite.new(@viewport)
+    @text_sprite = Sprite.new(@viewport)
+    @text_sprite.bitmap = Bitmap.new(640, 64)
 
-    @text_sprite.bitmap =
-      Bitmap.new(
-        Graphics.width,
-        Graphics.height
-      )
-
-    font =
-      @text_sprite.bitmap.font
-
-    font.name =
-      FO_LOADING_SCREEN::FONT_NAME
-
-    font.size =
-      FO_LOADING_SCREEN::TITLE_SIZE
-
-    font.bold = true
-
-    font.color =
-      FO_LOADING_SCREEN::TEXT_COLOR
+    @text_sprite.bitmap.font.name = FONT_NAME
+    @text_sprite.bitmap.font.size = FONT_SIZE
+    @text_sprite.bitmap.font.color = TEXT_COLOR
+    @text_sprite.bitmap.font.bold = true
 
     @text_sprite.bitmap.draw_text(
       0,
-      160,
-      Graphics.width,
-      48,
-      "FIELDS ONLINE",
+      0,
+      640,
+      64,
+      title,
       1
     )
 
-    #--------------------------------------------------------------------------
-    # ● Status
-    #--------------------------------------------------------------------------
+    @text_sprite.y = 180
+    @text_sprite.opacity = 0
 
-    @status_sprite =
-      Sprite.new(@viewport)
+    #-----------------------------------------------------------------------
+    # Sub texto
+    #-----------------------------------------------------------------------
 
-    @status_sprite.bitmap =
-      Bitmap.new(
-        Graphics.width,
-        Graphics.height
-      )
+    @sub_text_sprite = Sprite.new(@viewport)
+    @sub_text_sprite.bitmap = Bitmap.new(640, 32)
 
+    @sub_text_sprite.bitmap.font.name = FONT_NAME
+    @sub_text_sprite.bitmap.font.size = SUB_FONT_SIZE
+    @sub_text_sprite.bitmap.font.color = TEXT_COLOR
+
+    @sub_text_sprite.y = 340
+    @sub_text_sprite.opacity = 0
   end
 
-  #--------------------------------------------------------------------------
-  # ● Set Status
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ update_bar
+  #===========================================================================
 
-  def self.set_status(text)
+  def self.update_bar
 
-    @status =
-      text
-
-    refresh
-
+    refresh_fill_bar
   end
 
-  #--------------------------------------------------------------------------
-  # ● Set Progress
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ refresh_fill_bar
+  #===========================================================================
 
-  def self.set_progress(value)
+  def self.refresh_fill_bar
 
-    @progress =
-      value
+    return if @bar_fill.nil?
 
-    if @progress < 0
-      @progress = 0
-    end
+    @bar_fill.bitmap.clear
 
-    if @progress > 100
-      @progress = 100
-    end
+    fill_width = (BAR_WIDTH * @progress / 100.0).to_i
 
-    refresh
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Refresh
-  #--------------------------------------------------------------------------
-
-  def self.refresh
-
-    refresh_bar
-
-    refresh_status
-
-    Graphics.update
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Refresh Bar
-  #--------------------------------------------------------------------------
-
-  def self.refresh_bar
-
-    bitmap =
-      @bar_sprite.bitmap
-
-    bitmap.clear
-
-    #--------------------------------------------------------------------------
-    # ● Fundo
-    #--------------------------------------------------------------------------
-
-    bitmap.fill_rect(
-      FO_LOADING_SCREEN::BAR_X,
-      FO_LOADING_SCREEN::BAR_Y,
-      FO_LOADING_SCREEN::BAR_WIDTH,
-      FO_LOADING_SCREEN::BAR_HEIGHT,
-      FO_LOADING_SCREEN::BAR_BG_COLOR
-    )
-
-    #--------------------------------------------------------------------------
-    # ● Fill
-    #--------------------------------------------------------------------------
-
-    fill_width =
-      (
-        FO_LOADING_SCREEN::BAR_WIDTH *
-        @progress / 100.0
-      ).to_i
-
-    bitmap.fill_rect(
-      FO_LOADING_SCREEN::BAR_X,
-      FO_LOADING_SCREEN::BAR_Y,
+    @bar_fill.bitmap.fill_rect(
+      0,
+      0,
       fill_width,
-      FO_LOADING_SCREEN::BAR_HEIGHT,
-      FO_LOADING_SCREEN::BAR_FILL_COLOR
+      BAR_HEIGHT,
+      BAR_COLOR
     )
-
-    #--------------------------------------------------------------------------
-    # ● Percent
-    #--------------------------------------------------------------------------
-
-    font =
-      bitmap.font
-
-    font.name =
-      FO_LOADING_SCREEN::FONT_NAME
-
-    font.size = 16
-
-    font.bold = true
-
-    font.color =
-      FO_LOADING_SCREEN::TEXT_COLOR
-
-    bitmap.draw_text(
-      0,
-      FO_LOADING_SCREEN::BAR_Y + 28,
-      Graphics.width,
-      24,
-      "#{@progress.to_i}%",
-      1
-    )
-
   end
 
-  #--------------------------------------------------------------------------
-  # ● Refresh Status
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ update_message
+  #===========================================================================
 
-  def self.refresh_status
+  def self.update_message(message)
 
-    bitmap =
-      @status_sprite.bitmap
+    return if @sub_text_sprite.nil?
 
-    bitmap.clear
+    @sub_text_sprite.bitmap.clear
 
-    font =
-      bitmap.font
+    @sub_text_sprite.bitmap.font.name = FONT_NAME
+    @sub_text_sprite.bitmap.font.size = SUB_FONT_SIZE
+    @sub_text_sprite.bitmap.font.color = TEXT_COLOR
 
-    font.name =
-      FO_LOADING_SCREEN::FONT_NAME
-
-    font.size =
-      FO_LOADING_SCREEN::STATUS_SIZE
-
-    font.color =
-      FO_LOADING_SCREEN::TEXT_COLOR
-
-    bitmap.draw_text(
+    @sub_text_sprite.bitmap.draw_text(
       0,
-      270,
-      Graphics.width,
+      0,
+      640,
       32,
-      @status,
+      message,
       1
     )
-
   end
 
-  #--------------------------------------------------------------------------
-  # ● Finish
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ fade_in
+  #===========================================================================
 
-  def self.finish
+  def self.fade_in
 
-    return if @finished
+    while @background.opacity < 255
 
-    @finished = true
+      @background.opacity += FADE_SPEED
 
-    fade_out
+      @bar_bg.opacity += FADE_SPEED
+      @bar_fill.opacity += FADE_SPEED
 
-    dispose
+      @text_sprite.opacity += FADE_SPEED
+      @sub_text_sprite.opacity += FADE_SPEED
 
+      Graphics.update
+    end
   end
 
-  #--------------------------------------------------------------------------
-  # ● Fade Out
-  #--------------------------------------------------------------------------
+  #===========================================================================
+  # ■ fade_out
+  #===========================================================================
 
   def self.fade_out
 
-    for i in 0..30
+    while @background.opacity > 0
 
-      opacity =
-        255 - (i * 8)
+      @background.opacity -= FADE_SPEED
 
-      set_opacity(opacity)
+      @bar_bg.opacity -= FADE_SPEED
+      @bar_fill.opacity -= FADE_SPEED
+
+      @text_sprite.opacity -= FADE_SPEED
+      @sub_text_sprite.opacity -= FADE_SPEED
 
       Graphics.update
+    end
+  end
 
+  #===========================================================================
+  # ■ dispose_all
+  #===========================================================================
+
+  def self.dispose_all
+
+    sprites = [
+      @background,
+      @bar_bg,
+      @bar_fill,
+      @text_sprite,
+      @sub_text_sprite
+    ]
+
+    for sprite in sprites
+      next if sprite.nil?
+
+      sprite.bitmap.dispose if sprite.bitmap and !sprite.bitmap.disposed?
+      sprite.dispose unless sprite.disposed?
     end
 
+    @viewport.dispose unless @viewport.nil? or @viewport.disposed?
+
+    @background = nil
+    @bar_bg = nil
+    @bar_fill = nil
+    @text_sprite = nil
+    @sub_text_sprite = nil
+    @viewport = nil
   end
-
-  #--------------------------------------------------------------------------
-  # ● Set Opacity
-  #--------------------------------------------------------------------------
-
-  def self.set_opacity(value)
-
-    @background.opacity =
-      value
-
-    @bar_sprite.opacity =
-      value
-
-    @text_sprite.opacity =
-      value
-
-    @status_sprite.opacity =
-      value
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Dispose
-  #--------------------------------------------------------------------------
-
-  def self.dispose
-
-    dispose_sprite(@background)
-    dispose_sprite(@bar_sprite)
-    dispose_sprite(@text_sprite)
-    dispose_sprite(@status_sprite)
-
-    if @viewport != nil
-
-      @viewport.dispose
-
-    end
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Dispose Sprite
-  #--------------------------------------------------------------------------
-
-  def self.dispose_sprite(sprite)
-
-    return if sprite.nil?
-
-    if sprite.bitmap != nil
-
-      sprite.bitmap.dispose
-
-    end
-
-    sprite.dispose
-
-  end
-
-end
-
-#==============================================================================
-# ■ Inicialização
-#==============================================================================
-
-if defined?(FO_DEBUG)
-
-  FO_DEBUG.log(
-    "FO_Loading_Screen_v1 carregado com sucesso"
-  )
 
 end
