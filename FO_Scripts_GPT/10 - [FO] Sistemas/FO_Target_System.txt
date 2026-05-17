@@ -1,10 +1,10 @@
 #==============================================================================
-# ■ FO_Target_System_v2
+# ■ FO_Target_System_v3
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor: ChatGPT + Caio
-# Versão: 2.0
+# Versão: 3.0
 # Data: 18/05/2026
 #------------------------------------------------------------------------------
 # Sistema de Target MMORPG
@@ -13,9 +13,8 @@
 # RESPONSABILIDADES:
 # - Seleção de target
 # - Limpeza automática
-# - Validação de entidades
-# - Integração com Enemy System
-# - Integração com Combat
+# - Integração com Entity Manager
+# - Validação centralizada
 #==============================================================================
 
 #==============================================================================
@@ -61,10 +60,12 @@ module FO_Target_System
     return unless target.fo_combat_entity?
 
     #--------------------------------------------------------------------------
-    # Dead?
+    # Entity válida?
     #--------------------------------------------------------------------------
 
-    return if target.fo_dead?
+    return unless FO_Entity_Manager.valid_entity?(
+      target
+    )
 
     #--------------------------------------------------------------------------
     # Define
@@ -74,7 +75,7 @@ module FO_Target_System
       target
 
     #--------------------------------------------------------------------------
-    # Compatibilidade antiga
+    # Compatibilidade temporária
     #--------------------------------------------------------------------------
 
     $fo_target =
@@ -84,9 +85,15 @@ module FO_Target_System
     # Debug
     #--------------------------------------------------------------------------
 
-    FO_CORE.debug(
-      "[TARGET SET] #{@target.event.name}"
-    )
+    begin
+
+      FO_CORE.debug(
+        "[TARGET SET] #{target.event.name}"
+      )
+
+    rescue
+
+    end
 
   end
 
@@ -97,9 +104,23 @@ module FO_Target_System
 
     return if @target.nil?
 
-    FO_CORE.debug(
-      "[TARGET CLEAR]"
-    )
+    #--------------------------------------------------------------------------
+    # Debug
+    #--------------------------------------------------------------------------
+
+    begin
+
+      FO_CORE.debug(
+        "[TARGET CLEAR] #{@target.event.name}"
+      )
+
+    rescue
+
+    end
+
+    #--------------------------------------------------------------------------
+    # Remove
+    #--------------------------------------------------------------------------
 
     @target = nil
 
@@ -119,38 +140,12 @@ module FO_Target_System
     return false if @target.nil?
 
     #--------------------------------------------------------------------------
-    # Existe?
+    # Entity válida?
     #--------------------------------------------------------------------------
 
-    begin
-
-      @target.event
-
-    rescue
-
-      clear_target
-
-      return false
-
-    end
-
-    #--------------------------------------------------------------------------
-    # Morto?
-    #--------------------------------------------------------------------------
-
-    if @target.fo_dead?
-
-      clear_target
-
-      return false
-
-    end
-
-    #--------------------------------------------------------------------------
-    # HP
-    #--------------------------------------------------------------------------
-
-    if @target.fo_hp <= 0
+    unless FO_Entity_Manager.valid_entity?(
+      @target
+    )
 
       clear_target
 
@@ -159,6 +154,58 @@ module FO_Target_System
     end
 
     return true
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Target Dead?
+  #--------------------------------------------------------------------------
+  def self.target_dead?
+
+    return true unless valid_target?
+
+    return @target.fo_dead?
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Target HP
+  #--------------------------------------------------------------------------
+  def self.target_hp
+
+    return 0 unless valid_target?
+
+    return @target.fo_hp
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Target MaxHP
+  #--------------------------------------------------------------------------
+  def self.target_maxhp
+
+    return 0 unless valid_target?
+
+    return @target.fo_maxhp
+
+  end
+
+  #--------------------------------------------------------------------------
+  # ● Target Name
+  #--------------------------------------------------------------------------
+  def self.target_name
+
+    return "" unless valid_target?
+
+    begin
+
+      return @target.fo_enemy_data.name
+
+    rescue
+
+      return ""
+
+    end
 
   end
 
@@ -196,5 +243,5 @@ FO_System_Manager.register(
 #==============================================================================
 
 FO_CORE.debug(
-  "FO_Target_System_v2 carregado com sucesso"
+  "FO_Target_System_v3 carregado com sucesso"
 )
