@@ -3,108 +3,144 @@
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor....: ChatGPT + Caio
-# Versão...: 1.0
-# Data.....: 16/05/2026
-# Hora.....: 16:30
+# Autor: OpenAI + Caio Juan
+# Versão: 2.0
+# Data: 17/05/2026
+# RPG Maker XP / Ruby 1.8.1
 #------------------------------------------------------------------------------
-# Descrição:
+# DESCRIÇÃO:
 # Sistema global de timers do Fields Online.
-# Responsável por cooldowns, delays e eventos temporários.
+#
+# Responsável por:
+# - Timers únicos
+# - Timers repetitivos
+# - Cooldowns
+# - Delays
+# - Agendamento de eventos
+# - Timers persistentes
+# - Timers pausáveis
+# - Execução segura
+# - Base para sistemas MMORPG
 #------------------------------------------------------------------------------
-# Organização:
-# 1. Classe Timer
-# 2. Gerenciamento Global
-# 3. Integração com Engine
-#==============================================================================
-
-#==============================================================================
-# ■ FO_Timer
+# IMPORTANTE:
+# Requer:
+# - FO_Core v2.0+
+# - FO_Engine v2.0+
 #------------------------------------------------------------------------------
-# Classe principal do Timer
+# Ordem recomendada:
+#
+# FO_Core
+# FO_Engine
+# FO_Timer
+# ...
 #==============================================================================
 
-class FO_Timer
+#==============================================================================
+# ■ [FO] Configurações Timer
+#==============================================================================
+module FO_TIMER_CONFIG
 
   #--------------------------------------------------------------------------
-  # ● Initialize
+  # Ativar logs
   #--------------------------------------------------------------------------
-  def initialize
+  ENABLE_TIMER_LOGS = true
 
-    # Hash de timers
-    @timers = {}
+  #--------------------------------------------------------------------------
+  # Ativar debug
+  #--------------------------------------------------------------------------
+  ENABLE_DEBUG = true
 
-    # Debug
-    FO_CORE.debug("FO_Timer iniciado")
+  #--------------------------------------------------------------------------
+  # Ativar limpeza automática
+  #--------------------------------------------------------------------------
+  ENABLE_AUTO_CLEAN = true
+
+  #--------------------------------------------------------------------------
+  # Intervalo limpeza
+  #--------------------------------------------------------------------------
+  CLEAN_INTERVAL = 300
+
+  #--------------------------------------------------------------------------
+  # Ativar timers persistentes
+  #--------------------------------------------------------------------------
+  ENABLE_PERSISTENT_TIMERS = true
+
+  #--------------------------------------------------------------------------
+  # Ativar proteção anti-crash
+  #--------------------------------------------------------------------------
+  ENABLE_FAIL_SAFE = true
+
+  #--------------------------------------------------------------------------
+  # Ativar profiler
+  #--------------------------------------------------------------------------
+  ENABLE_TIMER_PROFILER = true
+
+end
+
+#==============================================================================
+# ■ [FO] Classe Timer
+#==============================================================================
+class FO_Timer_Data
+
+  attr_accessor :id
+  attr_accessor :name
+  attr_accessor :duration
+  attr_accessor :remaining
+  attr_accessor :loop
+  attr_accessor :active
+  attr_accessor :paused
+  attr_accessor :persistent
+  attr_accessor :callback
+  attr_accessor :started_at
+
+  #--------------------------------------------------------------------------
+  # Inicialização
+  #--------------------------------------------------------------------------
+  def initialize(id, name, duration)
+
+    @id = id
+
+    @name = name
+
+    @duration = duration
+
+    @remaining = duration
+
+    @loop = false
+
+    @active = true
+
+    @paused = false
+
+    @persistent = false
+
+    @callback = nil
+
+    @started_at = FO_UTILS.current_time_ms
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Criar timer
+  # Atualização
   #--------------------------------------------------------------------------
-  def create_timer(name, seconds)
+  def update(delta)
 
-    # Cria timer
-    @timers[name] = seconds
+    return unless @active
+    return if @paused
 
-    # Debug
-    FO_CORE.debug("Timer criado: #{name} (#{seconds}s)")
+    @remaining -= delta
 
-  end
+    if @remaining <= 0
 
-  #--------------------------------------------------------------------------
-  # ● Verificar timer
-  #--------------------------------------------------------------------------
-  def timer_exists?(name)
+      execute_callback
 
-    return @timers.has_key?(name)
+      if @loop
 
-  end
+        restart
 
-  #--------------------------------------------------------------------------
-  # ● Pegar tempo restante
-  #--------------------------------------------------------------------------
-  def get_timer(name)
+      else
 
-    return 0 unless timer_exists?(name)
-
-    return @timers[name]
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Remover timer
-  #--------------------------------------------------------------------------
-  def remove_timer(name)
-
-    return unless timer_exists?(name)
-
-    @timers.delete(name)
-
-    FO_CORE.debug("Timer removido: #{name}")
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Update
-  #--------------------------------------------------------------------------
-  def update
-
-    # Percorre todos os timers
-    @timers.keys.each do |name|
-
-      # Reduz 1 segundo
-      @timers[name] -= 1
-
-      # Debug
-      FO_CORE.debug("Timer #{name}: #{@timers[name]}s")
-
-      # Remove se terminar
-      if @timers[name] <= 0
-
-        FO_CORE.debug("Timer finalizado: #{name}")
-
-        remove_timer(name)
+        @active = false
 
       end
 
@@ -112,59 +148,450 @@ class FO_Timer
 
   end
 
+  #--------------------------------------------------------------------------
+  # Reinicia timer
+  #--------------------------------------------------------------------------
+  def restart
+
+    @remaining = @duration
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Executa callback
+  #--------------------------------------------------------------------------
+  def execute_callback
+
+    return if @callback.nil?
+
+    if FO_TIMER_CONFIG::ENABLE_FAIL_SAFE
+
+      FO_FAIL_SAFE.safe_execute(
+        "FO_Timer Callback #{@name}"
+      ) do
+
+        @callback.call(self)
+
+      end
+
+    else
+
+      @callback.call(self)
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Finalizado?
+  #--------------------------------------------------------------------------
+  def finished?
+
+    return !@active
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Pausar
+  #--------------------------------------------------------------------------
+  def pause
+
+    @paused = true
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Resume
+  #--------------------------------------------------------------------------
+  def resume
+
+    @paused = false
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Tempo restante %
+  #--------------------------------------------------------------------------
+  def progress_percent
+
+    return 0 if @duration <= 0
+
+    progress = (@remaining.to_f / @duration.to_f) * 100.0
+
+    return FO_UTILS.clamp(progress.to_i, 0, 100)
+
+  end
+
 end
 
 #==============================================================================
-# ■ FO_Engine
+# ■ [FO] Sistema Global de Timers
+#==============================================================================
+module FO_TIMER
+
+  @timers = {}
+
+  @next_id = 1
+
+  @clean_counter = 0
+
+  #--------------------------------------------------------------------------
+  # Inicialização
+  #--------------------------------------------------------------------------
+  def self.initialize
+
+    log("========================================")
+    log("Inicializando FO_Timer v2.0")
+    log("========================================")
+
+    @timers = {}
+
+    @next_id = 1
+
+    @clean_counter = 0
+
+    log("FO_Timer inicializado com sucesso.")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Atualização
+  #--------------------------------------------------------------------------
+  def self.update(delta)
+
+    update_timers(delta)
+
+    auto_clean
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Atualiza timers
+  #--------------------------------------------------------------------------
+  def self.update_timers(delta)
+
+    @timers.values.each do |timer|
+
+      next if timer.nil?
+
+      if FO_TIMER_CONFIG::ENABLE_TIMER_PROFILER
+
+        profile_timer(timer.name) do
+
+          timer.update(delta)
+
+        end
+
+      else
+
+        timer.update(delta)
+
+      end
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Cria timer simples
+  #--------------------------------------------------------------------------
+  def self.create(name, duration, &block)
+
+    timer = FO_Timer_Data.new(
+      @next_id,
+      name,
+      duration
+    )
+
+    timer.callback = block if block_given?
+
+    @timers[@next_id] = timer
+
+    log("Timer criado: #{name}")
+
+    @next_id += 1
+
+    return timer
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Cria timer loop
+  #--------------------------------------------------------------------------
+  def self.create_loop(name, duration, &block)
+
+    timer = create(name, duration, &block)
+
+    timer.loop = true
+
+    log("Loop timer criado: #{name}")
+
+    return timer
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Remove timer
+  #--------------------------------------------------------------------------
+  def self.remove(timer_id)
+
+    return if @timers[timer_id].nil?
+
+    timer_name = @timers[timer_id].name
+
+    @timers.delete(timer_id)
+
+    log("Timer removido: #{timer_name}")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Remove todos timers
+  #--------------------------------------------------------------------------
+  def self.clear
+
+    @timers.clear
+
+    log("Todos os timers foram removidos.")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Busca timer
+  #--------------------------------------------------------------------------
+  def self.get(timer_id)
+
+    return @timers[timer_id]
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Busca por nome
+  #--------------------------------------------------------------------------
+  def self.find_by_name(name)
+
+    @timers.values.each do |timer|
+
+      next if timer.nil?
+
+      return timer if timer.name == name
+
+    end
+
+    return nil
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Existe timer?
+  #--------------------------------------------------------------------------
+  def self.exists?(name)
+
+    return !find_by_name(name).nil?
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Pausar timer
+  #--------------------------------------------------------------------------
+  def self.pause(timer_id)
+
+    timer = get(timer_id)
+
+    return if timer.nil?
+
+    timer.pause
+
+    log("Timer pausado: #{timer.name}")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Resume timer
+  #--------------------------------------------------------------------------
+  def self.resume(timer_id)
+
+    timer = get(timer_id)
+
+    return if timer.nil?
+
+    timer.resume
+
+    log("Timer resumido: #{timer.name}")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Reiniciar timer
+  #--------------------------------------------------------------------------
+  def self.restart(timer_id)
+
+    timer = get(timer_id)
+
+    return if timer.nil?
+
+    timer.restart
+
+    log("Timer reiniciado: #{timer.name}")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Limpeza automática
+  #--------------------------------------------------------------------------
+  def self.auto_clean
+
+    return unless FO_TIMER_CONFIG::ENABLE_AUTO_CLEAN
+
+    @clean_counter += 1
+
+    return if @clean_counter < FO_TIMER_CONFIG::CLEAN_INTERVAL
+
+    clean_finished_timers
+
+    @clean_counter = 0
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Limpa timers finalizados
+  #--------------------------------------------------------------------------
+  def self.clean_finished_timers
+
+    removed = 0
+
+    @timers.keys.each do |id|
+
+      timer = @timers[id]
+
+      next if timer.nil?
+
+      if timer.finished?
+
+        @timers.delete(id)
+        removed += 1
+      end
+
+    end
+
+    log("#{removed} timers removidos.") if removed > 0
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Quantidade timers
+  #--------------------------------------------------------------------------
+  def self.count
+
+    return @timers.size
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Lista timers
+  #--------------------------------------------------------------------------
+  def self.list
+
+    return @timers.values
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Debug timers
+  #--------------------------------------------------------------------------
+  def self.debug_timers
+
+    return unless FO_TIMER_CONFIG::ENABLE_DEBUG
+
+    log("======= TIMERS =======")
+
+    @timers.values.each do |timer|
+
+      next if timer.nil?
+
+      log(
+        "#{timer.name} | " +
+        "Restante: #{timer.remaining.round(2)}"
+      )
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Profile timer
+  #--------------------------------------------------------------------------
+  def self.profile_timer(timer_name)
+
+    start_time = Time.now
+
+    yield
+
+    elapsed = ((Time.now - start_time) * 1000.0).to_i
+
+    if elapsed >= 5
+
+      FO_DEBUG.warning(
+        "Timer #{timer_name} consumiu #{elapsed}ms"
+      )
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Logs
+  #--------------------------------------------------------------------------
+  def self.log(message)
+
+    return unless FO_TIMER_CONFIG::ENABLE_TIMER_LOGS
+
+    FO_LOG.write("[FO_TIMER] #{message}")
+
+  end
+
+end
+
+#==============================================================================
+# ■ [FO] Sistema Engine Integration
 #------------------------------------------------------------------------------
-# Integra Timer à Engine
+# Integra automaticamente com FO_Engine
 #==============================================================================
 
-class FO_Engine
+class FO_Timer_System < FO_BaseSystem
 
   #--------------------------------------------------------------------------
-  # ● Alias Initialize
-  #--------------------------------------------------------------------------
-  alias fo_timer_initialize initialize
-
-  #--------------------------------------------------------------------------
-  # ● Initialize
+  # Inicialização
   #--------------------------------------------------------------------------
   def initialize
 
-    # Executa original
-    fo_timer_initialize
+    super("FO_Timer_System")
 
-    # Cria sistema de timer
-    @fo_timer = FO_Timer.new
-
-    # Timer de teste
-    @fo_timer.create_timer("teste_skill", 10)
+    @priority = 10
 
   end
 
   #--------------------------------------------------------------------------
-  # ● Alias Update Second
+  # Update
   #--------------------------------------------------------------------------
-  alias fo_timer_update_second update_second
+  def update(delta)
 
-  #--------------------------------------------------------------------------
-  # ● Update Second
-  #--------------------------------------------------------------------------
-  def update_second
-
-    # Executa original
-    fo_timer_update_second
-
-    # Atualiza timers
-    @fo_timer.update if @fo_timer
+    FO_TIMER.update(delta)
 
   end
 
 end
 
 #==============================================================================
-# ■ Inicialização
+# ■ [FO] Inicialização
 #==============================================================================
 
-FO_CORE.debug("FO_Timer carregado com sucesso")
+FO_FAIL_SAFE.safe_execute("FO_Timer Initialize") do
+
+  FO_TIMER.initialize
+
+  timer_system = FO_Timer_System.new
+
+  FO_ENGINE.register_system(timer_system)
+
+end

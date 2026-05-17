@@ -3,127 +3,579 @@
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor....: ChatGPT + Caio
-# Versão...: 1.0
-# Data.....: 16/05/2026
-# Hora.....: 15:40
+# Autor: OpenAI + Caio Juan
+# Versão: 2.0
+# Data: 17/05/2026
+# RPG Maker XP / Ruby 1.8.1
 #------------------------------------------------------------------------------
-# Descrição:
+# DESCRIÇÃO:
 # Motor principal do Fields Online.
-# Responsável pelas atualizações globais do MMORPG.
+#
+# Responsável por:
+# - Loop principal do sistema
+# - Atualizações globais
+# - Controle de sessão
+# - Controle de FPS
+# - Delta Time
+# - Pause/Resume
+# - Registro de Systems
+# - Prioridade de Updates
+# - Update seguro com Fail Safe
+# - Base para MMORPG Online
 #------------------------------------------------------------------------------
-# Organização:
-# 1. Engine Principal
-# 2. Atualização Global
-# 3. Integração com Scene_Map
-#==============================================================================
-
-#==============================================================================
-# ■ FO_Engine
+# IMPORTANTE:
+# Este script depende do:
+# - FO_Core v2.0+
 #------------------------------------------------------------------------------
-# Classe principal da Engine
+# Ordem recomendada:
+#
+# FO_Core
+# FO_Engine
+# FO_Timer
+# ...
 #==============================================================================
 
-class FO_Engine
+#==============================================================================
+# ■ [FO] Configurações da Engine
+#==============================================================================
+module FO_ENGINE_CONFIG
 
-  #===========================================================================
-  # ● Initialize
-  #===========================================================================
-  def initialize
+  #--------------------------------------------------------------------------
+  # FPS alvo
+  #--------------------------------------------------------------------------
+  TARGET_FPS = 60
 
-    # Contador de frames
-    @frame_count = 0
+  #--------------------------------------------------------------------------
+  # Delta time mínimo
+  #--------------------------------------------------------------------------
+  MIN_DELTA = 0.001
 
-    # Tempo inicial
-    @start_time = Time.now
+  #--------------------------------------------------------------------------
+  # Delta time máximo
+  #--------------------------------------------------------------------------
+  MAX_DELTA = 0.100
 
-    # Debug
-    FO_CORE.debug("FO_Engine iniciada")
+  #--------------------------------------------------------------------------
+  # Ativar monitoramento de FPS
+  #--------------------------------------------------------------------------
+  ENABLE_FPS_MONITOR = true
+
+  #--------------------------------------------------------------------------
+  # Ativar logs da Engine
+  #--------------------------------------------------------------------------
+  ENABLE_ENGINE_LOGS = true
+
+  #--------------------------------------------------------------------------
+  # Ativar prioridade de updates
+  #--------------------------------------------------------------------------
+  ENABLE_UPDATE_PRIORITY = true
+
+  #--------------------------------------------------------------------------
+  # Ativar sistema pause
+  #--------------------------------------------------------------------------
+  ENABLE_PAUSE_SYSTEM = true
+
+  #--------------------------------------------------------------------------
+  # Ativar update seguro
+  #--------------------------------------------------------------------------
+  ENABLE_SAFE_UPDATE = true
+
+  #--------------------------------------------------------------------------
+  # Ativar profiler simples
+  #--------------------------------------------------------------------------
+  ENABLE_UPDATE_PROFILER = true
+
+end
+
+#==============================================================================
+# ■ [FO] Classe Base de Sistema
+#==============================================================================
+class FO_BaseSystem
+
+  attr_accessor :system_name
+  attr_accessor :priority
+  attr_accessor :enabled
+
+  #--------------------------------------------------------------------------
+  # Inicialização
+  #--------------------------------------------------------------------------
+  def initialize(system_name = "Unknown System")
+
+    @system_name = system_name
+    @priority = 100
+    @enabled = true
 
   end
 
-  #===========================================================================
-  # ● Update
-  #===========================================================================
-  def update
-
-    # Tick da engine
-    #FO_CORE.debug("Tick da Engine")
-    
-    # Atualiza contador
-    @frame_count += 1
-
-    # Executa atualização por segundo
-    update_second if @frame_count >= Graphics.frame_rate
+  #--------------------------------------------------------------------------
+  # Update
+  #--------------------------------------------------------------------------
+  def update(delta)
 
   end
 
-  #===========================================================================
-  # ● Update Second
-  #===========================================================================
-  def update_second
+  #--------------------------------------------------------------------------
+  # Late Update
+  #--------------------------------------------------------------------------
+  def late_update(delta)
 
-    # Reseta contador
-    @frame_count = 0
+  end
 
-    # Debug
-    FO_CORE.debug("FO_Engine executando update global")
+  #--------------------------------------------------------------------------
+  # Render
+  #--------------------------------------------------------------------------
+  def render(delta)
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Pause
+  #--------------------------------------------------------------------------
+  def pause
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Resume
+  #--------------------------------------------------------------------------
+  def resume
 
   end
 
 end
 
 #==============================================================================
-# ■ Scene_Map
+# ■ [FO] Engine Principal
+#==============================================================================
+module FO_ENGINE
+
+  @initialized = false
+
+  @systems = []
+
+  @paused = false
+
+  @last_time = Time.now
+
+  @delta_time = 0.016
+
+  @fps = 60
+
+  @frame_counter = 0
+
+  @fps_timer = Time.now
+
+  @session_started = false
+
+  #--------------------------------------------------------------------------
+  # Inicialização
+  #--------------------------------------------------------------------------
+  def self.initialize
+
+    return if @initialized
+
+    log("========================================")
+    log("Inicializando FO_Engine v2.0")
+    log("========================================")
+
+    @systems = []
+
+    @paused = false
+
+    @last_time = Time.now
+
+    @delta_time = 0.016
+
+    @fps = 60
+
+    @frame_counter = 0
+
+    @fps_timer = Time.now
+
+    @session_started = true
+
+    @initialized = true
+
+    validate_engine
+
+    log("FO_Engine inicializada com sucesso.")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Validação
+  #--------------------------------------------------------------------------
+  def self.validate_engine
+
+    log("Validando Engine...")
+
+    if FO_ENGINE_CONFIG::TARGET_FPS <= 0
+      FO_DEBUG.warning("TARGET_FPS inválido.")
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Atualização principal
+  #--------------------------------------------------------------------------
+  def self.update
+
+    return unless @initialized
+
+    update_delta_time
+
+    update_fps
+
+    return if paused?
+
+    update_systems
+
+    late_update_systems
+
+    render_systems
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Atualiza delta time
+  #--------------------------------------------------------------------------
+  def self.update_delta_time
+
+    current_time = Time.now
+
+    delta = current_time - @last_time
+
+    delta = FO_UTILS.clamp(
+      delta,
+      FO_ENGINE_CONFIG::MIN_DELTA,
+      FO_ENGINE_CONFIG::MAX_DELTA
+    )
+
+    @delta_time = delta
+
+    @last_time = current_time
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Atualiza FPS
+  #--------------------------------------------------------------------------
+  def self.update_fps
+
+    return unless FO_ENGINE_CONFIG::ENABLE_FPS_MONITOR
+
+    @frame_counter += 1
+
+    elapsed = Time.now - @fps_timer
+
+    if elapsed >= 1.0
+
+      @fps = @frame_counter
+
+      @frame_counter = 0
+
+      @fps_timer = Time.now
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Atualiza sistemas
+  #--------------------------------------------------------------------------
+  def self.update_systems
+
+    sorted_systems.each do |system|
+
+      next if system.nil?
+      next unless system.enabled
+
+      if FO_ENGINE_CONFIG::ENABLE_SAFE_UPDATE
+
+        FO_FAIL_SAFE.safe_execute(
+          "Update #{system.system_name}"
+        ) do
+
+          profile_update(system.system_name) do
+            system.update(@delta_time)
+          end
+
+        end
+
+      else
+
+        system.update(@delta_time)
+
+      end
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Late update
+  #--------------------------------------------------------------------------
+  def self.late_update_systems
+
+    sorted_systems.each do |system|
+
+      next if system.nil?
+      next unless system.enabled
+
+      FO_FAIL_SAFE.safe_execute(
+        "LateUpdate #{system.system_name}"
+      ) do
+
+        system.late_update(@delta_time)
+
+      end
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Render
+  #--------------------------------------------------------------------------
+  def self.render_systems
+
+    sorted_systems.each do |system|
+
+      next if system.nil?
+      next unless system.enabled
+
+      FO_FAIL_SAFE.safe_execute(
+        "Render #{system.system_name}"
+      ) do
+
+        system.render(@delta_time)
+
+      end
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Sistemas ordenados
+  #--------------------------------------------------------------------------
+  def self.sorted_systems
+
+    return @systems unless FO_ENGINE_CONFIG::ENABLE_UPDATE_PRIORITY
+
+    return @systems.sort_by { |system| system.priority }
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Registra sistema
+  #--------------------------------------------------------------------------
+  def self.register_system(system)
+
+    return if system.nil?
+
+    @systems << system
+
+    log("Sistema registrado: #{system.system_name}")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Remove sistema
+  #--------------------------------------------------------------------------
+  def self.unregister_system(system)
+
+    return if system.nil?
+
+    @systems.delete(system)
+
+    log("Sistema removido: #{system.system_name}")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Pausa engine
+  #--------------------------------------------------------------------------
+  def self.pause
+
+    return unless FO_ENGINE_CONFIG::ENABLE_PAUSE_SYSTEM
+
+    return if @paused
+
+    @paused = true
+
+    @systems.each do |system|
+
+      next if system.nil?
+
+      FO_FAIL_SAFE.safe_execute(
+        "Pause #{system.system_name}"
+      ) do
+
+        system.pause
+
+      end
+
+    end
+
+    log("Engine pausada.")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Resume engine
+  #--------------------------------------------------------------------------
+  def self.resume
+
+    return unless @paused
+
+    @paused = false
+
+    @systems.each do |system|
+
+      next if system.nil?
+
+      FO_FAIL_SAFE.safe_execute(
+        "Resume #{system.system_name}"
+      ) do
+
+        system.resume
+
+      end
+
+    end
+
+    log("Engine resumida.")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Pausada?
+  #--------------------------------------------------------------------------
+  def self.paused?
+
+    return @paused
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Delta time
+  #--------------------------------------------------------------------------
+  def self.delta_time
+
+    return @delta_time
+
+  end
+
+  #--------------------------------------------------------------------------
+  # FPS atual
+  #--------------------------------------------------------------------------
+  def self.fps
+
+    return @fps
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Sistemas registrados
+  #--------------------------------------------------------------------------
+  def self.systems
+
+    return @systems
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Quantidade de sistemas
+  #--------------------------------------------------------------------------
+  def self.system_count
+
+    return @systems.size
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Sessão iniciada?
+  #--------------------------------------------------------------------------
+  def self.session_started?
+
+    return @session_started
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Engine inicializada?
+  #--------------------------------------------------------------------------
+  def self.initialized?
+
+    return @initialized
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Profile update
+  #--------------------------------------------------------------------------
+  def self.profile_update(system_name)
+
+    return yield unless FO_ENGINE_CONFIG::ENABLE_UPDATE_PROFILER
+
+    start_time = Time.now
+
+    yield
+
+    elapsed = ((Time.now - start_time) * 1000.0).to_i
+
+    if elapsed >= 5
+      FO_DEBUG.warning(
+        "#{system_name} consumiu #{elapsed}ms no update."
+      )
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Log da engine
+  #--------------------------------------------------------------------------
+  def self.log(message)
+
+    return unless FO_ENGINE_CONFIG::ENABLE_ENGINE_LOGS
+
+    FO_LOG.write("[FO_ENGINE] #{message}")
+
+  end
+
+end
+
+#==============================================================================
+# ■ [FO] Integração Scene_Map
 #------------------------------------------------------------------------------
-# Integra Engine ao mapa principal
+# Atualiza engine automaticamente
 #==============================================================================
 
 class Scene_Map
 
-  #--------------------------------------------------------------------------
-  # ● Alias do main
-  #--------------------------------------------------------------------------
-  alias fo_engine_main main
+  alias fo_engine_main_update update
 
-  #--------------------------------------------------------------------------
-  # ● Main
-  #--------------------------------------------------------------------------
-  def main
-
-    # Cria engine
-    @fo_engine = FO_Engine.new
-
-    # Debug
-    FO_CORE.debug("FO_Engine conectada ao Scene_Map")
-
-    # Executa main original
-    fo_engine_main
-
-  end
-
-  #--------------------------------------------------------------------------
-  # ● Alias do update
-  #--------------------------------------------------------------------------
-  alias fo_engine_update update
-
-  #--------------------------------------------------------------------------
-  # ● Update
-  #--------------------------------------------------------------------------
   def update
 
-    # Executa update original
-    fo_engine_update
+    FO_FAIL_SAFE.safe_execute("FO_ENGINE Scene_Map Update") do
 
-    # Atualiza engine
-    @fo_engine.update if @fo_engine
+      FO_ENGINE.update
+
+    end
+
+    fo_engine_main_update
 
   end
 
 end
 
 #==============================================================================
-# ■ Inicialização
+# ■ [FO] Inicialização Automática
 #==============================================================================
 
-FO_CORE.debug("FO_Engine carregada com sucesso")
+FO_FAIL_SAFE.safe_execute("FO_Engine Initialize") do
+
+  FO_ENGINE.initialize
+
+end

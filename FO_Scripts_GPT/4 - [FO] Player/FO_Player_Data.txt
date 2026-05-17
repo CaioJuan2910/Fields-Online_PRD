@@ -3,171 +3,560 @@
 #------------------------------------------------------------------------------
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
-# Autor....: ChatGPT + Caio
-# Versão...: 1.0
-# Data.....: 16/05/2026
-# Hora.....: 17:10
+# Autor: OpenAI + Caio Juan
+# Versão: 2.0
+# Data: 17/05/2026
+# RPG Maker XP / Ruby 1.8.1
 #------------------------------------------------------------------------------
-# Descrição:
-# Sistema de dados do jogador do Fields Online.
-# Responsável pelos atributos principais do personagem.
+# DESCRIÇÃO:
+# Sistema responsável pelos dados persistentes do jogador.
+#
+# Responsável por:
+# - Nome do jogador
+# - Level
+# - EXP
+# - Ouro
+# - Classe
+# - Salvamento
+# - Carregamento
+# - Logs
+# - Segurança de dados
+# - Estrutura MMORPG
 #------------------------------------------------------------------------------
-# Organização:
-# 1. Classe do Jogador
-# 2. Atributos
-# 3. Métodos de Controle
+# IMPORTANTE:
+# Requer:
+# - FO_Core v2.0+
+# - FO_Engine v2.0+
+# - FO_Timer v2.0+
+#------------------------------------------------------------------------------
 #==============================================================================
 
 #==============================================================================
-# ■ FO_Player_Data
-#------------------------------------------------------------------------------
-# Classe principal de dados do jogador
+# ■ [FO] Configurações
 #==============================================================================
+module FO_PLAYER_DATA_CONFIG
 
+  #--------------------------------------------------------------------------
+  # Nome padrão
+  #--------------------------------------------------------------------------
+  DEFAULT_NAME = "Player"
+
+  #--------------------------------------------------------------------------
+  # Classe padrão
+  #--------------------------------------------------------------------------
+  DEFAULT_CLASS = "Aventureiro"
+
+  #--------------------------------------------------------------------------
+  # Level inicial
+  #--------------------------------------------------------------------------
+  START_LEVEL = 1
+
+  #--------------------------------------------------------------------------
+  # EXP inicial
+  #--------------------------------------------------------------------------
+  START_EXP = 0
+
+  #--------------------------------------------------------------------------
+  # Ouro inicial
+  #--------------------------------------------------------------------------
+  START_GOLD = 100
+
+  #--------------------------------------------------------------------------
+  # HP inicial
+  #--------------------------------------------------------------------------
+  START_HP = 100
+
+  #--------------------------------------------------------------------------
+  # MP inicial
+  #--------------------------------------------------------------------------
+  START_MP = 50
+
+  #--------------------------------------------------------------------------
+  # Pasta save
+  #--------------------------------------------------------------------------
+  SAVE_FOLDER = "FO_Save"
+
+  #--------------------------------------------------------------------------
+  # Arquivo save
+  #--------------------------------------------------------------------------
+  SAVE_FILE = "player_data.dat"
+
+  #--------------------------------------------------------------------------
+  # Ativar logs
+  #--------------------------------------------------------------------------
+  ENABLE_LOGS = true
+
+  #--------------------------------------------------------------------------
+  # Ativar auto save
+  #--------------------------------------------------------------------------
+  ENABLE_AUTO_SAVE = true
+
+  #--------------------------------------------------------------------------
+  # Tempo auto save (segundos)
+  #--------------------------------------------------------------------------
+  AUTO_SAVE_INTERVAL = 120
+
+end
+
+#==============================================================================
+# ■ [FO] Classe Dados Jogador
+#==============================================================================
 class FO_Player_Data
 
-  #===========================================================================
-  # ■ ATTR ACCESSOR
-  #===========================================================================
-
   attr_accessor :name
+  attr_accessor :player_class
   attr_accessor :level
-  attr_accessor :hp
-  attr_accessor :mp
   attr_accessor :exp
   attr_accessor :gold
-  attr_accessor :player_class
 
-  #===========================================================================
-  # ● Initialize
-  #===========================================================================
+  attr_accessor :hp
+  attr_accessor :max_hp
+
+  attr_accessor :mp
+  attr_accessor :max_mp
+
+  attr_accessor :map_id
+  attr_accessor :x
+  attr_accessor :y
+
+  attr_accessor :created_at
+  attr_accessor :last_save
+
+  #--------------------------------------------------------------------------
+  # Inicialização
+  #--------------------------------------------------------------------------
   def initialize
 
-    # Nome do jogador
-    @name = "Caio"
-
-    # Nível
-    @level = 1
-
-    # HP
-    @hp = 100
-
-    # MP
-    @mp = 30
-
-    # Experiência
-    @exp = 0
-
-    # Ouro
-    @gold = 500
-
-    # Classe
-    @player_class = "Aventureiro"
-
-    # Debug
-    FO_CORE.debug("FO_Player_Data iniciado")
-
-    # Mostrar dados
-    show_player_data
+    setup_default_data
 
   end
 
-  #===========================================================================
-  # ● Mostrar dados
-  #===========================================================================
-  def show_player_data
+  #--------------------------------------------------------------------------
+  # Dados padrão
+  #--------------------------------------------------------------------------
+  def setup_default_data
 
-    FO_CORE.debug("==============================")
-    FO_CORE.debug("PLAYER DATA")
-    FO_CORE.debug("Nome...: #{@name}")
-    FO_CORE.debug("Level..: #{@level}")
-    FO_CORE.debug("HP.....: #{@hp}")
-    FO_CORE.debug("MP.....: #{@mp}")
-    FO_CORE.debug("EXP....: #{@exp}")
-    FO_CORE.debug("Gold...: #{@gold}")
-    FO_CORE.debug("Classe.: #{@player_class}")
-    FO_CORE.debug("==============================")
+    @name = FO_PLAYER_DATA_CONFIG::DEFAULT_NAME
+
+    @player_class = FO_PLAYER_DATA_CONFIG::DEFAULT_CLASS
+
+    @level = FO_PLAYER_DATA_CONFIG::START_LEVEL
+
+    @exp = FO_PLAYER_DATA_CONFIG::START_EXP
+
+    @gold = FO_PLAYER_DATA_CONFIG::START_GOLD
+
+    @max_hp = FO_PLAYER_DATA_CONFIG::START_HP
+
+    @hp = @max_hp
+
+    @max_mp = FO_PLAYER_DATA_CONFIG::START_MP
+
+    @mp = @max_mp
+
+    @map_id = 1
+
+    @x = 0
+
+    @y = 0
+
+    @created_at = Time.now
+
+    @last_save = Time.now
 
   end
 
-  #===========================================================================
-  # ● Ganhar experiência
-  #===========================================================================
-  def gain_exp(amount)
+  #--------------------------------------------------------------------------
+  # EXP necessária próximo level
+  #--------------------------------------------------------------------------
+  def exp_to_next_level
 
-    # Adiciona experiência
-    @exp += amount
+    return (@level * 100)
 
-    FO_CORE.debug("#{@name} ganhou #{amount} EXP")
+  end
 
-    # Verifica level up
+  #--------------------------------------------------------------------------
+  # Ganha EXP
+  #--------------------------------------------------------------------------
+  def gain_exp(value)
+
+    return if value.nil?
+
+    value = value.to_i
+
+    return if value <= 0
+
+    @exp += value
+
     check_level_up
 
+    FO_PLAYER_DATA_SYSTEM.log(
+      "EXP recebida: #{value}"
+    )
+
   end
 
-  #===========================================================================
-  # ● Verificar level up
-  #===========================================================================
+  #--------------------------------------------------------------------------
+  # Verifica level up
+  #--------------------------------------------------------------------------
   def check_level_up
 
-    # EXP necessária
-    required_exp = @level * 100
+    while @exp >= exp_to_next_level
 
-    # Verifica level up
-    if @exp >= required_exp
+      @exp -= exp_to_next_level
 
-      # Aumenta nível
-      @level += 1
-
-      # Reseta EXP
-      @exp = 0
-
-      # Aumenta atributos
-      @hp += 20
-      @mp += 10
-
-      FO_CORE.debug("LEVEL UP!")
-      FO_CORE.debug("#{@name} agora está no nível #{@level}")
+      level_up
 
     end
 
   end
 
-end
+  #--------------------------------------------------------------------------
+  # Level up
+  #--------------------------------------------------------------------------
+  def level_up
 
-#==============================================================================
-# ■ FO_Engine
-#------------------------------------------------------------------------------
-# Integra Player Data à Engine
-#==============================================================================
+    @level += 1
 
-class FO_Engine
+    @max_hp += 10
+
+    @max_mp += 5
+
+    @hp = @max_hp
+
+    @mp = @max_mp
+
+    FO_PLAYER_DATA_SYSTEM.log(
+      "LEVEL UP -> #{@level}"
+    )
+
+  end
 
   #--------------------------------------------------------------------------
-  # ● Alias Initialize
+  # Recebe gold
   #--------------------------------------------------------------------------
-  alias fo_player_initialize initialize
+  def gain_gold(value)
+
+    return if value.nil?
+
+    value = value.to_i
+
+    return if value <= 0
+
+    @gold += value
+
+  end
 
   #--------------------------------------------------------------------------
-  # ● Initialize
+  # Remove gold
   #--------------------------------------------------------------------------
-  def initialize
+  def lose_gold(value)
 
-    # Executa original
-    fo_player_initialize
+    return if value.nil?
 
-    # Cria jogador
-    @player_data = FO_Player_Data.new
+    value = value.to_i
 
-    # Teste de EXP
-    @player_data.gain_exp(100)
+    return if value <= 0
+
+    @gold -= value
+
+    @gold = 0 if @gold < 0
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Cura HP
+  #--------------------------------------------------------------------------
+  def heal(value)
+
+    return if value.nil?
+
+    @hp += value.to_i
+
+    @hp = [@hp, @max_hp].min
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Recupera MP
+  #--------------------------------------------------------------------------
+  def recover_mp(value)
+
+    return if value.nil?
+
+    @mp += value.to_i
+
+    @mp = [@mp, @max_mp].min
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Recebe dano
+  #--------------------------------------------------------------------------
+  def take_damage(value)
+
+    return if value.nil?
+
+    @hp -= value.to_i
+
+    @hp = 0 if @hp < 0
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Morto?
+  #--------------------------------------------------------------------------
+  def dead?
+
+    return @hp <= 0
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Reviver
+  #--------------------------------------------------------------------------
+  def revive
+
+    @hp = @max_hp
+
+    @mp = @max_mp
 
   end
 
 end
 
 #==============================================================================
-# ■ Inicialização
+# ■ [FO] Sistema Principal
 #==============================================================================
+module FO_PLAYER_DATA_SYSTEM
 
-FO_CORE.debug("FO_Player_Data carregado com sucesso")
+  @player_data = nil
+
+  #--------------------------------------------------------------------------
+  # Inicialização
+  #--------------------------------------------------------------------------
+  def self.initialize
+
+    log("========================================")
+    log("Inicializando FO_Player_Data v2.0")
+    log("========================================")
+
+    create_save_folder
+
+    @player_data = FO_Player_Data.new
+
+    setup_auto_save
+
+    log("FO_Player_Data inicializado.")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Dados jogador
+  #--------------------------------------------------------------------------
+  def self.data
+
+    return @player_data
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Cria pasta save
+  #--------------------------------------------------------------------------
+  def self.create_save_folder
+
+    begin
+
+      unless FileTest.exist?(FO_PLAYER_DATA_CONFIG::SAVE_FOLDER)
+
+        Dir.mkdir(FO_PLAYER_DATA_CONFIG::SAVE_FOLDER)
+
+      end
+
+    rescue
+
+      log("Erro ao criar pasta save.")
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Caminho save
+  #--------------------------------------------------------------------------
+  def self.save_path
+
+    return (
+      FO_PLAYER_DATA_CONFIG::SAVE_FOLDER +
+      "/" +
+      FO_PLAYER_DATA_CONFIG::SAVE_FILE
+    )
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Salvar dados
+  #--------------------------------------------------------------------------
+  def self.save
+
+    return if @player_data.nil?
+
+    begin
+
+      File.open(save_path, "wb") do |file|
+
+        Marshal.dump(@player_data, file)
+
+      end
+
+      @player_data.last_save = Time.now
+
+      log("Dados do jogador salvos.")
+
+    rescue Exception => e
+
+      FO_DEBUG.error(e.message)
+
+      log("Erro ao salvar jogador.")
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Carregar dados
+  #--------------------------------------------------------------------------
+  def self.load
+
+    unless FileTest.exist?(save_path)
+
+      log("Save não encontrado.")
+
+      return false
+
+    end
+
+    begin
+
+      File.open(save_path, "rb") do |file|
+
+        @player_data = Marshal.load(file)
+
+      end
+
+      log("Dados carregados com sucesso.")
+
+      return true
+
+    rescue Exception => e
+
+      FO_DEBUG.error(e.message)
+
+      log("Erro ao carregar save.")
+
+      return false
+
+    end
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Auto save
+  #--------------------------------------------------------------------------
+  def self.setup_auto_save
+
+    return unless FO_PLAYER_DATA_CONFIG::ENABLE_AUTO_SAVE
+
+    FO_TIMER.create_loop(
+      "FO_AUTO_SAVE",
+      FO_PLAYER_DATA_CONFIG::AUTO_SAVE_INTERVAL
+    ) do
+
+      save
+
+    end
+
+    log("Auto save configurado.")
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Atualiza posição
+  #--------------------------------------------------------------------------
+  def self.update_position
+
+    return if @player_data.nil?
+    return if $game_player.nil?
+    return if $game_map.nil?
+
+    @player_data.map_id = $game_map.map_id
+
+    @player_data.x = $game_player.x
+
+    @player_data.y = $game_player.y
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Update
+  #--------------------------------------------------------------------------
+  def self.update(delta)
+
+    update_position
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Logs
+  #--------------------------------------------------------------------------
+  def self.log(message)
+
+    return unless FO_PLAYER_DATA_CONFIG::ENABLE_LOGS
+
+    FO_LOG.write(
+      "[FO_PLAYER_DATA] #{message}"
+    )
+
+  end
+
+end
+
+#==============================================================================
+# ■ [FO] Integração Engine
+#==============================================================================
+class FO_Player_Data_System < FO_BaseSystem
+
+  #--------------------------------------------------------------------------
+  # Inicialização
+  #--------------------------------------------------------------------------
+  def initialize
+
+    super("FO_Player_Data_System")
+
+    @priority = 20
+
+  end
+
+  #--------------------------------------------------------------------------
+  # Update
+  #--------------------------------------------------------------------------
+  def update(delta)
+
+    FO_PLAYER_DATA_SYSTEM.update(delta)
+
+  end
+
+end
+
+#==============================================================================
+# ■ [FO] Inicialização
+#==============================================================================
+FO_FAIL_SAFE.safe_execute("FO_Player_Data Initialize") do
+
+  FO_PLAYER_DATA_SYSTEM.initialize
+
+  player_data_system = FO_Player_Data_System.new
+
+  FO_ENGINE.register_system(player_data_system)
+
+end
