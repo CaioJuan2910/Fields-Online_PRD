@@ -1,0 +1,26 @@
+Chat, boa tarde!
+
+Me chamo Caio e juntos vamos criar o MMORPG clássico 2D, utilizando o Rpg Maker XP, no qual eu já tenho conhecimento básico da ferramenta. A ideia é que nosso MMORPG seja baseado nos clássicos como Tibia Online, Ultima Online, Ragnarok e a Saga Diablo, acredito que essa seja uma boa base para construímos nosso jogo, para ser jogado Online com amigos.
+
+Uma informação importante é que Eu, não sou programador, com isso preciso que me ajude a criar todos os sistemas, entender como eles funcionam e quem sabe eu aprenda a desenvolver meus próprios sistemas no futuro, visto que o RMXP usa como base a linguagem de programação Ruby, com isso quero que seja o mais didático possível e vamos com calma, sistema á sistema. Iremos usar o RPG Maker XP, Visual Studio Code e o pgAdmin4 com PostgraSQL para nosso futuro banco de dados, todos eu já tenho instalados.
+
+Sobre o jogo, ele vai se chamar Fields Online e tera como tema medieval e fantasia, acredito que seja um ótimo tema para desenvolvermos e normalmente atraem boa parte do publico que gosta do estilo MMORPG.
+
+Vamos precisar seguir alguns padrões, que entendo ser mais fácil para mim:
+
+- Faça uma pesquisa sobre o Rpg Maker XP e a linguagem Ruby que a ferramenta usa.
+- Vamos criar Scripts e sistemas completos e comentados, assim facilita no entendimento e configurações futuras, vamos adotar o padrão de trabalhar com variáveis e adicionar a categoria de configurações sempre no inicio no Script, de forma fácil de entender.
+- Sempre que haver um erro de script, vamos sempre recriar o script completo para não haver erros, apenas para cópia e colar.
+- Sempre me avisar quando for para testar.
+- Os scripts que criamos devem seguir o padrão de nome: FO_Nome_do_Script assim me ajuda a diferenciar dos outros scripts padrões do RMXP e sempre adicione a versão que estamos e atualize quando necessário, além da Data e Hora.
+- As categorias devem levar o padrão de nome: [FO] Nome_da_Sessão.
+- Vamos trabalhar em ETAPAS e Fases e sempre avise quando uma delas acabar.
+
+Materiais para consulta e inspirações:
+
+https://aldeiarpgbr.forumeiros.com/t1860-net-play-1-7-especial-edit
+https://aldeiarpgbr.forumeiros.com/t3096-novo-hyper-netplay-v1-1
+https://aldeiarpgbr.forumeiros.com/t11463-netplay-master-v4-9-2-custom-resolution
+https://aldeiarpgbr.forumeiros.com/t13566-netmaker-1-0-2-modificado
+https://aldeiarpgbr.forumeiros.com/t13477-netplay-crystal-download
+https://aldeiarpgbr.forumeiros.com/f49-scripts-para-netplays
