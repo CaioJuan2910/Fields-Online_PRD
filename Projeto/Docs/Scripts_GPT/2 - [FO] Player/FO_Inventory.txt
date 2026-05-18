@@ -1,0 +1,231 @@
+#==============================================================================
+# ■ FO_Inventory
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.0.0
+# Data......: 18/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema de inventário do personagem.
+#------------------------------------------------------------------------------
+# Funções atuais:
+# - Slots
+# - Stack de itens
+# - Adicionar item
+# - Remover item
+# - Peso total
+#------------------------------------------------------------------------------
+#==============================================================================
+
+class FO_PlayerData
+
+  #===========================================================================
+  # ■ CONFIGURAÇÕES
+  #===========================================================================
+
+  MAX_INVENTORY_SLOTS = 20
+
+  #===========================================================================
+  # ■ setup_inventory
+  #--------------------------------------------------------------------------
+  # Inicializa inventário.
+  #===========================================================================
+  def setup_inventory
+
+    @inventory = []
+
+    FO_Logger.action("#{@name} inventário inicializado.")
+
+    FO_Debug.debug_log("engine", "Inventário criado.")
+
+  end
+
+  #===========================================================================
+  # ■ inventory_full?
+  #--------------------------------------------------------------------------
+  # Verifica se inventário está cheio.
+  #===========================================================================
+  def inventory_full?
+
+    return @inventory.size >= MAX_INVENTORY_SLOTS
+
+  end
+
+  #===========================================================================
+  # ■ add_item
+  #--------------------------------------------------------------------------
+  # Adiciona item ao inventário.
+  #===========================================================================
+  def add_item(item_id, item_name, amount = 1, weight = 1)
+
+    existing_item = nil
+
+    for item in @inventory
+
+      if item[:id] == item_id
+
+        existing_item = item
+
+        break
+
+      end
+
+    end
+
+    if existing_item
+
+      existing_item[:amount] += amount
+
+      FO_Logger.action(
+        "#{@name} recebeu +#{amount} #{item_name}"
+      )
+
+    else
+
+      if inventory_full?
+
+        FO_Logger.error("#{@name} inventário cheio.")
+
+        return false
+
+      end
+
+      item_data = {
+        :id     => item_id,
+        :name   => item_name,
+        :amount => amount,
+        :weight => weight
+      }
+
+      @inventory.push(item_data)
+
+      FO_Logger.action(
+        "#{@name} recebeu item #{item_name}"
+      )
+
+    end
+
+    FO_Debug.debug_log("engine", "Item adicionado.")
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ remove_item
+  #--------------------------------------------------------------------------
+  # Remove item do inventário.
+  #===========================================================================
+  def remove_item(item_id, amount = 1)
+
+    for item in @inventory
+
+      next unless item[:id] == item_id
+
+      item[:amount] -= amount
+
+      if item[:amount] <= 0
+
+        @inventory.delete(item)
+
+      end
+
+      FO_Logger.action(
+        "#{@name} removeu item ID #{item_id}"
+      )
+
+      FO_Debug.debug_log("engine", "Item removido.")
+
+      return true
+
+    end
+
+    FO_Logger.error("Item não encontrado.")
+
+    return false
+
+  end
+
+  #===========================================================================
+  # ■ item_amount
+  #--------------------------------------------------------------------------
+  # Retorna quantidade do item.
+  #===========================================================================
+  def item_amount(item_id)
+
+    for item in @inventory
+
+      return item[:amount] if item[:id] == item_id
+
+    end
+
+    return 0
+
+  end
+
+  #===========================================================================
+  # ■ has_item?
+  #--------------------------------------------------------------------------
+  # Verifica se possui item.
+  #===========================================================================
+  def has_item?(item_id)
+
+    return item_amount(item_id) > 0
+
+  end
+
+  #===========================================================================
+  # ■ inventory_weight
+  #--------------------------------------------------------------------------
+  # Calcula peso total do inventário.
+  #===========================================================================
+  def inventory_weight
+
+    total_weight = 0
+
+    for item in @inventory
+
+      total_weight += item[:weight] * item[:amount]
+
+    end
+
+    return total_weight
+
+  end
+
+end
+
+#==============================================================================
+# ■ Expansão do initialize
+#==============================================================================
+
+class FO_PlayerData
+
+  alias fo_inventory_initialize initialize
+
+  #===========================================================================
+  # ■ initialize
+  #===========================================================================
+  def initialize(name = "Player")
+
+    fo_inventory_initialize(name)
+
+    setup_inventory
+
+    FO_Logger.action("#{@name} inventário carregado.")
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_Logger.action("FO_Inventory carregado com sucesso.")
+
+FO_Debug.debug_log("engine", "FO_Inventory carregado.")
+
+FO_CORE.debug("FO_Inventory carregado com sucesso.")

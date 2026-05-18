@@ -1,0 +1,187 @@
+#==============================================================================
+# ■ FO_DataManager
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.0.0
+# Data......: 18/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema de gerenciamento de dados do projeto Fields Online.
+#------------------------------------------------------------------------------
+# Funções atuais:
+# - Criação automática da pasta Data
+# - Save de arquivos
+# - Load de arquivos
+# - Verificação de existência
+# - Preparação para PostgreSQL
+#------------------------------------------------------------------------------
+#==============================================================================
+
+module FO_DataManager
+
+  #===========================================================================
+  # ■ CONFIGURAÇÕES
+  #===========================================================================
+
+  DATA_FOLDER = "Data"
+
+  #===========================================================================
+  # ■ create_data_folder
+  #--------------------------------------------------------------------------
+  # Cria a pasta Data automaticamente.
+  #===========================================================================
+  def self.create_data_folder
+
+    unless FileTest.exist?(DATA_FOLDER)
+      Dir.mkdir(DATA_FOLDER)
+    end
+
+  end
+
+  #===========================================================================
+  # ■ save_data
+  #--------------------------------------------------------------------------
+  # Salva dados serializados.
+  #===========================================================================
+  def self.save_data(file_name, data)
+
+    begin
+
+      create_data_folder
+
+      file_path = "#{DATA_FOLDER}/#{file_name}"
+
+      file = File.open(file_path, "wb")
+
+      Marshal.dump(data, file)
+
+      file.close
+
+      FO_Logger.action("Arquivo salvo: #{file_name}")
+
+      FO_Debug.debug_log("engine", "Save executado: #{file_name}")
+
+      return true
+
+    rescue => error
+
+      FO_Logger.error("Erro ao salvar #{file_name}: #{error}")
+
+      FO_Debug.debug_log("engine", "Erro save: #{error}")
+
+      return false
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ load_data
+  #--------------------------------------------------------------------------
+  # Carrega dados serializados.
+  #===========================================================================
+  def self.load_data(file_name)
+
+    begin
+
+      file_path = "#{DATA_FOLDER}/#{file_name}"
+
+      unless FileTest.exist?(file_path)
+
+        FO_Logger.error("Arquivo não encontrado: #{file_name}")
+
+        return nil
+
+      end
+
+      file = File.open(file_path, "rb")
+
+      data = Marshal.load(file)
+
+      file.close
+
+      FO_Logger.action("Arquivo carregado: #{file_name}")
+
+      FO_Debug.debug_log("engine", "Load executado: #{file_name}")
+
+      return data
+
+    rescue => error
+
+      FO_Logger.error("Erro ao carregar #{file_name}: #{error}")
+
+      FO_Debug.debug_log("engine", "Erro load: #{error}")
+
+      return nil
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ file_exists?
+  #--------------------------------------------------------------------------
+  # Verifica se o arquivo existe.
+  #===========================================================================
+  def self.file_exists?(file_name)
+
+    file_path = "#{DATA_FOLDER}/#{file_name}"
+
+    return FileTest.exist?(file_path)
+
+  end
+
+  #===========================================================================
+  # ■ delete_data
+  #--------------------------------------------------------------------------
+  # Remove um arquivo.
+  #===========================================================================
+  def self.delete_data(file_name)
+
+    begin
+
+      file_path = "#{DATA_FOLDER}/#{file_name}"
+
+      unless FileTest.exist?(file_path)
+
+        FO_Logger.error("Tentativa de deletar arquivo inexistente.")
+
+        return false
+
+      end
+
+      File.delete(file_path)
+
+      FO_Logger.action("Arquivo deletado: #{file_name}")
+
+      FO_Debug.debug_log("engine", "Delete executado: #{file_name}")
+
+      return true
+
+    rescue => error
+
+      FO_Logger.error("Erro ao deletar #{file_name}: #{error}")
+
+      FO_Debug.debug_log("engine", "Erro delete: #{error}")
+
+      return false
+
+    end
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_DataManager.create_data_folder
+
+FO_Logger.action("FO_DataManager carregado com sucesso.")
+
+FO_Debug.debug_log("engine", "FO_DataManager carregado.")
+
+FO_CORE.debug("FO_DataManager carregado com sucesso.")

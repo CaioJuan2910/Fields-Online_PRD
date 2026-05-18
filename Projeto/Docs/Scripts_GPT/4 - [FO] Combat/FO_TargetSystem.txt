@@ -1,0 +1,124 @@
+#==============================================================================
+# ■ FO_TargetSystem
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.0.0
+# Data......: 18/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema de target do projeto Fields Online.
+#------------------------------------------------------------------------------
+# Funções atuais:
+# - Distância entre entidades
+# - Range de combate
+# - Validação de alvo
+# - Nearest target
+#------------------------------------------------------------------------------
+#==============================================================================
+
+module FO_TargetSystem
+
+  #===========================================================================
+  # ■ CONFIGURAÇÕES
+  #===========================================================================
+
+  DEFAULT_ATTACK_RANGE = 1
+
+  #===========================================================================
+  # ■ distance
+  #--------------------------------------------------------------------------
+  # Calcula distância entre duas entidades.
+  #===========================================================================
+  def self.distance(entity_a, entity_b)
+
+    dx = (entity_a.x - entity_b.x).abs
+
+    dy = (entity_a.y - entity_b.y).abs
+
+    return dx + dy
+
+  end
+
+  #===========================================================================
+  # ■ in_range?
+  #--------------------------------------------------------------------------
+  # Verifica se alvo está em range.
+  #===========================================================================
+  def self.in_range?(entity_a, entity_b, range = DEFAULT_ATTACK_RANGE)
+
+    return distance(entity_a, entity_b) <= range
+
+  end
+
+  #===========================================================================
+  # ■ valid_target?
+  #--------------------------------------------------------------------------
+  # Verifica se target é válido.
+  #===========================================================================
+  def self.valid_target?(target)
+
+    return false if target.nil?
+
+    return false if target.dead?
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ nearest_target
+  #--------------------------------------------------------------------------
+  # Retorna alvo mais próximo.
+  #===========================================================================
+  def self.nearest_target(entity, targets)
+
+    nearest = nil
+
+    nearest_distance = 999999
+
+    for target in targets
+
+      next unless valid_target?(target)
+
+      current_distance = distance(entity, target)
+
+      if current_distance < nearest_distance
+
+        nearest = target
+
+        nearest_distance = current_distance
+
+      end
+
+    end
+
+    return nearest
+
+  end
+
+end
+
+#==============================================================================
+# ■ Expansão do FO_Enemy
+#------------------------------------------------------------------------------
+# Adiciona posição aos monstros.
+#==============================================================================
+
+class FO_Enemy
+
+  attr_accessor :x
+  attr_accessor :y
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_Logger.action("FO_TargetSystem carregado com sucesso.")
+
+FO_Debug.debug_log("combat", "FO_TargetSystem carregado.")
+
+FO_CORE.debug("FO_TargetSystem carregado com sucesso.")

@@ -1,0 +1,117 @@
+#==============================================================================
+# ■ FO_EngineBoot
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.1.0
+# Data......: 18/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema responsável pela inicialização oficial da engine.
+#------------------------------------------------------------------------------
+#==============================================================================
+
+#==============================================================================
+# ■ FO_EngineBoot
+#==============================================================================
+
+module FO_EngineBoot
+
+  #===========================================================================
+  # ■ CONFIGURAÇÕES
+  #===========================================================================
+
+  ENGINE_VERSION = "1.1.0"
+
+  #===========================================================================
+  # ■ SISTEMAS REGISTRADOS
+  #===========================================================================
+
+  SYSTEMS = [
+
+    "FO_PlayerData",
+    "FO_PlayerStats",
+    "FO_Inventory",
+    "FO_EquipmentSystem",
+    "FO_ItemDatabase",
+
+    "FO_CombatSystem",
+    "FO_EnemySystem",
+    "FO_TargetSystem",
+    "FO_AISystem",
+
+    "FO_MapEntitySystem",
+    "FO_EntityVisualSystem"
+
+  ]
+
+  #===========================================================================
+  # ■ start
+  #===========================================================================
+  def self.start
+
+    FO_Logger.action(
+      "========================================"
+    )
+
+    FO_Logger.action(
+      "FIELDS ONLINE ENGINE BOOT"
+    )
+
+    FO_Logger.action(
+      "Versão #{ENGINE_VERSION}"
+    )
+
+    FO_Logger.action(
+      "Inicializando engine..."
+    )
+
+    register_systems
+
+    FO_Logger.action(
+      "Engine iniciada com sucesso."
+    )
+
+    FO_Logger.action(
+      "========================================"
+    )
+
+    FO_Debug.debug_log(
+      "engine",
+      "Boot iniciado."
+    )
+
+  end
+
+  #===========================================================================
+  # ■ register_systems
+  #===========================================================================
+  def self.register_systems
+
+    for system_name in SYSTEMS
+
+      FO_Logger.action(
+        "Sistema registrado: #{system_name}"
+      )
+
+    end
+
+    FO_Debug.debug_log(
+      "engine",
+      "Sistemas registrados."
+    )
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_EngineBoot.start
+
+FO_CORE.debug(
+  "FO_EngineBoot carregado com sucesso."
+)

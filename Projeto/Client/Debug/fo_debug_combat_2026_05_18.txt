@@ -1,0 +1,181 @@
+[14:23:01] FO_CombatSystem carregado.
+[14:23:19] Dano aplicado.
+[14:31:03] FO_CombatSystem carregado.
+[14:31:25] Dano aplicado.
+[14:31:30] FO_EnemySystem carregado.
+[14:31:39] Enemy criado.
+[14:31:45] Dano aplicado.
+[14:31:47] Dano aplicado.
+[14:31:48] Dano aplicado.
+[14:31:50] Dano aplicado.
+[14:31:52] Dano aplicado.
+[14:31:53] Target morto.
+[14:31:59] Rewards aplicadas.
+[14:45:30] FO_CombatSystem carregado.
+[14:45:43] Dano aplicado.
+[14:45:45] FO_EnemySystem carregado.
+[14:45:46] FO_TargetSystem carregado.
+[14:45:52] Enemy criado.
+[14:45:53] Enemy criado.
+[14:53:46] FO_CombatSystem carregado.
+[14:53:46] FO_EnemySystem carregado.
+[14:53:46] FO_TargetSystem carregado.
+[14:57:05] FO_CombatSystem carregado.
+[14:57:05] FO_EnemySystem carregado.
+[14:57:05] FO_TargetSystem carregado.
+[15:01:03] FO_CombatSystem carregado.
+[15:01:03] FO_EnemySystem carregado.
+[15:01:03] FO_TargetSystem carregado.
+[15:01:03] FO_AISystem carregado.
+[15:01:03] Enemy criado.
+[15:01:03] Target detectado.
+[15:01:47] FO_CombatSystem carregado.
+[15:01:47] FO_EnemySystem carregado.
+[15:01:47] FO_TargetSystem carregado.
+[15:01:47] FO_AISystem carregado.
+[15:01:47] Enemy criado.
+[15:01:47] Target detectado.
+[15:10:04] FO_CombatSystem carregado.
+[15:10:04] FO_EnemySystem carregado.
+[15:10:04] FO_TargetSystem carregado.
+[15:10:04] FO_AISystem carregado.
+[15:10:04] Enemy criado.
+[15:10:04] Target detectado.
+[15:10:04] Enemy moving.
+[15:10:04] Enemy moving.
+[15:10:04] Enemy moving.
+[15:10:04] Dano aplicado.
+[15:10:04] Enemy attack executado.
+[15:10:04] Dano aplicado.
+[15:10:04] Enemy attack executado.
+[15:10:04] Dano aplicado.
+[15:10:04] Enemy attack executado.
+[15:10:04] Dano aplicado.
+[15:10:04] Enemy attack executado.
+[15:10:04] Dano aplicado.
+[15:10:04] Enemy attack executado.
+[15:10:04] Dano aplicado.
+[15:10:04] Enemy attack executado.
+[15:11:55] FO_CombatSystem carregado.
+[15:11:55] FO_EnemySystem carregado.
+[15:11:55] FO_TargetSystem carregado.
+[15:11:55] FO_AISystem carregado.
+[15:11:55] Enemy criado.
+[15:11:55] Target detectado.
+[15:11:55] Enemy moving.
+[15:11:55] Enemy moving.
+[15:11:55] Enemy moving.
+[15:11:55] Dano aplicado.
+[15:11:55] Enemy attack executado.
+[15:11:55] Dano aplicado.
+[15:11:55] Enemy attack executado.
+[15:11:55] Dano aplicado.
+[15:11:55] Enemy attack executado.
+[15:11:55] Dano aplicado.
+[15:11:55] Enemy attack executado.
+[15:11:55] Dano aplicado.
+[15:11:55] Enemy attack executado.
+[15:11:55] Dano aplicado.
+[15:11:55] Enemy attack executado.
+[15:12:20] FO_CombatSystem carregado.
+[15:12:20] FO_EnemySystem carregado.
+[15:12:20] FO_TargetSystem carregado.
+[15:12:20] FO_AISystem carregado.
+[15:12:20] Enemy criado.
+[15:12:20] Target detectado.
+[15:12:20] Enemy moving.
+[15:12:20] Enemy moving.
+[15:12:20] Enemy moving.
+[15:12:20] Dano aplicado.
+[15:12:20] Enemy attack executado.
+[15:12:20] Dano aplicado.
+[15:12:20] Enemy attack executado.
+[15:12:20] Dano aplicado.
+[15:12:20] Enemy attack executado.
+[15:12:20] Dano aplicado.
+[15:12:20] Enemy attack executado.
+[15:12:20] Dano aplicado.
+[15:12:20] Enemy attack executado.
+[15:12:20] Dano aplicado.
+[15:12:20] Enemy attack executado.
+[15:13:08] FO_CombatSystem carregado.
+[15:13:08] FO_EnemySystem carregado.
+[15:13:08] FO_TargetSystem carregado.
+[15:13:08] FO_AISystem carregado.
+[15:13:08] Enemy criado.
+[15:13:08] Target detectado.
+[15:13:08] Enemy moving.
+[15:13:08] Enemy moving.
+[15:13:08] Enemy moving.
+[15:13:08] Dano aplicado.
+[15:13:08] Enemy attack executado.
+[15:13:08] Dano aplicado.
+[15:13:08] Enemy attack executado.
+[15:13:08] Dano aplicado.
+[15:13:08] Enemy attack executado.
+[15:13:08] Dano aplicado.
+[15:13:08] Enemy attack executado.
+[15:13:08] Dano aplicado.
+[15:13:08] Enemy attack executado.
+[15:13:08] Dano aplicado.
+[15:13:08] Enemy attack executado.
+[15:20:15] FO_CombatSystem carregado.
+[15:20:15] FO_EnemySystem carregado.
+[15:20:15] FO_TargetSystem carregado.
+[15:20:15] FO_AISystem carregado.
+[15:41:51] FO_CombatSystem carregado.
+[15:41:51] FO_EnemySystem carregado.
+[15:41:51] FO_TargetSystem carregado.
+[15:41:51] FO_AISystem carregado.
+[15:44:29] FO_CombatSystem carregado.
+[15:44:29] FO_EnemySystem carregado.
+[15:44:29] FO_TargetSystem carregado.
+[15:44:29] FO_AISystem carregado.
+[15:45:42] FO_CombatSystem carregado.
+[15:45:42] FO_EnemySystem carregado.
+[15:45:42] FO_TargetSystem carregado.
+[15:45:42] FO_AISystem carregado.
+[15:56:43] FO_CombatSystem carregado.
+[15:56:43] FO_EnemySystem carregado.
+[15:56:43] FO_TargetSystem carregado.
+[15:56:43] FO_AISystem carregado.
+[15:59:32] FO_CombatSystem carregado.
+[15:59:32] FO_EnemySystem carregado.
+[15:59:32] FO_TargetSystem carregado.
+[15:59:32] FO_AISystem carregado.
+[16:01:53] FO_CombatSystem carregado.
+[16:01:53] FO_EnemySystem carregado.
+[16:01:53] FO_TargetSystem carregado.
+[16:01:53] FO_AISystem carregado.
+[16:04:24] FO_CombatSystem carregado.
+[16:04:24] FO_EnemySystem carregado.
+[16:04:24] FO_TargetSystem carregado.
+[16:04:24] FO_AISystem carregado.
+[16:05:08] FO_CombatSystem carregado.
+[16:05:08] FO_EnemySystem carregado.
+[16:05:08] FO_TargetSystem carregado.
+[16:05:08] FO_AISystem carregado.
+[16:06:27] FO_CombatSystem carregado.
+[16:06:27] FO_EnemySystem carregado.
+[16:06:27] FO_TargetSystem carregado.
+[16:06:27] FO_AISystem carregado.
+[16:09:02] FO_CombatSystem carregado.
+[16:09:02] FO_EnemySystem carregado.
+[16:09:02] FO_TargetSystem carregado.
+[16:09:02] FO_AISystem carregado.
+[16:09:15] FO_CombatSystem carregado.
+[16:09:15] FO_EnemySystem carregado.
+[16:09:15] FO_TargetSystem carregado.
+[16:09:15] FO_AISystem carregado.
+[16:10:29] FO_CombatSystem carregado.
+[16:10:29] FO_EnemySystem carregado.
+[16:10:29] FO_TargetSystem carregado.
+[16:10:29] FO_AISystem carregado.
+[16:13:59] FO_CombatSystem carregado.
+[16:13:59] FO_EnemySystem carregado.
+[16:13:59] FO_TargetSystem carregado.
+[16:13:59] FO_AISystem carregado.
+[16:14:57] FO_CombatSystem carregado.
+[16:14:57] FO_EnemySystem carregado.
+[16:14:57] FO_TargetSystem carregado.
+[16:14:57] FO_AISystem carregado.

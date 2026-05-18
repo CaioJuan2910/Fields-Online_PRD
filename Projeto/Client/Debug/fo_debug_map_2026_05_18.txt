@@ -1,0 +1,40 @@
+[15:41:51] FO_MapEntitySystem carregado.
+[15:41:52] Entidades limpas.
+[15:44:29] FO_MapEntitySystem carregado.
+[15:44:30] Entidades limpas.
+[15:45:42] FO_MapEntitySystem carregado.
+[15:45:43] Entidades limpas.
+[15:45:43] Scan de entidades concluído.
+[15:56:43] FO_MapEntitySystem carregado.
+[15:59:32] FO_MapEntitySystem carregado.
+[16:01:53] FO_MapEntitySystem carregado.
+[16:01:53] FO_EntityVisualSystem carregado.
+[16:01:53] Entidades limpas.
+[16:01:53] Scan de entidades concluído.
+[16:04:24] FO_MapEntitySystem carregado.
+[16:04:24] FO_EntityVisualSystem carregado.
+[16:04:25] Entidades limpas.
+[16:04:25] Scan de entidades concluído.
+[16:05:08] FO_MapEntitySystem carregado.
+[16:05:08] FO_EntityVisualSystem carregado.
+[16:05:09] Entidades limpas.
+[16:05:09] Scan de entidades concluído.
+[16:06:27] FO_MapEntitySystem carregado.
+[16:06:27] FO_EntityVisualSystem carregado.
+[16:06:28] Entidades limpas.
+[16:06:28] Scan de entidades concluído.
+[16:09:02] FO_MapEntitySystem carregado.
+[16:09:15] FO_MapEntitySystem carregado.
+[16:10:29] FO_MapEntitySystem carregado.
+[16:10:29] FO_EntityVisualSystem carregado.
+[16:10:30] Entidades limpas.
+[16:10:30] Scan de entidades concluído.
+[16:13:59] FO_MapEntitySystem carregado.
+[16:13:59] FO_EntityVisualSystem carregado.
+[16:14:00] Entidades limpas.
+[16:14:00] Scan de entidades concluído.
+[16:14:57] FO_MapEntitySystem carregado.
+[16:14:57] FO_EntityVisualSystem carregado.
+[16:14:57] Entidades limpas.
+[16:14:57] Scan de entidades concluído.
+[16:14:58] Visuais criados no mapa 1.

@@ -1,0 +1,314 @@
+#==============================================================================
+# ■ FO_EntityVisualSystem
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 2.0.0
+# Data......: 18/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema visual de entidades do mapa.
+#------------------------------------------------------------------------------
+#==============================================================================
+
+#==============================================================================
+# ■ FO_EntityVisual
+#==============================================================================
+
+class FO_EntityVisual
+
+  #===========================================================================
+  # ■ initialize
+  #===========================================================================
+  def initialize(event, viewport)
+
+    @event = event
+
+    @viewport = viewport
+
+    create_name_sprite
+
+    create_hp_bar
+
+    FO_Logger.action(
+      "Visual criado para #{@event.event.name}"
+    )
+
+  end
+
+  #===========================================================================
+  # ■ create_name_sprite
+  #===========================================================================
+  def create_name_sprite
+
+    @name_sprite = Sprite.new(@viewport)
+
+    @name_sprite.bitmap = Bitmap.new(160, 32)
+
+    @name_sprite.bitmap.font.size = 18
+
+    @name_sprite.bitmap.font.bold = true
+
+    @name_sprite.bitmap.font.color = Color.new(255,255,255)
+
+    @name_sprite.bitmap.draw_text(
+      0,
+      0,
+      160,
+      32,
+      @event.event.name,
+      1
+    )
+
+    @name_sprite.z = 99999
+
+  end
+
+  #===========================================================================
+  # ■ create_hp_bar
+  #===========================================================================
+  def create_hp_bar
+
+    @hp_background = Sprite.new(@viewport)
+
+    @hp_background.bitmap = RPG::Cache.picture(
+      "HPMobFundo"
+    )
+
+    @hp_background.z = 99998
+
+    @hp_bar = Sprite.new(@viewport)
+
+    @hp_bar.bitmap = RPG::Cache.picture(
+      "HPMobInterno"
+    )
+
+    @hp_bar.z = 99999
+
+  end
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def update
+
+    return if @event.nil?
+
+    update_name_position
+
+    update_hp_position
+
+    update_hp_bar
+
+  end
+
+  #===========================================================================
+  # ■ update_name_position
+  #===========================================================================
+  def update_name_position
+
+    @name_sprite.x = @event.screen_x - 80
+
+    @name_sprite.y = @event.screen_y - 72
+
+  end
+
+  #===========================================================================
+  # ■ update_hp_position
+  #===========================================================================
+  def update_hp_position
+
+    @hp_background.x = @event.screen_x - 32
+
+    @hp_background.y = @event.screen_y - 42
+
+    @hp_bar.x = @event.screen_x - 32
+
+    @hp_bar.y = @event.screen_y - 42
+
+  end
+
+  #===========================================================================
+  # ■ update_hp_bar
+  #===========================================================================
+  def update_hp_bar
+
+    hp_rate = 1.0
+
+    width = (@hp_bar.bitmap.width * hp_rate).to_i
+
+    @hp_bar.src_rect.set(
+      0,
+      0,
+      width,
+      @hp_bar.bitmap.height
+    )
+
+  end
+
+  #===========================================================================
+  # ■ dispose
+  #===========================================================================
+  def dispose
+
+    @name_sprite.dispose if @name_sprite
+
+    @hp_background.dispose if @hp_background
+
+    @hp_bar.dispose if @hp_bar
+
+  end
+
+end
+
+#==============================================================================
+# ■ FO_EntityVisualManager
+#==============================================================================
+
+module FO_EntityVisualManager
+
+  @visuals = []
+
+  @viewport = nil
+
+  @initialized = false
+
+  @map_id = nil
+
+  #===========================================================================
+  # ■ setup
+  #===========================================================================
+  def self.setup
+
+    return if $game_map.nil?
+
+    return if FO_MapEntitySystem.map_entities.empty?
+
+    dispose
+
+    @viewport = Viewport.new(0, 0, 640, 480)
+
+    @viewport.z = 99999
+
+    for entity in FO_MapEntitySystem.map_entities
+
+      event = entity[:event]
+
+      next if event.nil?
+
+      visual = FO_EntityVisual.new(
+        event,
+        @viewport
+      )
+
+      @visuals.push(visual)
+
+    end
+
+    @initialized = true
+
+    @map_id = $game_map.map_id
+
+    FO_Logger.action(
+      "Visuais inicializados."
+    )
+
+    FO_Debug.debug_log(
+      "map",
+      "Visuais criados no mapa #{@map_id}."
+    )
+
+  end
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def self.update
+
+    return if $game_map.nil?
+
+    if @map_id != $game_map.map_id
+
+      @initialized = false
+
+    end
+
+    unless @initialized
+
+      setup
+
+    end
+
+    for visual in @visuals
+
+      visual.update
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ dispose
+  #===========================================================================
+  def self.dispose
+
+    for visual in @visuals
+
+      visual.dispose
+
+    end
+
+    @visuals.clear
+
+    if @viewport
+
+      @viewport.dispose
+
+      @viewport = nil
+
+    end
+
+    @initialized = false
+
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_entity_visual_update update
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def update
+
+    FO_EntityVisualManager.update
+
+    fo_entity_visual_update
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_Logger.action(
+  "FO_EntityVisualSystem carregado com sucesso."
+)
+
+FO_Debug.debug_log(
+  "map",
+  "FO_EntityVisualSystem carregado."
+)
+
+FO_CORE.debug(
+  "FO_EntityVisualSystem carregado com sucesso."
+)

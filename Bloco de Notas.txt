@@ -2,19 +2,21 @@ Chat, boa tarde!
 
 Me chamo Caio e juntos vamos criar o MMORPG clássico 2D, utilizando o Rpg Maker XP, no qual eu já tenho conhecimento básico da ferramenta. A ideia é que nosso MMORPG seja baseado nos clássicos como Tibia Online, Ultima Online, Ragnarok e a Saga Diablo, acredito que essa seja uma boa base para construímos nosso jogo, para ser jogado Online com amigos.
 
-Uma informação importante é que Eu, não sou programador, com isso preciso que me ajude a criar todos os sistemas, entender como eles funcionam e quem sabe eu aprenda a desenvolver meus próprios sistemas no futuro, visto que o RMXP usa como base a linguagem de programação Ruby, com isso quero que seja o mais didático possível e vamos com calma, sistema á sistema. Iremos usar o RPG Maker XP, Visual Studio Code e o pgAdmin4 com PostgraSQL para nosso futuro banco de dados, todos eu já tenho instalados.
+Uma informação importante é que Eu (Caio), não sou programador, com isso preciso que me ajude a criar todos os sistemas, entender como eles funcionam e quem sabe eu aprenda a desenvolver meus próprios sistemas no futuro, visto que o RMXP usa como base a linguagem de programação Ruby, com isso quero que seja o mais didático possível e vamos com calma, sistema á sistema. Iremos usar o RPG Maker XP, Visual Studio Code e o pgAdmin4 com PostgraSQL para nosso futuro banco de dados, todos eu já tenho instalados.
 
-Sobre o jogo, ele vai se chamar Fields Online e tera como tema medieval e fantasia, acredito que seja um ótimo tema para desenvolvermos e normalmente atraem boa parte do publico que gosta do estilo MMORPG.
+Sobre o jogo, ele vai se chamar Fields Online e terá como tema medieval e fantasia, acredito que seja um ótimo tema para desenvolvermos e normalmente atraem boa parte do publico que gosta do estilo MMORPG 2D.
 
 Vamos precisar seguir alguns padrões, que entendo ser mais fácil para mim:
 
 - Faça uma pesquisa sobre o Rpg Maker XP e a linguagem Ruby que a ferramenta usa.
 - Vamos criar Scripts e sistemas completos e comentados, assim facilita no entendimento e configurações futuras, vamos adotar o padrão de trabalhar com variáveis e adicionar a categoria de configurações sempre no inicio no Script, de forma fácil de entender.
-- Sempre que haver um erro de script, vamos sempre recriar o script completo para não haver erros, apenas para cópia e colar.
+- Sempre que possível faremos os scripts separados, assim não fica uma bagunça dentro do F11 do RMXP.
+- Sempre que haver um erro de script, vamos sempre recriar o script completo para não haver erros, apenas para cópiar e colar.
 - Sempre me avisar quando for para testar.
 - Os scripts que criamos devem seguir o padrão de nome: FO_Nome_do_Script assim me ajuda a diferenciar dos outros scripts padrões do RMXP e sempre adicione a versão que estamos e atualize quando necessário, além da Data e Hora.
-- As categorias devem levar o padrão de nome: [FO] Nome_da_Sessão.
-- Vamos trabalhar em ETAPAS e Fases e sempre avise quando uma delas acabar.
+- Sempre volte aos scripts anteriores e veja é necessário alterarmos algo ou refazer por completo os scripts.
+- As categorias devem levar o padrão de nome: [FO] Nome_da_Sessão
+- Vamos trabalhar em ETAPAS e Fases e sempre avise quando uma delas for começar e acabar.
 
 Materiais para consulta e inspirações:
 
@@ -25,6 +27,5 @@ https://aldeiarpgbr.forumeiros.com/t13566-netmaker-1-0-2-modificado
 https://aldeiarpgbr.forumeiros.com/t13477-netplay-crystal-download
 https://aldeiarpgbr.forumeiros.com/f49-scripts-para-netplays
 
-Link do Projeto no GitHub:
-https://github.com/CaioJuan2910/Fields-Online_PRD.git
-https://github.com/CaioJuan2910/Fields-Online_PRD#
+Link de expiração de outro projeto no GitHub:
+https://github.com/Valentine90/vxa-os/tree/master

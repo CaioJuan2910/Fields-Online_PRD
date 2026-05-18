@@ -1,0 +1,238 @@
+#==============================================================================
+# ■ FO_Debug
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.0.0
+# Data......: 18/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema de Debug técnico do projeto Fields Online.
+#------------------------------------------------------------------------------
+# Funções atuais:
+# - HUD Debug
+# - FPS
+# - Informações do jogador
+# - Logs técnicos
+# - Diretório Debug
+#------------------------------------------------------------------------------
+#==============================================================================
+
+module FO_Debug
+
+  #===========================================================================
+  # ■ CONFIGURAÇÕES
+  #===========================================================================
+
+  ENABLE_DEBUG_HUD = true
+
+  DEBUG_FOLDER     = "Debug"
+
+  #===========================================================================
+  # ■ create_debug_folder
+  #--------------------------------------------------------------------------
+  # Cria a pasta Debug automaticamente.
+  #===========================================================================
+  def self.create_debug_folder
+
+    unless FileTest.exist?(DEBUG_FOLDER)
+      Dir.mkdir(DEBUG_FOLDER)
+    end
+
+  end
+
+  #===========================================================================
+  # ■ current_date
+  #===========================================================================
+  def self.current_date
+
+    time = Time.now
+
+    return sprintf("%04d_%02d_%02d",
+      time.year,
+      time.month,
+      time.day
+    )
+
+  end
+
+  #===========================================================================
+  # ■ current_time
+  #===========================================================================
+  def self.current_time
+
+    time = Time.now
+
+    return sprintf("%02d:%02d:%02d",
+      time.hour,
+      time.min,
+      time.sec
+    )
+
+  end
+
+  #===========================================================================
+  # ■ debug_log
+  #--------------------------------------------------------------------------
+  # Salva logs técnicos.
+  #===========================================================================
+  def self.debug_log(type, message)
+
+    begin
+
+      create_debug_folder
+
+      file_name = "fo_debug_#{type}_#{current_date}.txt"
+
+      file_path = "#{DEBUG_FOLDER}/#{file_name}"
+
+      file = File.open(file_path, "a")
+
+      file.write("[#{current_time}] #{message}\n")
+
+      file.close
+
+    rescue => error
+
+      FO_Logger.error("FO_Debug ERROR: #{error}")
+
+    end
+
+  end
+
+end
+
+#==============================================================================
+# ■ FO_Debug_HUD
+#------------------------------------------------------------------------------
+# HUD visual de debug na tela.
+#==============================================================================
+
+class FO_Debug_HUD
+
+  #===========================================================================
+  # ■ initialize
+  #===========================================================================
+  def initialize
+
+    @sprite = Sprite.new
+
+    @sprite.bitmap = Bitmap.new(300, 120)
+
+    @sprite.x = 5
+    @sprite.y = 5
+    @sprite.z = 9999
+
+    refresh
+
+  end
+
+  #===========================================================================
+  # ■ refresh
+  #===========================================================================
+  def refresh
+
+    @sprite.bitmap.clear
+
+    return unless $game_player
+    return unless $game_map
+
+    fps = Graphics.frame_rate
+
+    map_id = $game_map.map_id
+
+    player_x = $game_player.x
+    player_y = $game_player.y
+
+    text = ""
+
+    text += "FIELDS ONLINE DEBUG\n"
+    text += "FPS: #{fps}\n"
+    text += "MAP ID: #{map_id}\n"
+    text += "PLAYER X: #{player_x}\n"
+    text += "PLAYER Y: #{player_y}\n"
+
+    @sprite.bitmap.font.size = 18
+
+    @sprite.bitmap.draw_text(0, 0, 300, 120, text)
+
+  end
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def update
+
+    refresh
+
+  end
+
+  #===========================================================================
+  # ■ dispose
+  #===========================================================================
+  def dispose
+
+    @sprite.bitmap.dispose
+    @sprite.dispose
+
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#------------------------------------------------------------------------------
+# Integração do Debug HUD ao mapa.
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_debug_main main
+  alias fo_debug_update update
+
+  #===========================================================================
+  # ■ main
+  #===========================================================================
+  def main
+
+    if FO_Debug::ENABLE_DEBUG_HUD
+      @fo_debug_hud = FO_Debug_HUD.new
+    end
+
+    FO_Debug.debug_log("engine", "Scene_Map iniciada.")
+
+    fo_debug_main
+
+    if @fo_debug_hud
+      @fo_debug_hud.dispose
+    end
+
+  end
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def update
+
+    fo_debug_update
+
+    if @fo_debug_hud
+      @fo_debug_hud.update
+    end
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_Debug.create_debug_folder
+
+FO_Debug.debug_log("engine", "FO_Debug carregado com sucesso.")
+
+FO_Logger.action("FO_Debug carregado com sucesso.")
+
+FO_CORE.debug("FO_Debug carregado com sucesso.")

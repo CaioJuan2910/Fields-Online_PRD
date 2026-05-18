@@ -1,0 +1,47 @@
+[11:57:02] Teste de erro.
+[14:12:32] $data_weapons está nil.
+[14:12:33] $data_armors está nil.
+[14:23:13] $data_weapons está nil.
+[14:31:20] $data_weapons está nil.
+[14:31:41] $data_weapons está nil.
+[14:31:55] Database Items não carregado.
+[14:45:42] $data_weapons está nil.
+[15:20:15] Database Items não carregado.
+[15:20:15] Database Weapons não carregado.
+[15:20:15] Database Armors não carregado.
+[15:41:51] Database Items não carregado.
+[15:41:51] Database Weapons não carregado.
+[15:41:51] Database Armors não carregado.
+[15:44:29] Database Items não carregado.
+[15:44:29] Database Weapons não carregado.
+[15:44:29] Database Armors não carregado.
+[15:45:42] Database Items não carregado.
+[15:45:42] Database Weapons não carregado.
+[15:45:42] Database Armors não carregado.
+[15:56:43] Database Items não carregado.
+[15:56:43] Database Weapons não carregado.
+[15:56:43] Database Armors não carregado.
+[15:59:32] Database Items não carregado.
+[15:59:32] Database Weapons não carregado.
+[15:59:32] Database Armors não carregado.
+[16:01:53] Database Items não carregado.
+[16:01:53] Database Weapons não carregado.
+[16:01:53] Database Armors não carregado.
+[16:04:24] Database Items não carregado.
+[16:04:24] Database Weapons não carregado.
+[16:04:24] Database Armors não carregado.
+[16:05:08] Database Items não carregado.
+[16:05:08] Database Weapons não carregado.
+[16:05:08] Database Armors não carregado.
+[16:06:27] Database Items não carregado.
+[16:06:27] Database Weapons não carregado.
+[16:06:27] Database Armors não carregado.
+[16:09:02] Database Items não carregado.
+[16:09:02] Database Weapons não carregado.
+[16:09:02] Database Armors não carregado.
+[16:09:15] Database Items não carregado.
+[16:09:15] Database Weapons não carregado.
+[16:09:15] Database Armors não carregado.
+[16:10:29] Database Items não carregado.
+[16:10:29] Database Weapons não carregado.
+[16:10:29] Database Armors não carregado.
