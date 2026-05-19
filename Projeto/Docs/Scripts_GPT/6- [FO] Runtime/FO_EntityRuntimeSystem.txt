@@ -1,0 +1,346 @@
+#==============================================================================
+# ■ FO_EntityRuntimeSystem
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.0.0
+# Data......: 18/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema responsável pelo runtime das entidades MMORPG.
+#------------------------------------------------------------------------------
+#==============================================================================
+
+#==============================================================================
+# ■ FO_EntityRuntime
+#==============================================================================
+
+class FO_EntityRuntime
+
+  #===========================================================================
+  # ■ ACCESSORS
+  #===========================================================================
+
+  attr_accessor :runtime_id
+
+  attr_accessor :map_id
+
+  attr_accessor :event_id
+
+  attr_accessor :event
+
+  attr_accessor :entity_type
+
+  attr_accessor :name
+
+  attr_accessor :hp
+
+  attr_accessor :max_hp
+
+  attr_accessor :alive
+
+  attr_accessor :respawn_time
+
+  #===========================================================================
+  # ■ initialize
+  #===========================================================================
+  def initialize(entity_data)
+
+    @runtime_id = generate_runtime_id
+
+    @map_id = $game_map.map_id
+
+    @event = entity_data[:event]
+
+    @event_id = @event.id
+
+    @entity_type = entity_data[:type]
+
+    setup_name
+
+    setup_stats
+
+    setup_state
+
+    FO_Logger.action(
+      "Runtime criado: #{@name}"
+    )
+
+    FO_Debug.debug_log(
+      "runtime",
+      "Runtime #{@runtime_id} criado."
+    )
+
+  end
+
+  #===========================================================================
+  # ■ generate_runtime_id
+  #===========================================================================
+  def generate_runtime_id
+
+    return rand(999999)
+
+  end
+
+  #===========================================================================
+  # ■ setup_name
+  #===========================================================================
+  def setup_name
+
+    original_name = @event.event.name
+
+    @name = original_name[1..original_name.size]
+
+  end
+
+  #===========================================================================
+  # ■ setup_stats
+  #===========================================================================
+  def setup_stats
+
+    case @entity_type
+
+    when :boss
+
+      @max_hp = 500
+
+    when :mob
+
+      @max_hp = 100
+
+    else
+
+      @max_hp = 1
+
+    end
+
+    @hp = @max_hp
+
+  end
+
+  #===========================================================================
+  # ■ setup_state
+  #===========================================================================
+  def setup_state
+
+    @alive = true
+
+    @respawn_time = 10
+
+  end
+
+  #===========================================================================
+  # ■ damage
+  #===========================================================================
+  def damage(value)
+
+    return unless @alive
+
+    @hp -= value
+
+    @hp = 0 if @hp < 0
+
+    FO_Logger.action(
+      "#{@name} recebeu #{value} de dano."
+    )
+
+    check_death
+
+  end
+
+  #===========================================================================
+  # ■ heal
+  #===========================================================================
+  def heal(value)
+
+    return unless @alive
+
+    @hp += value
+
+    @hp = @max_hp if @hp > @max_hp
+
+    FO_Logger.action(
+      "#{@name} recuperou #{value} HP."
+    )
+
+  end
+
+  #===========================================================================
+  # ■ hp_rate
+  #===========================================================================
+  def hp_rate
+
+    return @hp.to_f / @max_hp.to_f
+
+  end
+
+  #===========================================================================
+  # ■ check_death
+  #===========================================================================
+  def check_death
+
+    return if @hp > 0
+
+    die
+
+  end
+
+  #===========================================================================
+  # ■ die
+  #===========================================================================
+  def die
+
+    @alive = false
+
+    FO_Logger.action(
+      "#{@name} morreu."
+    )
+
+    FO_Debug.debug_log(
+      "combat",
+      "#{@name} morreu."
+    )
+
+  end
+
+end
+
+#==============================================================================
+# ■ FO_EntityRuntimeManager
+#==============================================================================
+
+module FO_EntityRuntimeManager
+
+  @runtimes = []
+
+  @initialized = false
+
+  @map_id = nil
+
+  #===========================================================================
+  # ■ runtimes
+  #===========================================================================
+  def self.runtimes
+
+    return @runtimes
+
+  end
+
+  #===========================================================================
+  # ■ setup
+  #===========================================================================
+  def self.setup
+
+    return if $game_map.nil?
+
+    return if FO_MapEntitySystem.map_entities.empty?
+
+    dispose
+
+    for entity_data in FO_MapEntitySystem.map_entities
+
+      runtime = FO_EntityRuntime.new(
+        entity_data
+      )
+
+      @runtimes.push(runtime)
+
+    end
+
+    @initialized = true
+
+    @map_id = $game_map.map_id
+
+    FO_Logger.action(
+      "Runtimes inicializados."
+    )
+
+  end
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def self.update
+
+    return if $game_map.nil?
+
+    if @map_id != $game_map.map_id
+
+      @initialized = false
+
+    end
+
+    unless @initialized
+
+      setup
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ find_by_event
+  #===========================================================================
+  def self.find_by_event(event)
+
+    for runtime in @runtimes
+
+      return runtime if runtime.event == event
+
+    end
+
+    return nil
+
+  end
+
+  #===========================================================================
+  # ■ dispose
+  #===========================================================================
+  def self.dispose
+
+    @runtimes.clear
+
+    @initialized = false
+
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_entity_runtime_update update
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def update
+
+    FO_EntityRuntimeManager.update
+
+    fo_entity_runtime_update
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_Logger.action(
+  "FO_EntityRuntimeSystem carregado com sucesso."
+)
+
+FO_Debug.debug_log(
+  "runtime",
+  "FO_EntityRuntimeSystem carregado."
+)
+
+FO_CORE.debug(
+  "FO_EntityRuntimeSystem carregado com sucesso."
+)

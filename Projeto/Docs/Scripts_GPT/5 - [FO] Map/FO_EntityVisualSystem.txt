@@ -4,13 +4,51 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 2.0.0
+# Versão....: 2.2.1
 # Data......: 18/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema visual de entidades do mapa.
 #------------------------------------------------------------------------------
 #==============================================================================
+
+module FO_EntityVisualConfig
+
+  #===========================================================================
+  # ■ FONTE
+  #===========================================================================
+
+  FONT_NAME = "Arial"
+
+  FONT_SIZE = 18
+
+  FONT_BOLD = true
+
+  #===========================================================================
+  # ■ POSIÇÃO DO NOME
+  #===========================================================================
+
+  NAME_OFFSET_X = -100
+
+  NAME_OFFSET_Y = -48
+
+  #===========================================================================
+  # ■ POSIÇÃO DO FUNDO DA BARRA
+  #===========================================================================
+
+  HP_BARFUNDO_OFFSET_X = -32
+
+  HP_BARFUNDO_OFFSET_Y = -12
+
+  #===========================================================================
+  # ■ POSIÇÃO DA BARRA INTERNA
+  #===========================================================================
+
+  HP_BAR_OFFSET_X = -31
+
+  HP_BAR_OFFSET_Y = -11
+
+end
 
 #==============================================================================
 # ■ FO_EntityVisual
@@ -21,19 +59,36 @@ class FO_EntityVisual
   #===========================================================================
   # ■ initialize
   #===========================================================================
-  def initialize(event, viewport)
+  def initialize(entity_data, viewport)
 
-    @event = event
+    @entity_data = entity_data
+
+    @event = entity_data[:event]
+
+    @entity_type = entity_data[:type]
 
     @viewport = viewport
+
+    setup_name
 
     create_name_sprite
 
     create_hp_bar
 
     FO_Logger.action(
-      "Visual criado para #{@event.event.name}"
+      "Visual criado para #{@display_name}"
     )
+
+  end
+
+  #===========================================================================
+  # ■ setup_name
+  #===========================================================================
+  def setup_name
+
+    original_name = @event.event.name
+
+    @display_name = original_name[1..original_name.size]
 
   end
 
@@ -44,24 +99,89 @@ class FO_EntityVisual
 
     @name_sprite = Sprite.new(@viewport)
 
-    @name_sprite.bitmap = Bitmap.new(160, 32)
+    @name_sprite.bitmap = Bitmap.new(200, 40)
 
-    @name_sprite.bitmap.font.size = 18
+    @name_sprite.bitmap.font.name =
+      FO_EntityVisualConfig::FONT_NAME
 
-    @name_sprite.bitmap.font.bold = true
+    @name_sprite.bitmap.font.size =
+      FO_EntityVisualConfig::FONT_SIZE
 
-    @name_sprite.bitmap.font.color = Color.new(255,255,255)
+    @name_sprite.bitmap.font.bold =
+      FO_EntityVisualConfig::FONT_BOLD
 
-    @name_sprite.bitmap.draw_text(
-      0,
-      0,
-      160,
-      32,
-      @event.event.name,
-      1
+    text_color = get_text_color
+
+    draw_text_outline(
+      @name_sprite.bitmap,
+      @display_name,
+      text_color
     )
 
     @name_sprite.z = 99999
+
+  end
+
+  #===========================================================================
+  # ■ draw_text_outline
+  #===========================================================================
+  def draw_text_outline(bitmap, text, color)
+
+    bitmap.font.color = Color.new(0,0,0)
+
+    offsets = [
+      [-1, 0],
+      [1, 0],
+      [0, -1],
+      [0, 1]
+    ]
+
+    for offset in offsets
+
+      bitmap.draw_text(
+        offset[0],
+        offset[1],
+        200,
+        40,
+        text,
+        1
+      )
+
+    end
+
+    bitmap.font.color = color
+
+    bitmap.draw_text(
+      0,
+      0,
+      200,
+      40,
+      text,
+      1
+    )
+
+  end
+
+  #===========================================================================
+  # ■ get_text_color
+  #===========================================================================
+  def get_text_color
+
+    case @entity_type
+
+    when :boss
+
+      return Color.new(255, 80, 80)
+
+    when :quest
+
+      return Color.new(255, 255, 0)
+
+    else
+
+      return Color.new(255, 255, 255)
+
+    end
 
   end
 
@@ -104,13 +224,36 @@ class FO_EntityVisual
   end
 
   #===========================================================================
+  # ■ get_sprite_height
+  #===========================================================================
+  def get_sprite_height
+
+    character_name = @event.character_name
+
+    bitmap = RPG::Cache.character(
+      character_name,
+      0
+    )
+
+    return bitmap.height / 4
+
+  end
+
+  #===========================================================================
   # ■ update_name_position
   #===========================================================================
   def update_name_position
 
-    @name_sprite.x = @event.screen_x - 80
+    sprite_height = get_sprite_height
 
-    @name_sprite.y = @event.screen_y - 72
+    @name_sprite.x =
+      @event.screen_x +
+      FO_EntityVisualConfig::NAME_OFFSET_X
+
+    @name_sprite.y =
+      @event.screen_y -
+      sprite_height +
+      FO_EntityVisualConfig::NAME_OFFSET_Y
 
   end
 
@@ -119,13 +262,25 @@ class FO_EntityVisual
   #===========================================================================
   def update_hp_position
 
-    @hp_background.x = @event.screen_x - 32
+    sprite_height = get_sprite_height
 
-    @hp_background.y = @event.screen_y - 42
+    @hp_background.x =
+      @event.screen_x +
+      FO_EntityVisualConfig::HP_BARFUNDO_OFFSET_X
 
-    @hp_bar.x = @event.screen_x - 32
+    @hp_background.y =
+      @event.screen_y -
+      sprite_height +
+      FO_EntityVisualConfig::HP_BARFUNDO_OFFSET_Y
 
-    @hp_bar.y = @event.screen_y - 42
+    @hp_bar.x =
+      @event.screen_x +
+      FO_EntityVisualConfig::HP_BAR_OFFSET_X
+
+    @hp_bar.y =
+      @event.screen_y -
+      sprite_height +
+      FO_EntityVisualConfig::HP_BAR_OFFSET_Y
 
   end
 
@@ -133,6 +288,9 @@ class FO_EntityVisual
   # ■ update_hp_bar
   #===========================================================================
   def update_hp_bar
+
+    # Futuramente:
+    # hp_rate será ligado ao HP REAL da entidade.
 
     hp_rate = 1.0
 
@@ -191,14 +349,14 @@ module FO_EntityVisualManager
 
     @viewport.z = 99999
 
-    for entity in FO_MapEntitySystem.map_entities
+    for entity_data in FO_MapEntitySystem.map_entities
 
-      event = entity[:event]
+      event = entity_data[:event]
 
       next if event.nil?
 
       visual = FO_EntityVisual.new(
-        event,
+        entity_data,
         @viewport
       )
 
@@ -212,11 +370,6 @@ module FO_EntityVisualManager
 
     FO_Logger.action(
       "Visuais inicializados."
-    )
-
-    FO_Debug.debug_log(
-      "map",
-      "Visuais criados no mapa #{@map_id}."
     )
 
   end

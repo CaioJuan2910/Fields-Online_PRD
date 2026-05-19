@@ -38,3 +38,56 @@
 [16:14:57] Entidades limpas.
 [16:14:57] Scan de entidades concluído.
 [16:14:58] Visuais criados no mapa 1.
+[18:09:31] FO_MapEntitySystem carregado.
+[18:09:31] FO_EntityVisualSystem carregado.
+[18:09:32] Entidades limpas.
+[18:09:32] Scan de entidades concluído.
+[18:09:32] Visuais criados no mapa 1.
+[18:10:11] FO_MapEntitySystem carregado.
+[18:10:11] FO_EntityVisualSystem carregado.
+[18:10:11] Entidades limpas.
+[18:10:11] Scan de entidades concluído.
+[18:10:12] Visuais criados no mapa 1.
+[18:15:17] FO_MapEntitySystem carregado.
+[18:15:17] FO_EntityVisualSystem carregado.
+[18:15:29] Entidades limpas.
+[18:15:29] Scan de entidades concluído.
+[18:15:30] Visuais criados no mapa 1.
+[18:17:30] FO_MapEntitySystem carregado.
+[18:17:30] FO_EntityVisualSystem carregado.
+[18:17:31] Entidades limpas.
+[18:17:31] Scan de entidades concluído.
+[18:17:31] Visuais criados no mapa 1.
+[18:23:32] FO_MapEntitySystem carregado.
+[18:23:32] FO_EntityVisualSystem carregado.
+[18:23:33] Entidades limpas.
+[18:23:33] Scan de entidades concluído.
+[18:23:33] Visuais criados no mapa 1.
+[18:29:26] FO_MapEntitySystem carregado.
+[18:29:26] FO_EntityVisualSystem carregado.
+[18:29:26] Entidades limpas.
+[18:29:26] Scan de entidades concluído.
+[18:33:26] FO_MapEntitySystem carregado.
+[18:33:26] FO_EntityVisualSystem carregado.
+[18:33:27] Entidades limpas.
+[18:33:27] Scan de entidades concluído.
+[18:33:47] FO_MapEntitySystem carregado.
+[18:33:47] FO_EntityVisualSystem carregado.
+[18:33:47] Entidades limpas.
+[18:33:47] Scan de entidades concluído.
+[18:33:58] FO_MapEntitySystem carregado.
+[18:33:58] FO_EntityVisualSystem carregado.
+[18:33:59] Entidades limpas.
+[18:33:59] Scan de entidades concluído.
+[18:34:11] FO_MapEntitySystem carregado.
+[18:34:11] FO_EntityVisualSystem carregado.
+[18:34:12] Entidades limpas.
+[18:34:12] Scan de entidades concluído.
+[18:36:21] FO_MapEntitySystem carregado.
+[18:36:21] FO_EntityVisualSystem carregado.
+[18:36:22] Entidades limpas.
+[18:36:22] Scan de entidades concluído.
+[18:39:33] FO_MapEntitySystem carregado.
+[18:39:33] FO_EntityVisualSystem carregado.
+[18:39:34] Entidades limpas.
+[18:39:34] Scan de entidades concluído.
