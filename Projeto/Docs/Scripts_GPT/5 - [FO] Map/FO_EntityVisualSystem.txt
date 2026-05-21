@@ -4,8 +4,8 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 2.2.1
-# Data......: 18/05/2026
+# Versão....: 2.4.0
+# Data......: 20/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema visual de entidades do mapa.
@@ -68,6 +68,10 @@ class FO_EntityVisual
     @entity_type = entity_data[:type]
 
     @viewport = viewport
+
+    @runtime = FO_EntityRuntimeManager.find_by_event(
+      @event
+    )
 
     setup_name
 
@@ -215,11 +219,56 @@ class FO_EntityVisual
 
     return if @event.nil?
 
+    refresh_runtime
+
+    update_visibility
+
+    return unless visual_visible?
+
     update_name_position
 
     update_hp_position
 
     update_hp_bar
+
+  end
+
+  #===========================================================================
+  # ■ refresh_runtime
+  #===========================================================================
+  def refresh_runtime
+
+    return unless @runtime.nil?
+
+    @runtime = FO_EntityRuntimeManager.find_by_event(
+      @event
+    )
+
+  end
+
+  #===========================================================================
+  # ■ visual_visible?
+  #===========================================================================
+  def visual_visible?
+
+    return true if @runtime.nil?
+
+    return @runtime.alive?
+
+  end
+
+  #===========================================================================
+  # ■ update_visibility
+  #===========================================================================
+  def update_visibility
+
+    visible = visual_visible?
+
+    @name_sprite.visible = visible if @name_sprite
+
+    @hp_background.visible = visible if @hp_background
+
+    @hp_bar.visible = visible if @hp_bar
 
   end
 
@@ -289,10 +338,9 @@ class FO_EntityVisual
   #===========================================================================
   def update_hp_bar
 
-    # Futuramente:
-    # hp_rate será ligado ao HP REAL da entidade.
+    return if @runtime.nil?
 
-    hp_rate = 1.0
+    hp_rate = @runtime.hp_rate
 
     width = (@hp_bar.bitmap.width * hp_rate).to_i
 

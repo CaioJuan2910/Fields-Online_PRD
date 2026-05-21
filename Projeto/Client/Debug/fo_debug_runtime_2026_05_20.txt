@@ -1,0 +1,52 @@
+[21:01:10] FO_EntityRuntimeSystem carregado.
+[21:01:23] Runtime 298795 criado para Blacksmith.
+[21:01:23] Runtime 38682 criado para Ghost.
+[21:01:23] Runtime 19268 criado para DragonBoss.
+[21:01:23] Runtime 260229 criado para Quest_Inicial.
+[21:02:45] FO_EntityRuntimeSystem carregado.
+[21:03:32] FO_EntityRuntimeSystem carregado.
+[21:06:28] FO_EntityRuntimeSystem carregado.
+[21:08:40] FO_EntityRuntimeSystem carregado.
+[21:09:08] FO_EntityRuntimeSystem carregado.
+[21:10:13] FO_EntityRuntimeSystem carregado.
+[21:10:14] Runtime 167017 criado para Blacksmith.
+[21:10:14] Runtime 58644 criado para Ghost.
+[21:10:14] Runtime 692592 criado para DragonBoss.
+[21:10:14] Runtime 789823 criado para Quest_Inicial.
+[21:10:15] Ghost damage 25. HP 75/100
+[21:10:16] Ghost damage 25. HP 50/100
+[21:20:58] FO_EntityRuntimeSystem carregado.
+[21:20:59] Runtime 178004 criado para Blacksmith.
+[21:20:59] Runtime 874248 criado para Ghost.
+[21:20:59] Runtime 651028 criado para DragonBoss.
+[21:20:59] Runtime 132000 criado para Quest_Inicial.
+[21:21:00] Ghost damage 25. HP 75/100
+[21:21:01] Ghost damage 25. HP 50/100
+[21:21:03] Ghost damage 25. HP 25/100
+[21:21:05] Ghost damage 25. HP 0/100
+[21:21:05] Ghost morreu.
+[21:21:11] FO_EntityRuntimeSystem carregado.
+[21:21:12] Runtime 632040 criado para Blacksmith.
+[21:21:12] Runtime 683665 criado para Ghost.
+[21:21:12] Runtime 108399 criado para DragonBoss.
+[21:21:12] Runtime 93262 criado para Quest_Inicial.
+[21:21:14] Ghost damage 25. HP 75/100
+[21:21:21] Ghost damage 25. HP 50/100
+[21:23:36] FO_EntityRuntimeSystem carregado.
+[21:26:48] FO_EntityRuntimeSystem carregado.
+[21:30:47] FO_EntityRuntimeSystem carregado.
+[21:31:13] FO_EntityRuntimeSystem carregado.
+[21:35:43] FO_EntityRuntimeSystem carregado.
+[21:43:01] FO_EntityRuntimeSystem carregado.
+[21:44:50] FO_EntityRuntimeSystem carregado.
+[21:47:57] FO_EntityRuntimeSystem carregado.
+[21:50:11] FO_EntityRuntimeSystem carregado.
+[21:58:31] FO_EntityRuntimeSystem carregado.
+[21:59:55] FO_EntityRuntimeSystem carregado.
+[22:03:21] FO_EntityRuntimeSystem carregado.
+[22:05:32] FO_EntityRuntimeSystem carregado.
+[22:06:52] FO_EntityRuntimeSystem carregado.
+[22:07:36] FO_EntityRuntimeSystem carregado.
+[22:08:00] FO_EntityRuntimeSystem carregado.
+[22:08:17] FO_EntityRuntimeSystem carregado.
+[22:09:27] FO_EntityRuntimeSystem carregado.

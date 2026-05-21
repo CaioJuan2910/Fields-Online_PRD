@@ -1,0 +1,199 @@
+#==============================================================================
+# ■ FO_AutoAttackSystem
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.1.0
+# Data......: 20/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema de auto attack do jogador.
+#------------------------------------------------------------------------------
+#==============================================================================
+
+module FO_AutoAttackConfig
+
+  #===========================================================================
+  # ■ CONFIGURAÇÕES
+  #===========================================================================
+
+  ATTACK_RANGE = 1
+
+  ATTACK_SPEED = 60
+
+  BASE_DAMAGE = 25
+
+end
+
+#==============================================================================
+# ■ FO_AutoAttackSystem
+#==============================================================================
+
+module FO_AutoAttackSystem
+
+  @attack_timer = 0
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def self.update
+
+    update_attack_timer
+
+    process_auto_attack
+
+  end
+
+  #===========================================================================
+  # ■ update_attack_timer
+  #===========================================================================
+  def self.update_attack_timer
+
+    if @attack_timer > 0
+
+      @attack_timer -= 1
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ process_auto_attack
+  #===========================================================================
+  def self.process_auto_attack
+
+    return if @attack_timer > 0
+
+    target = FO_TargetSystem.current_target
+
+    return if target.nil?
+
+    unless FO_TargetSystem.valid_target?(target)
+
+      FO_TargetSystem.clear_target
+
+      return
+
+    end
+
+    runtime = FO_EntityRuntimeManager.find_by_event(
+      target
+    )
+
+    return if runtime.nil?
+
+    return unless in_attack_range?(target)
+
+    execute_attack(runtime)
+
+  end
+
+  #===========================================================================
+  # ■ in_attack_range?
+  #===========================================================================
+  def self.in_attack_range?(target)
+
+    player_x = $game_player.x
+    player_y = $game_player.y
+
+    target_x = target.x
+    target_y = target.y
+
+    dx = (player_x - target_x).abs
+    dy = (player_y - target_y).abs
+
+    distance = dx + dy
+
+    return distance <= FO_AutoAttackConfig::ATTACK_RANGE
+
+  end
+
+  #===========================================================================
+  # ■ execute_attack
+  #===========================================================================
+  def self.execute_attack(runtime)
+
+    damage = calculate_damage
+
+    runtime.damage(damage)
+
+    start_attack_cooldown
+
+    FO_Logger.action(
+      "Player atacou #{runtime.name} causando #{damage}."
+    )
+
+    FO_Debug.debug_log(
+      "combat",
+      "Auto attack em #{runtime.name}."
+    )
+
+  end
+
+  #===========================================================================
+  # ■ calculate_damage
+  #===========================================================================
+  def self.calculate_damage
+
+    return FO_AutoAttackConfig::BASE_DAMAGE
+
+  end
+
+  #===========================================================================
+  # ■ start_attack_cooldown
+  #===========================================================================
+  def self.start_attack_cooldown
+
+    @attack_timer = FO_AutoAttackConfig::ATTACK_SPEED
+
+  end
+
+  #===========================================================================
+  # ■ reset
+  #===========================================================================
+  def self.reset
+
+    @attack_timer = 0
+
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_auto_attack_update update
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def update
+
+    FO_AutoAttackSystem.update
+
+    fo_auto_attack_update
+
+  end
+
+end
+
+#==============================================================================
+# ■ Inicialização
+#==============================================================================
+
+FO_Logger.action(
+  "FO_AutoAttackSystem carregado com sucesso."
+)
+
+FO_Debug.debug_log(
+  "combat",
+  "FO_AutoAttackSystem carregado."
+)
+
+FO_CORE.debug(
+  "FO_AutoAttackSystem carregado com sucesso."
+)
