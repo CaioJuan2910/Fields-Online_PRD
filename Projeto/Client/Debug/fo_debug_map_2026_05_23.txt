@@ -94,3 +94,55 @@
 [15:48:15] FO_FloatingDamageSystem carregado.
 [15:48:16] Entidades limpas.
 [15:48:16] Scan de entidades concluído.
+[15:58:09] FO_MapEntitySystem carregado.
+[15:58:09] FO_EntityVisualSystem carregado.
+[15:58:09] FO_TargetVisualSystem carregado.
+[15:58:09] FO_FloatingDamageSystem carregado.
+[15:58:10] Entidades limpas.
+[15:58:10] Scan de entidades concluído.
+[15:58:51] FO_MapEntitySystem carregado.
+[15:58:51] FO_EntityVisualSystem carregado.
+[15:58:51] FO_TargetVisualSystem carregado.
+[15:58:51] FO_FloatingDamageSystem carregado.
+[15:58:53] Entidades limpas.
+[15:58:53] Scan de entidades concluído.
+[16:00:06] FO_MapEntitySystem carregado.
+[16:00:06] FO_EntityVisualSystem carregado.
+[16:00:06] FO_TargetVisualSystem carregado.
+[16:00:06] FO_FloatingDamageSystem carregado.
+[16:00:06] Entidades limpas.
+[16:00:06] Scan de entidades concluído.
+[16:00:18] FO_MapEntitySystem carregado.
+[16:00:18] FO_EntityVisualSystem carregado.
+[16:00:18] FO_TargetVisualSystem carregado.
+[16:00:18] FO_FloatingDamageSystem carregado.
+[16:00:21] Entidades limpas.
+[16:00:21] Scan de entidades concluído.
+[16:10:28] FO_MapEntitySystem carregado.
+[16:10:28] FO_EntityVisualSystem carregado.
+[16:10:28] FO_TargetVisualSystem carregado.
+[16:10:28] FO_FloatingDamageSystem carregado.
+[16:10:29] Entidades limpas.
+[16:10:29] Scan de entidades concluído.
+[16:12:03] FO_MapEntitySystem carregado.
+[16:12:03] FO_EntityVisualSystem carregado.
+[16:12:03] FO_TargetVisualSystem carregado.
+[16:12:03] FO_FloatingDamageSystem carregado.
+[16:12:03] Entidades limpas.
+[16:12:03] Scan de entidades concluído.
+[16:12:47] Entidades limpas.
+[16:12:47] Scan de entidades concluído.
+[16:12:48] Entidades limpas.
+[16:12:48] Scan de entidades concluído.
+[16:14:59] FO_MapEntitySystem carregado.
+[16:14:59] FO_EntityVisualSystem carregado.
+[16:14:59] FO_TargetVisualSystem carregado.
+[16:14:59] FO_FloatingDamageSystem carregado.
+[16:14:59] Entidades limpas.
+[16:14:59] Scan de entidades concluído.
+[16:21:28] FO_MapEntitySystem carregado.
+[16:21:28] FO_EntityVisualSystem carregado.
+[16:21:28] FO_TargetVisualSystem carregado.
+[16:21:28] FO_FloatingDamageSystem carregado.
+[16:21:28] Entidades limpas.
+[16:21:28] Scan de entidades concluído.

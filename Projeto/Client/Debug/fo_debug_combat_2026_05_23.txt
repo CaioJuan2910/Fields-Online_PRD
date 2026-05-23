@@ -132,3 +132,64 @@
 [15:48:35] Auto attack em Ghost.
 [15:48:37] Auto attack em Ghost.
 [15:48:40] Auto attack em Ghost.
+[15:58:09] FO_CombatSystem carregado.
+[15:58:09] FO_TargetSystem carregado.
+[15:58:09] FO_AutoAttackSystem carregado.
+[15:58:09] FO_MobAISystem carregado.
+[15:58:09] FO_EnemySystem carregado.
+[15:58:09] FO_AISystem carregado.
+[15:58:51] FO_CombatSystem carregado.
+[15:58:51] FO_TargetSystem carregado.
+[15:58:51] FO_AutoAttackSystem carregado.
+[15:58:51] FO_MobAISystem carregado.
+[15:58:51] FO_EnemySystem carregado.
+[15:58:51] FO_AISystem carregado.
+[16:00:06] FO_CombatSystem carregado.
+[16:00:06] FO_TargetSystem carregado.
+[16:00:06] FO_AutoAttackSystem carregado.
+[16:00:06] FO_MobAISystem carregado.
+[16:00:06] FO_EnemySystem carregado.
+[16:00:06] FO_AISystem carregado.
+[16:00:18] FO_CombatSystem carregado.
+[16:00:18] FO_TargetSystem carregado.
+[16:00:18] FO_AutoAttackSystem carregado.
+[16:00:18] FO_MobAISystem carregado.
+[16:00:18] FO_EnemySystem carregado.
+[16:00:18] FO_AISystem carregado.
+[16:00:27] Auto attack em Ghost.
+[16:10:28] FO_CombatSystem carregado.
+[16:10:28] FO_TargetSystem carregado.
+[16:10:28] FO_AutoAttackSystem carregado.
+[16:10:28] FO_MobAISystem carregado.
+[16:10:28] FO_EnemySystem carregado.
+[16:10:28] FO_AISystem carregado.
+[16:12:03] FO_CombatSystem carregado.
+[16:12:03] FO_TargetSystem carregado.
+[16:12:03] FO_AutoAttackSystem carregado.
+[16:12:03] FO_MobAISystem carregado.
+[16:12:03] FO_EnemySystem carregado.
+[16:12:03] FO_AISystem carregado.
+[16:12:08] Auto attack em Ghost.
+[16:12:10] Auto attack em Ghost.
+[16:12:14] Auto attack em Ghost.
+[16:12:37] Auto attack em Ghost.
+[16:12:40] Auto attack em Ghost.
+[16:12:43] Auto attack em Ghost.
+[16:14:59] FO_CombatSystem carregado.
+[16:14:59] FO_TargetSystem carregado.
+[16:14:59] FO_AutoAttackSystem carregado.
+[16:14:59] FO_MobAISystem carregado.
+[16:14:59] FO_EnemySystem carregado.
+[16:14:59] FO_AISystem carregado.
+[16:15:08] Auto attack em Ghost.
+[16:15:23] Auto attack em Ghost.
+[16:15:24] Auto attack em Ghost.
+[16:21:28] FO_CombatSystem carregado.
+[16:21:28] FO_TargetSystem carregado.
+[16:21:28] FO_AutoAttackSystem carregado.
+[16:21:28] FO_MobAISystem carregado.
+[16:21:28] FO_EnemySystem carregado.
+[16:21:28] FO_AISystem carregado.
+[16:21:30] Auto attack em Ghost.
+[16:21:35] Auto attack em Ghost.
+[16:21:38] Auto attack em Ghost.

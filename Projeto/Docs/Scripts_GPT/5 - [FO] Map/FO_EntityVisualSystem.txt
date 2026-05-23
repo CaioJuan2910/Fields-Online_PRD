@@ -4,19 +4,24 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 2.4.0
-# Data......: 20/05/2026
+# Versão....: 2.6.1
+# Data......: 23/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema visual de entidades do mapa.
 #------------------------------------------------------------------------------
+# Funções atuais:
+# - Nome das entidades
+# - Cores por tipo
+# - Barra de HP apenas para Mob e Boss
+# - Nome ajustado para NPC e Quest
+# - Ícone de fúria para Mob/Boss
+# - Tom avermelhado quando em fúria
+# - Ocultar visual ao morrer
+# - Reaparecer no respawn
 #==============================================================================
 
 module FO_EntityVisualConfig
-
-  #===========================================================================
-  # ■ FONTE
-  #===========================================================================
 
   FONT_NAME = "Arial"
 
@@ -24,41 +29,42 @@ module FO_EntityVisualConfig
 
   FONT_BOLD = true
 
-  #===========================================================================
-  # ■ POSIÇÃO DO NOME
-  #===========================================================================
-
   NAME_OFFSET_X = -100
 
   NAME_OFFSET_Y = -48
 
-  #===========================================================================
-  # ■ POSIÇÃO DO FUNDO DA BARRA
-  #===========================================================================
+  NPC_NAME_EXTRA_OFFSET_Y = 18
 
   HP_BARFUNDO_OFFSET_X = -32
 
   HP_BARFUNDO_OFFSET_Y = -12
 
-  #===========================================================================
-  # ■ POSIÇÃO DA BARRA INTERNA
-  #===========================================================================
-
   HP_BAR_OFFSET_X = -31
 
   HP_BAR_OFFSET_Y = -11
 
-end
+  FURY_ICON_PICTURE_NAME = "StatusFuria"
 
-#==============================================================================
-# ■ FO_EntityVisual
-#==============================================================================
+  FURY_ICON_OFFSET_X = 0
+
+  FURY_ICON_OFFSET_Y = -78
+
+  FURY_ICON_OPACITY = 255
+
+  ENABLE_FURY_TONE = true
+
+  FURY_TONE_RED = 255
+
+  FURY_TONE_GREEN = 0
+
+  FURY_TONE_BLUE = 0
+
+  FURY_TONE_GRAY = 0
+
+end
 
 class FO_EntityVisual
 
-  #===========================================================================
-  # ■ initialize
-  #===========================================================================
   def initialize(entity_data, viewport)
 
     @entity_data = entity_data
@@ -77,7 +83,9 @@ class FO_EntityVisual
 
     create_name_sprite
 
-    create_hp_bar
+    create_hp_bar if uses_hp_bar?
+
+    create_fury_icon if uses_fury_icon?
 
     FO_Logger.action(
       "Visual criado para #{@display_name}"
@@ -85,9 +93,6 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ setup_name
-  #===========================================================================
   def setup_name
 
     original_name = @event.event.name
@@ -96,9 +101,26 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ create_name_sprite
-  #===========================================================================
+  def uses_hp_bar?
+
+    return true if @entity_type == :mob
+
+    return true if @entity_type == :boss
+
+    return false
+
+  end
+
+  def uses_fury_icon?
+
+    return true if @entity_type == :mob
+
+    return true if @entity_type == :boss
+
+    return false
+
+  end
+
   def create_name_sprite
 
     @name_sprite = Sprite.new(@viewport)
@@ -126,12 +148,9 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ draw_text_outline
-  #===========================================================================
   def draw_text_outline(bitmap, text, color)
 
-    bitmap.font.color = Color.new(0,0,0)
+    bitmap.font.color = Color.new(0, 0, 0)
 
     offsets = [
       [-1, 0],
@@ -166,9 +185,6 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ get_text_color
-  #===========================================================================
   def get_text_color
 
     case @entity_type
@@ -189,9 +205,6 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ create_hp_bar
-  #===========================================================================
   def create_hp_bar
 
     @hp_background = Sprite.new(@viewport)
@@ -212,9 +225,23 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ update
-  #===========================================================================
+  def create_fury_icon
+
+    @fury_icon = Sprite.new(@viewport)
+
+    @fury_icon.bitmap = RPG::Cache.picture(
+      FO_EntityVisualConfig::FURY_ICON_PICTURE_NAME
+    )
+
+    @fury_icon.visible = false
+
+    @fury_icon.opacity =
+      FO_EntityVisualConfig::FURY_ICON_OPACITY
+
+    @fury_icon.z = 100000
+
+  end
+
   def update
 
     return if @event.nil?
@@ -223,19 +250,20 @@ class FO_EntityVisual
 
     update_visibility
 
+    update_fury_tone
+
     return unless visual_visible?
 
     update_name_position
 
-    update_hp_position
+    update_hp_position if uses_hp_bar?
 
-    update_hp_bar
+    update_hp_bar if uses_hp_bar?
+
+    update_fury_icon if uses_fury_icon?
 
   end
 
-  #===========================================================================
-  # ■ refresh_runtime
-  #===========================================================================
   def refresh_runtime
 
     return unless @runtime.nil?
@@ -246,9 +274,6 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ visual_visible?
-  #===========================================================================
   def visual_visible?
 
     return true if @runtime.nil?
@@ -257,24 +282,71 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ update_visibility
-  #===========================================================================
+  def fury_active?
+
+    return false if @runtime.nil?
+
+    return @runtime.instance_variable_get(:@fo_fury) == true
+
+  end
+
   def update_visibility
 
     visible = visual_visible?
 
     @name_sprite.visible = visible if @name_sprite
 
-    @hp_background.visible = visible if @hp_background
+    if uses_hp_bar?
 
-    @hp_bar.visible = visible if @hp_bar
+      @hp_background.visible = visible if @hp_background
+
+      @hp_bar.visible = visible if @hp_bar
+
+    end
+
+    if uses_fury_icon?
+
+      if @fury_icon
+
+        @fury_icon.visible = visible && fury_active?
+
+      end
+
+    end
 
   end
 
-  #===========================================================================
-  # ■ get_sprite_height
-  #===========================================================================
+  def update_fury_tone
+
+    return unless uses_fury_icon?
+
+    return unless FO_EntityVisualConfig::ENABLE_FURY_TONE
+
+    return if @event.nil?
+
+    if visual_visible? && fury_active?
+
+      @event.instance_variable_set(
+        :@tone,
+        Tone.new(
+          FO_EntityVisualConfig::FURY_TONE_RED,
+          FO_EntityVisualConfig::FURY_TONE_GREEN,
+          FO_EntityVisualConfig::FURY_TONE_BLUE,
+          FO_EntityVisualConfig::FURY_TONE_GRAY
+        )
+      )
+
+    else
+
+      @event.instance_variable_set(
+        :@tone,
+        Tone.new(0, 0, 0, 0)
+      )
+
+    end
+
+  end
+
   def get_sprite_height
 
     character_name = @event.character_name
@@ -288,12 +360,18 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ update_name_position
-  #===========================================================================
   def update_name_position
 
     sprite_height = get_sprite_height
+
+    extra_offset_y = 0
+
+    unless uses_hp_bar?
+
+      extra_offset_y =
+        FO_EntityVisualConfig::NPC_NAME_EXTRA_OFFSET_Y
+
+    end
 
     @name_sprite.x =
       @event.screen_x +
@@ -302,14 +380,14 @@ class FO_EntityVisual
     @name_sprite.y =
       @event.screen_y -
       sprite_height +
-      FO_EntityVisualConfig::NAME_OFFSET_Y
+      FO_EntityVisualConfig::NAME_OFFSET_Y +
+      extra_offset_y
 
   end
 
-  #===========================================================================
-  # ■ update_hp_position
-  #===========================================================================
   def update_hp_position
+
+    return unless uses_hp_bar?
 
     sprite_height = get_sprite_height
 
@@ -333,10 +411,9 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ update_hp_bar
-  #===========================================================================
   def update_hp_bar
+
+    return unless uses_hp_bar?
 
     return if @runtime.nil?
 
@@ -353,10 +430,37 @@ class FO_EntityVisual
 
   end
 
-  #===========================================================================
-  # ■ dispose
-  #===========================================================================
+  def update_fury_icon
+
+    return unless uses_fury_icon?
+
+    return if @fury_icon.nil?
+
+    @fury_icon.visible =
+      visual_visible? && fury_active?
+
+    return unless @fury_icon.visible
+
+    sprite_height = get_sprite_height
+
+    @fury_icon.x =
+      @event.screen_x -
+      (@fury_icon.bitmap.width / 2) +
+      FO_EntityVisualConfig::FURY_ICON_OFFSET_X
+
+    @fury_icon.y =
+      @event.screen_y -
+      sprite_height +
+      FO_EntityVisualConfig::FURY_ICON_OFFSET_Y
+
+  end
+
   def dispose
+
+    @event.instance_variable_set(
+      :@tone,
+      Tone.new(0, 0, 0, 0)
+    ) if @event
 
     @name_sprite.dispose if @name_sprite
 
@@ -364,13 +468,11 @@ class FO_EntityVisual
 
     @hp_bar.dispose if @hp_bar
 
+    @fury_icon.dispose if @fury_icon
+
   end
 
 end
-
-#==============================================================================
-# ■ FO_EntityVisualManager
-#==============================================================================
 
 module FO_EntityVisualManager
 
@@ -382,9 +484,6 @@ module FO_EntityVisualManager
 
   @map_id = nil
 
-  #===========================================================================
-  # ■ setup
-  #===========================================================================
   def self.setup
 
     return if $game_map.nil?
@@ -422,9 +521,6 @@ module FO_EntityVisualManager
 
   end
 
-  #===========================================================================
-  # ■ update
-  #===========================================================================
   def self.update
 
     return if $game_map.nil?
@@ -449,9 +545,6 @@ module FO_EntityVisualManager
 
   end
 
-  #===========================================================================
-  # ■ dispose
-  #===========================================================================
   def self.dispose
 
     for visual in @visuals
@@ -476,17 +569,10 @@ module FO_EntityVisualManager
 
 end
 
-#==============================================================================
-# ■ Scene_Map
-#==============================================================================
-
 class Scene_Map
 
   alias fo_entity_visual_update update
 
-  #===========================================================================
-  # ■ update
-  #===========================================================================
   def update
 
     FO_EntityVisualManager.update
@@ -496,10 +582,6 @@ class Scene_Map
   end
 
 end
-
-#==============================================================================
-# ■ Inicialização
-#==============================================================================
 
 FO_Logger.action(
   "FO_EntityVisualSystem carregado com sucesso."
