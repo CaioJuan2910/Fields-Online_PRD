@@ -13,3 +13,5 @@
 [15:31:21] FO_EntityRuntimeSystem carregado.
 [15:39:34] FO_EntityRuntimeSystem carregado.
 [15:40:55] FO_EntityRuntimeSystem carregado.
+[15:48:15] FO_EntityRuntimeSystem carregado.
+[15:48:15] FO_PlayerRuntimeSystem carregado.

@@ -2634,3 +2634,98 @@
 [15:40:56] Visual criado para DragonBoss
 [15:40:56] Visual criado para Quest_Inicial
 [15:40:56] Visuais inicializados.
+[15:48:15] FO_Settings carregado com sucesso.
+[15:48:15] FO_Debug carregado com sucesso.
+[15:48:15] FO_DataManager carregado com sucesso.
+[15:48:15] FO_DeveloperMode carregado com sucesso.
+[15:48:15] ========================================
+[15:48:15] FIELDS ONLINE ENGINE BOOT
+[15:48:15] Versão 1.3.0
+[15:48:15] Inicializando engine...
+[15:48:15] Sistema registrado: FO_PlayerData
+[15:48:15] Sistema registrado: FO_PlayerStats
+[15:48:15] Sistema registrado: FO_Inventory
+[15:48:15] Sistema registrado: FO_EquipmentSystem
+[15:48:15] Sistema registrado: FO_ItemDatabase
+[15:48:15] Sistema registrado: FO_CombatSystem
+[15:48:15] Sistema registrado: FO_EnemySystem
+[15:48:15] Sistema registrado: FO_TargetSystem
+[15:48:15] Sistema registrado: FO_AISystem
+[15:48:15] Sistema registrado: FO_MapEntitySystem
+[15:48:15] Sistema registrado: FO_EntityRuntimeSystem
+[15:48:15] Sistema registrado: FO_EntityVisualSystem
+[15:48:15] Sistema registrado: FO_FloatingDamageSystem
+[15:48:15] Engine iniciada com sucesso.
+[15:48:15] ========================================
+[15:48:15] FO_PlayerData carregado com sucesso.
+[15:48:15] FO_PlayerStats carregado com sucesso.
+[15:48:15] FO_Inventory carregado com sucesso.
+[15:48:15] FO_EquipmentSystem carregado com sucesso.
+[15:48:15] FO_ItemDatabase carregado com sucesso.
+[15:48:15] FO_CombatSystem carregado com sucesso.
+[15:48:15] FO_TargetSystem carregado com sucesso.
+[15:48:15] FO_AutoAttackSystem carregado com sucesso.
+[15:48:15] FO_MobAISystem carregado com sucesso.
+[15:48:15] FO_EnemySystem carregado com sucesso.
+[15:48:15] FO_AISystem carregado com sucesso.
+[15:48:15] FO_MapEntitySystem carregado com sucesso.
+[15:48:15] FO_EntityVisualSystem carregado com sucesso.
+[15:48:15] FO_TargetVisualSystem carregado com sucesso.
+[15:48:15] FO_FloatingDamageSystem carregado com sucesso.
+[15:48:15] FO_EntityRuntimeSystem carregado com sucesso.
+[15:48:15] FO_PlayerRuntimeSystem carregado com sucesso.
+[15:48:16] NPC registrado: @Blacksmith
+[15:48:16] Mob registrado: $Ghost
+[15:48:16] Boss registrado: !DragonBoss
+[15:48:16] Quest registrada: ?Quest_Inicial
+[15:48:16] Mapa escaneado: 4 entidades encontradas.
+[15:48:16] Runtime criado: Blacksmith
+[15:48:16] Runtime criado: Ghost
+[15:48:16] Runtime criado: DragonBoss
+[15:48:16] Runtime criado: Quest_Inicial
+[15:48:16] Runtimes inicializados.
+[15:48:16] Visual criado para Blacksmith
+[15:48:16] Visual criado para Ghost
+[15:48:16] Visual criado para DragonBoss
+[15:48:16] Visual criado para Quest_Inicial
+[15:48:16] Visuais inicializados.
+[15:48:18] Target selecionado: Ghost
+[15:48:18] Ghost recebeu 25 de dano. HP: 75/100
+[15:48:18] Player recebeu 25 de dano. HP: 175/200
+[15:48:18] Player recuperou 5 HP. HP: 180/200
+[15:48:18] Ghost entrou em combate.
+[15:48:18] Ghost recebeu 25 de dano. HP: 50/100
+[15:48:18] Player atacou Ghost causando 25.
+[15:48:19] Ghost entrou em combate.
+[15:48:20] Ghost recebeu 25 de dano. HP: 25/100
+[15:48:20] Player atacou Ghost causando 25.
+[15:48:21] Ghost entrou em combate.
+[15:48:21] Player recuperou 5 HP. HP: 185/200
+[15:48:22] Ghost recebeu 25 de dano. HP: 0/100
+[15:48:22] Target limpo.
+[15:48:22] Target limpo porque Ghost morreu.
+[15:48:22] Ghost morreu.
+[15:48:22] Player atacou Ghost causando 25.
+[15:48:24] Player recuperou 5 HP. HP: 190/200
+[15:48:27] Player recuperou 5 HP. HP: 195/200
+[15:48:30] Ghost renasceu em 5, 15.
+[15:48:30] Ghost saiu de combate.
+[15:48:30] Player recuperou 5 HP. HP: 200/200
+[15:48:35] Target selecionado: Ghost
+[15:48:35] Ghost recebeu 25 de dano. HP: 75/100
+[15:48:35] Player recebeu 25 de dano. HP: 175/200
+[15:48:35] Player recuperou 5 HP. HP: 180/200
+[15:48:35] Ghost entrou em combate.
+[15:48:35] Ghost recebeu 25 de dano. HP: 50/100
+[15:48:35] Player atacou Ghost causando 25.
+[15:48:35] Ghost entrou em combate.
+[15:48:37] Ghost recebeu 25 de dano. HP: 25/100
+[15:48:37] Player atacou Ghost causando 25.
+[15:48:37] Ghost entrou em combate.
+[15:48:38] Player recuperou 5 HP. HP: 185/200
+[15:48:40] Ghost recebeu 25 de dano. HP: 0/100
+[15:48:40] Target limpo.
+[15:48:40] Target limpo porque Ghost morreu.
+[15:48:40] Ghost morreu.
+[15:48:40] Player atacou Ghost causando 25.
+[15:48:41] Player recuperou 5 HP. HP: 190/200

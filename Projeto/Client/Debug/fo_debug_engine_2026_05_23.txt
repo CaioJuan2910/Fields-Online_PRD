@@ -163,3 +163,14 @@
 [15:40:55] FO_EquipmentSystem carregado.
 [15:40:55] FO_ItemDatabase carregado.
 [15:40:56] Scene_Map iniciada.
+[15:48:15] FO_Debug carregado com sucesso.
+[15:48:15] FO_DataManager carregado.
+[15:48:15] FO_DeveloperMode carregado.
+[15:48:15] Sistemas registrados.
+[15:48:15] Boot iniciado.
+[15:48:15] FO_PlayerData carregado.
+[15:48:15] FO_PlayerStats carregado.
+[15:48:15] FO_Inventory carregado.
+[15:48:15] FO_EquipmentSystem carregado.
+[15:48:15] FO_ItemDatabase carregado.
+[15:48:16] Scene_Map iniciada.
