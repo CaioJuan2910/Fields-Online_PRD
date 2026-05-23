@@ -202,3 +202,84 @@
 [16:29:31] Auto attack em Ghost.
 [16:29:38] Auto attack em Ghost.
 [16:29:40] Auto attack em Ghost.
+[16:52:24] FO_CombatSystem carregado.
+[16:52:24] FO_TargetSystem carregado.
+[16:52:24] FO_AutoAttackSystem carregado.
+[16:52:24] FO_MobAISystem carregado.
+[16:52:24] FO_EnemySystem carregado.
+[16:52:24] FO_AISystem carregado.
+[16:52:46] Auto attack em Ghost.
+[16:52:49] Auto attack em Ghost.
+[16:52:51] Auto attack em Ghost.
+[17:05:17] FO_CombatSystem carregado.
+[17:05:17] FO_TargetSystem carregado.
+[17:05:17] FO_AutoAttackSystem carregado.
+[17:05:17] FO_MobAISystem carregado.
+[17:05:17] FO_EnemySystem carregado.
+[17:05:17] FO_AISystem carregado.
+[17:08:36] FO_CombatSystem carregado.
+[17:08:36] FO_TargetSystem carregado.
+[17:08:36] FO_AutoAttackSystem carregado.
+[17:08:36] FO_MobAISystem carregado.
+[17:08:36] FO_EnemySystem carregado.
+[17:08:36] FO_AISystem carregado.
+[17:08:45] Auto attack em Ghost.
+[17:08:47] Auto attack em Ghost.
+[17:08:48] Auto attack em Ghost.
+[17:08:50] Auto attack em Ghost.
+[17:30:08] FO_CombatSystem carregado.
+[17:30:08] FO_TargetSystem carregado.
+[17:30:08] FO_AutoAttackSystem carregado.
+[17:30:08] FO_MobAISystem carregado.
+[17:30:09] FO_EnemySystem carregado.
+[17:30:09] FO_AISystem carregado.
+[17:30:12] Auto attack em Ghost.
+[17:30:14] Auto attack em Ghost.
+[17:30:15] Auto attack em Ghost.
+[17:33:46] FO_CombatSystem carregado.
+[17:33:46] FO_TargetSystem carregado.
+[17:33:46] FO_AutoAttackSystem carregado.
+[17:33:46] FO_MobAISystem carregado.
+[17:33:46] FO_EnemySystem carregado.
+[17:33:46] FO_AISystem carregado.
+[17:34:18] Auto attack em Ghost.
+[17:34:19] Auto attack em Ghost.
+[17:34:22] Auto attack em Ghost.
+[17:34:23] Auto attack em Ghost.
+[17:34:26] Auto attack em DragonBoss.
+[17:34:28] Auto attack em DragonBoss.
+[17:34:29] Auto attack em DragonBoss.
+[17:34:31] Auto attack em DragonBoss.
+[17:34:32] Auto attack em DragonBoss.
+[17:34:34] Auto attack em DragonBoss.
+[17:34:35] Auto attack em DragonBoss.
+[17:34:37] Auto attack em DragonBoss.
+[17:34:39] Auto attack em DragonBoss.
+[17:34:41] Auto attack em DragonBoss.
+[17:34:42] Auto attack em DragonBoss.
+[17:40:47] FO_CombatSystem carregado.
+[17:40:47] FO_TargetSystem carregado.
+[17:40:47] FO_AutoAttackSystem carregado.
+[17:40:47] FO_MobAISystem carregado.
+[17:40:47] FO_EnemySystem carregado.
+[17:40:47] FO_AISystem carregado.
+[17:40:52] Auto attack em Ghost.
+[17:40:54] Auto attack em Ghost.
+[17:40:55] Auto attack em Ghost.
+[17:40:57] Auto attack em Ghost.
+[17:41:50] FO_CombatSystem carregado.
+[17:41:50] FO_TargetSystem carregado.
+[17:41:50] FO_AutoAttackSystem carregado.
+[17:41:50] FO_MobAISystem carregado.
+[17:41:50] FO_EnemySystem carregado.
+[17:41:50] FO_AISystem carregado.
+[17:47:02] FO_CombatSystem carregado.
+[17:47:02] FO_TargetSystem carregado.
+[17:47:02] FO_AutoAttackSystem carregado.
+[17:47:02] FO_MobAISystem carregado.
+[17:47:02] FO_EnemySystem carregado.
+[17:47:02] FO_AISystem carregado.
+[17:54:25] FO_CombatSystem carregado.
+[17:54:25] FO_TargetSystem carregado.
+[17:54:25] FO_AutoAttackSystem carregado.
+[17:54:25] FO_MobAISystem carregado.

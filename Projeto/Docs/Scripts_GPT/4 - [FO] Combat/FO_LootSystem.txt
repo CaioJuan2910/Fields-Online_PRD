@@ -1,0 +1,204 @@
+#==============================================================================
+# ■ FO_LootSystem
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.0.0
+# Data......: 23/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema inicial de loot/drop dos mobs.
+#------------------------------------------------------------------------------
+# Funções atuais:
+# - Drop ao matar Mob/Boss
+# - Tabela de loot por nome da entidade
+# - Chance percentual
+# - Log de drops
+# - Preparação para inventário
+#==============================================================================
+
+module FO_LootConfig
+
+  ENABLE_LOOT = true
+
+  ENABLE_LOOT_LOG = true
+
+  DEFAULT_LOOT_TABLE = [
+    ["Gold", 100],
+    ["Potion", 35]
+  ]
+
+  LOOT_TABLES = {
+
+    "Ghost" => [
+      ["Gold", 100],
+      ["Potion", 40],
+      ["Ghost Essence", 10]
+    ],
+
+    "DragonBoss" => [
+      ["Gold", 100],
+      ["Potion", 80],
+      ["Dragon Scale", 35],
+      ["Dragon Core", 10]
+    ]
+
+  }
+
+end
+
+module FO_LootSystem
+
+  def self.process_loot(runtime)
+
+    return false unless FO_LootConfig::ENABLE_LOOT
+
+    return false if runtime.nil?
+
+    return false unless loot_entity?(runtime)
+
+    table = loot_table(runtime)
+
+    drops = roll_loot(table)
+
+    register_drops(runtime, drops)
+
+    return true
+
+  end
+
+  def self.loot_entity?(runtime)
+
+    return true if runtime.entity_type == :mob
+
+    return true if runtime.entity_type == :boss
+
+    return false
+
+  end
+
+  def self.loot_table(runtime)
+
+    name = runtime.name
+
+    table = FO_LootConfig::LOOT_TABLES[name]
+
+    return table if table
+
+    return FO_LootConfig::DEFAULT_LOOT_TABLE
+
+  end
+
+  def self.roll_loot(table)
+
+    drops = []
+
+    for loot_data in table
+
+      item_name = loot_data[0]
+
+      chance = loot_data[1]
+
+      chance = 0 if chance < 0
+
+      chance = 100 if chance > 100
+
+      roll = rand(100) + 1
+
+      if roll <= chance
+
+        drops.push(item_name)
+
+      end
+
+    end
+
+    return drops
+
+  end
+
+  def self.register_drops(runtime, drops)
+
+    if drops.empty?
+
+      FO_Logger.action(
+        "#{runtime.name} não dropou nenhum item."
+      ) if FO_LootConfig::ENABLE_LOOT_LOG
+
+      return
+
+    end
+
+    for item_name in drops
+
+      give_item_to_player(item_name)
+
+      FO_Logger.action(
+        "#{runtime.name} dropou: #{item_name}"
+      ) if FO_LootConfig::ENABLE_LOOT_LOG
+
+    end
+
+  end
+
+  def self.give_item_to_player(item_name)
+
+    if defined?(FO_Inventory)
+
+      if FO_Inventory.respond_to?(:add_item)
+
+        FO_Inventory.add_item(item_name)
+
+        return true
+
+      end
+
+    end
+
+    FO_Logger.action(
+      "Loot recebido: #{item_name}"
+    )
+
+    return true
+
+  end
+
+end
+
+#==============================================================================
+# ■ FO_EntityRuntime
+#------------------------------------------------------------------------------
+# Integração do loot com a morte da entidade.
+#==============================================================================
+
+class FO_EntityRuntime
+
+  alias fo_loot_system_die die
+
+  def die
+
+    already_dead = dead?
+
+    fo_loot_system_die
+
+    return if already_dead
+
+    FO_LootSystem.process_loot(self)
+
+  end
+
+end
+
+FO_Logger.action(
+  "FO_LootSystem carregado com sucesso."
+)
+
+FO_Debug.debug_log(
+  "combat",
+  "FO_LootSystem carregado."
+)
+
+FO_CORE.debug(
+  "FO_LootSystem carregado com sucesso."
+)
