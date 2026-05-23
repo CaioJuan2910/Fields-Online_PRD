@@ -4,8 +4,8 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.5.0
-# Data......: 20/05/2026
+# Versão....: 1.6.1
+# Data......: 23/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema inicial de IA dos mobs.
@@ -17,6 +17,8 @@
 # - Sai de combate ao perder chase
 # - Target limpa ao sair de combate
 # - Regeneração lenta fora de combate
+# - Movimento aleatório fora de combate
+# - Movimento aleatório em sequência
 #==============================================================================
 
 module FO_MobAIConfig
@@ -34,6 +36,18 @@ module FO_MobAIConfig
   REGEN_COOLDOWN = 60
 
   REGEN_VALUE = 5
+
+  ENABLE_RANDOM_WALK = true
+
+RANDOM_WALK_COOLDOWN = 35
+
+RANDOM_WALK_CHANCE = 65
+
+RANDOM_WALK_STOP_CHANCE = 20
+
+RANDOM_WALK_MIN_STEPS = 2
+
+RANDOM_WALK_MAX_STEPS = 4
 
 end
 
@@ -69,6 +83,7 @@ module FO_MobAISystem
 
       runtime.instance_variable_set(:@fo_move_timer, 0)
       runtime.instance_variable_set(:@fo_regen_timer, 0)
+      runtime.instance_variable_set(:@fo_random_walk_timer, 0)
       runtime.instance_variable_set(:@fo_in_combat, false)
       runtime.instance_variable_set(:@fo_last_hp, runtime.hp)
 
@@ -90,6 +105,8 @@ module FO_MobAISystem
     update_move_timer(runtime)
 
     update_regen_timer(runtime)
+
+    update_random_walk_timer(runtime)
 
     update_damage_detection(runtime)
 
@@ -176,6 +193,18 @@ module FO_MobAISystem
     timer -= 1 if timer > 0
 
     runtime.instance_variable_set(:@fo_regen_timer, timer)
+
+  end
+
+  def self.update_random_walk_timer(runtime)
+
+    timer = runtime.instance_variable_get(:@fo_random_walk_timer)
+
+    timer = 0 if timer.nil?
+
+    timer -= 1 if timer > 0
+
+    runtime.instance_variable_set(:@fo_random_walk_timer, timer)
 
   end
 
@@ -267,6 +296,8 @@ module FO_MobAISystem
 
     regenerate_hp(runtime)
 
+    random_walk(runtime)
+
   end
 
   def self.regenerate_hp(runtime)
@@ -293,6 +324,97 @@ module FO_MobAISystem
     FO_Logger.action(
       "#{runtime.name} regenerou HP. HP: #{runtime.hp}/#{runtime.max_hp}"
     )
+
+  end
+
+  def self.random_walk(runtime)
+
+    return unless FO_MobAIConfig::ENABLE_RANDOM_WALK
+
+    return unless can_random_walk?(runtime)
+
+    roll = rand(100)
+
+    if roll >= FO_MobAIConfig::RANDOM_WALK_CHANCE
+
+      reset_random_walk_timer(runtime)
+
+      return
+
+    end
+
+    stop_roll = rand(100)
+
+    if stop_roll < FO_MobAIConfig::RANDOM_WALK_STOP_CHANCE
+
+      reset_random_walk_timer(runtime)
+
+      return
+
+    end
+
+    move_random_direction(runtime)
+
+    reset_random_walk_timer(runtime)
+
+  end
+
+  def self.can_random_walk?(runtime)
+
+    timer = runtime.instance_variable_get(:@fo_random_walk_timer)
+
+    timer = 0 if timer.nil?
+
+    return timer <= 0
+
+  end
+
+  def self.reset_random_walk_timer(runtime)
+
+    runtime.instance_variable_set(
+      :@fo_random_walk_timer,
+      FO_MobAIConfig::RANDOM_WALK_COOLDOWN
+    )
+
+  end
+
+  def self.random_walk_steps
+
+    min = FO_MobAIConfig::RANDOM_WALK_MIN_STEPS
+
+    max = FO_MobAIConfig::RANDOM_WALK_MAX_STEPS
+
+    return min + rand(max - min + 1)
+
+  end
+
+  def self.move_random_direction(runtime)
+
+    event = runtime.event
+
+    steps = random_walk_steps
+
+    direction = rand(4)
+
+    steps.times do
+
+      case direction
+
+      when 0
+        event.move_down
+
+      when 1
+        event.move_left
+
+      when 2
+        event.move_right
+
+      when 3
+        event.move_up
+
+      end
+
+    end
 
   end
 

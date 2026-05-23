@@ -2371,3 +2371,266 @@
 [13:18:48] Ghost regenerou HP. HP: 75/100
 [13:18:50] Ghost regenerou HP. HP: 80/100
 [13:18:51] Ghost regenerou HP. HP: 85/100
+[15:29:03] FO_Settings carregado com sucesso.
+[15:29:03] FO_Debug carregado com sucesso.
+[15:29:03] FO_DataManager carregado com sucesso.
+[15:29:03] FO_DeveloperMode carregado com sucesso.
+[15:29:03] ========================================
+[15:29:03] FIELDS ONLINE ENGINE BOOT
+[15:29:03] Versão 1.3.0
+[15:29:03] Inicializando engine...
+[15:29:03] Sistema registrado: FO_PlayerData
+[15:29:03] Sistema registrado: FO_PlayerStats
+[15:29:03] Sistema registrado: FO_Inventory
+[15:29:03] Sistema registrado: FO_EquipmentSystem
+[15:29:03] Sistema registrado: FO_ItemDatabase
+[15:29:03] Sistema registrado: FO_CombatSystem
+[15:29:03] Sistema registrado: FO_EnemySystem
+[15:29:03] Sistema registrado: FO_TargetSystem
+[15:29:03] Sistema registrado: FO_AISystem
+[15:29:03] Sistema registrado: FO_MapEntitySystem
+[15:29:03] Sistema registrado: FO_EntityRuntimeSystem
+[15:29:03] Sistema registrado: FO_EntityVisualSystem
+[15:29:03] Sistema registrado: FO_FloatingDamageSystem
+[15:29:03] Engine iniciada com sucesso.
+[15:29:03] ========================================
+[15:29:03] FO_PlayerData carregado com sucesso.
+[15:29:03] FO_PlayerStats carregado com sucesso.
+[15:29:03] FO_Inventory carregado com sucesso.
+[15:29:03] FO_EquipmentSystem carregado com sucesso.
+[15:29:03] FO_ItemDatabase carregado com sucesso.
+[15:29:03] FO_CombatSystem carregado com sucesso.
+[15:29:03] FO_TargetSystem carregado com sucesso.
+[15:29:03] FO_AutoAttackSystem carregado com sucesso.
+[15:29:03] FO_MobAISystem carregado com sucesso.
+[15:29:03] FO_EnemySystem carregado com sucesso.
+[15:29:03] FO_AISystem carregado com sucesso.
+[15:29:03] FO_MapEntitySystem carregado com sucesso.
+[15:29:03] FO_EntityVisualSystem carregado com sucesso.
+[15:29:03] FO_TargetVisualSystem carregado com sucesso.
+[15:29:03] FO_FloatingDamageSystem carregado com sucesso.
+[15:29:03] FO_EntityRuntimeSystem carregado com sucesso.
+[15:29:04] NPC registrado: @Blacksmith
+[15:29:04] Mob registrado: $Ghost
+[15:29:04] Boss registrado: !DragonBoss
+[15:29:04] Quest registrada: ?Quest_Inicial
+[15:29:04] Mapa escaneado: 4 entidades encontradas.
+[15:29:04] Runtime criado: Blacksmith
+[15:29:04] Runtime criado: Ghost
+[15:29:04] Runtime criado: DragonBoss
+[15:29:04] Runtime criado: Quest_Inicial
+[15:29:04] Runtimes inicializados.
+[15:29:04] Visual criado para Blacksmith
+[15:29:04] Visual criado para Ghost
+[15:29:04] Visual criado para DragonBoss
+[15:29:04] Visual criado para Quest_Inicial
+[15:29:04] Visuais inicializados.
+[15:29:30] Target selecionado: Ghost
+[15:29:30] Ghost recebeu 25 de dano. HP: 75/100
+[15:29:30] Ghost entrou em combate.
+[15:29:30] Ghost recebeu 25 de dano. HP: 50/100
+[15:29:30] Player atacou Ghost causando 25.
+[15:29:30] Ghost entrou em combate.
+[15:29:32] Target limpo.
+[15:29:32] Ghost saiu de combate.
+[15:29:32] Ghost regenerou HP. HP: 55/100
+[15:29:34] Ghost regenerou HP. HP: 60/100
+[15:29:35] Ghost regenerou HP. HP: 65/100
+[15:29:37] Ghost regenerou HP. HP: 70/100
+[15:29:38] Ghost regenerou HP. HP: 75/100
+[15:29:40] Ghost regenerou HP. HP: 80/100
+[15:29:41] Ghost regenerou HP. HP: 85/100
+[15:29:43] Ghost regenerou HP. HP: 90/100
+[15:31:21] FO_Settings carregado com sucesso.
+[15:31:21] FO_Debug carregado com sucesso.
+[15:31:21] FO_DataManager carregado com sucesso.
+[15:31:21] FO_DeveloperMode carregado com sucesso.
+[15:31:21] ========================================
+[15:31:21] FIELDS ONLINE ENGINE BOOT
+[15:31:21] Versão 1.3.0
+[15:31:21] Inicializando engine...
+[15:31:21] Sistema registrado: FO_PlayerData
+[15:31:21] Sistema registrado: FO_PlayerStats
+[15:31:21] Sistema registrado: FO_Inventory
+[15:31:21] Sistema registrado: FO_EquipmentSystem
+[15:31:21] Sistema registrado: FO_ItemDatabase
+[15:31:21] Sistema registrado: FO_CombatSystem
+[15:31:21] Sistema registrado: FO_EnemySystem
+[15:31:21] Sistema registrado: FO_TargetSystem
+[15:31:21] Sistema registrado: FO_AISystem
+[15:31:21] Sistema registrado: FO_MapEntitySystem
+[15:31:21] Sistema registrado: FO_EntityRuntimeSystem
+[15:31:21] Sistema registrado: FO_EntityVisualSystem
+[15:31:21] Sistema registrado: FO_FloatingDamageSystem
+[15:31:21] Engine iniciada com sucesso.
+[15:31:21] ========================================
+[15:31:21] FO_PlayerData carregado com sucesso.
+[15:31:21] FO_PlayerStats carregado com sucesso.
+[15:31:21] FO_Inventory carregado com sucesso.
+[15:31:21] FO_EquipmentSystem carregado com sucesso.
+[15:31:21] FO_ItemDatabase carregado com sucesso.
+[15:31:21] FO_CombatSystem carregado com sucesso.
+[15:31:21] FO_TargetSystem carregado com sucesso.
+[15:31:21] FO_AutoAttackSystem carregado com sucesso.
+[15:31:21] FO_MobAISystem carregado com sucesso.
+[15:31:21] FO_EnemySystem carregado com sucesso.
+[15:31:21] FO_AISystem carregado com sucesso.
+[15:31:21] FO_MapEntitySystem carregado com sucesso.
+[15:31:21] FO_EntityVisualSystem carregado com sucesso.
+[15:31:21] FO_TargetVisualSystem carregado com sucesso.
+[15:31:21] FO_FloatingDamageSystem carregado com sucesso.
+[15:31:21] FO_EntityRuntimeSystem carregado com sucesso.
+[15:31:22] NPC registrado: @Blacksmith
+[15:31:22] Mob registrado: $Ghost
+[15:31:22] Boss registrado: !DragonBoss
+[15:31:22] Quest registrada: ?Quest_Inicial
+[15:31:22] Mapa escaneado: 4 entidades encontradas.
+[15:31:22] Runtime criado: Blacksmith
+[15:31:22] Runtime criado: Ghost
+[15:31:22] Runtime criado: DragonBoss
+[15:31:22] Runtime criado: Quest_Inicial
+[15:31:22] Runtimes inicializados.
+[15:31:22] Visual criado para Blacksmith
+[15:31:22] Visual criado para Ghost
+[15:31:22] Visual criado para DragonBoss
+[15:31:22] Visual criado para Quest_Inicial
+[15:31:22] Visuais inicializados.
+[15:31:32] Target selecionado: Ghost
+[15:31:32] Ghost recebeu 25 de dano. HP: 75/100
+[15:31:32] Ghost entrou em combate.
+[15:31:32] Ghost recebeu 25 de dano. HP: 50/100
+[15:31:32] Player atacou Ghost causando 25.
+[15:31:32] Ghost entrou em combate.
+[15:31:35] Target limpo.
+[15:31:35] Ghost saiu de combate.
+[15:31:35] Ghost regenerou HP. HP: 55/100
+[15:31:36] Ghost regenerou HP. HP: 60/100
+[15:31:38] Ghost regenerou HP. HP: 65/100
+[15:31:39] Ghost regenerou HP. HP: 70/100
+[15:31:41] Ghost regenerou HP. HP: 75/100
+[15:31:42] Ghost regenerou HP. HP: 80/100
+[15:31:44] Ghost regenerou HP. HP: 85/100
+[15:31:44] Target selecionado: Ghost
+[15:31:44] Ghost recebeu 25 de dano. HP: 60/100
+[15:31:44] Ghost entrou em combate.
+[15:31:44] Ghost recebeu 25 de dano. HP: 35/100
+[15:31:44] Player atacou Ghost causando 25.
+[15:31:44] Ghost entrou em combate.
+[15:31:44] Target selecionado: Ghost
+[15:31:44] Ghost recebeu 25 de dano. HP: 10/100
+[15:31:45] Ghost entrou em combate.
+[15:31:45] Target selecionado: Ghost
+[15:31:45] Ghost recebeu 25 de dano. HP: 0/100
+[15:31:45] Target limpo.
+[15:31:45] Target limpo porque Ghost morreu.
+[15:31:45] Ghost morreu.
+[15:31:52] Ghost renasceu em 30, 8.
+[15:31:52] Ghost saiu de combate.
+[15:39:33] FO_Settings carregado com sucesso.
+[15:39:33] FO_Debug carregado com sucesso.
+[15:39:33] FO_DataManager carregado com sucesso.
+[15:39:33] FO_DeveloperMode carregado com sucesso.
+[15:39:33] ========================================
+[15:39:33] FIELDS ONLINE ENGINE BOOT
+[15:39:33] Versão 1.3.0
+[15:39:33] Inicializando engine...
+[15:39:33] Sistema registrado: FO_PlayerData
+[15:39:33] Sistema registrado: FO_PlayerStats
+[15:39:33] Sistema registrado: FO_Inventory
+[15:39:33] Sistema registrado: FO_EquipmentSystem
+[15:39:33] Sistema registrado: FO_ItemDatabase
+[15:39:33] Sistema registrado: FO_CombatSystem
+[15:39:33] Sistema registrado: FO_EnemySystem
+[15:39:33] Sistema registrado: FO_TargetSystem
+[15:39:33] Sistema registrado: FO_AISystem
+[15:39:33] Sistema registrado: FO_MapEntitySystem
+[15:39:33] Sistema registrado: FO_EntityRuntimeSystem
+[15:39:33] Sistema registrado: FO_EntityVisualSystem
+[15:39:33] Sistema registrado: FO_FloatingDamageSystem
+[15:39:33] Engine iniciada com sucesso.
+[15:39:33] ========================================
+[15:39:33] FO_PlayerData carregado com sucesso.
+[15:39:33] FO_PlayerStats carregado com sucesso.
+[15:39:33] FO_Inventory carregado com sucesso.
+[15:39:33] FO_EquipmentSystem carregado com sucesso.
+[15:39:33] FO_ItemDatabase carregado com sucesso.
+[15:39:34] FO_CombatSystem carregado com sucesso.
+[15:39:34] FO_TargetSystem carregado com sucesso.
+[15:39:34] FO_AutoAttackSystem carregado com sucesso.
+[15:39:34] FO_MobAISystem carregado com sucesso.
+[15:39:34] FO_EnemySystem carregado com sucesso.
+[15:39:34] FO_AISystem carregado com sucesso.
+[15:39:34] FO_MapEntitySystem carregado com sucesso.
+[15:39:34] FO_EntityVisualSystem carregado com sucesso.
+[15:39:34] FO_TargetVisualSystem carregado com sucesso.
+[15:39:34] FO_FloatingDamageSystem carregado com sucesso.
+[15:39:34] FO_EntityRuntimeSystem carregado com sucesso.
+[15:39:34] NPC registrado: @Blacksmith
+[15:39:34] Mob registrado: $Ghost
+[15:39:34] Boss registrado: !DragonBoss
+[15:39:34] Quest registrada: ?Quest_Inicial
+[15:39:34] Mapa escaneado: 4 entidades encontradas.
+[15:39:34] Runtime criado: Blacksmith
+[15:39:34] Runtime criado: Ghost
+[15:39:34] Runtime criado: DragonBoss
+[15:39:34] Runtime criado: Quest_Inicial
+[15:39:34] Runtimes inicializados.
+[15:39:34] Visual criado para Blacksmith
+[15:39:34] Visual criado para Ghost
+[15:39:34] Visual criado para DragonBoss
+[15:39:34] Visual criado para Quest_Inicial
+[15:39:34] Visuais inicializados.
+[15:40:55] FO_Settings carregado com sucesso.
+[15:40:55] FO_Debug carregado com sucesso.
+[15:40:55] FO_DataManager carregado com sucesso.
+[15:40:55] FO_DeveloperMode carregado com sucesso.
+[15:40:55] ========================================
+[15:40:55] FIELDS ONLINE ENGINE BOOT
+[15:40:55] Versão 1.3.0
+[15:40:55] Inicializando engine...
+[15:40:55] Sistema registrado: FO_PlayerData
+[15:40:55] Sistema registrado: FO_PlayerStats
+[15:40:55] Sistema registrado: FO_Inventory
+[15:40:55] Sistema registrado: FO_EquipmentSystem
+[15:40:55] Sistema registrado: FO_ItemDatabase
+[15:40:55] Sistema registrado: FO_CombatSystem
+[15:40:55] Sistema registrado: FO_EnemySystem
+[15:40:55] Sistema registrado: FO_TargetSystem
+[15:40:55] Sistema registrado: FO_AISystem
+[15:40:55] Sistema registrado: FO_MapEntitySystem
+[15:40:55] Sistema registrado: FO_EntityRuntimeSystem
+[15:40:55] Sistema registrado: FO_EntityVisualSystem
+[15:40:55] Sistema registrado: FO_FloatingDamageSystem
+[15:40:55] Engine iniciada com sucesso.
+[15:40:55] ========================================
+[15:40:55] FO_PlayerData carregado com sucesso.
+[15:40:55] FO_PlayerStats carregado com sucesso.
+[15:40:55] FO_Inventory carregado com sucesso.
+[15:40:55] FO_EquipmentSystem carregado com sucesso.
+[15:40:55] FO_ItemDatabase carregado com sucesso.
+[15:40:55] FO_CombatSystem carregado com sucesso.
+[15:40:55] FO_TargetSystem carregado com sucesso.
+[15:40:55] FO_AutoAttackSystem carregado com sucesso.
+[15:40:55] FO_MobAISystem carregado com sucesso.
+[15:40:55] FO_EnemySystem carregado com sucesso.
+[15:40:55] FO_AISystem carregado com sucesso.
+[15:40:55] FO_MapEntitySystem carregado com sucesso.
+[15:40:55] FO_EntityVisualSystem carregado com sucesso.
+[15:40:55] FO_TargetVisualSystem carregado com sucesso.
+[15:40:55] FO_FloatingDamageSystem carregado com sucesso.
+[15:40:55] FO_EntityRuntimeSystem carregado com sucesso.
+[15:40:56] NPC registrado: @Blacksmith
+[15:40:56] Mob registrado: $Ghost
+[15:40:56] Boss registrado: !DragonBoss
+[15:40:56] Quest registrada: ?Quest_Inicial
+[15:40:56] Mapa escaneado: 4 entidades encontradas.
+[15:40:56] Runtime criado: Blacksmith
+[15:40:56] Runtime criado: Ghost
+[15:40:56] Runtime criado: DragonBoss
+[15:40:56] Runtime criado: Quest_Inicial
+[15:40:56] Runtimes inicializados.
+[15:40:56] Visual criado para Blacksmith
+[15:40:56] Visual criado para Ghost
+[15:40:56] Visual criado para DragonBoss
+[15:40:56] Visual criado para Quest_Inicial
+[15:40:56] Visuais inicializados.
