@@ -1,0 +1,2373 @@
+[12:36:00] FO_Settings carregado com sucesso.
+[12:36:00] FO_Debug carregado com sucesso.
+[12:36:00] FO_DataManager carregado com sucesso.
+[12:36:00] FO_DeveloperMode carregado com sucesso.
+[12:36:00] ========================================
+[12:36:00] FIELDS ONLINE ENGINE BOOT
+[12:36:00] Versão 1.3.0
+[12:36:00] Inicializando engine...
+[12:36:00] Sistema registrado: FO_PlayerData
+[12:36:00] Sistema registrado: FO_PlayerStats
+[12:36:00] Sistema registrado: FO_Inventory
+[12:36:00] Sistema registrado: FO_EquipmentSystem
+[12:36:00] Sistema registrado: FO_ItemDatabase
+[12:36:00] Sistema registrado: FO_CombatSystem
+[12:36:00] Sistema registrado: FO_EnemySystem
+[12:36:00] Sistema registrado: FO_TargetSystem
+[12:36:00] Sistema registrado: FO_AISystem
+[12:36:00] Sistema registrado: FO_MapEntitySystem
+[12:36:00] Sistema registrado: FO_EntityRuntimeSystem
+[12:36:00] Sistema registrado: FO_EntityVisualSystem
+[12:36:00] Sistema registrado: FO_FloatingDamageSystem
+[12:36:00] Engine iniciada com sucesso.
+[12:36:00] ========================================
+[12:36:00] FO_PlayerData carregado com sucesso.
+[12:36:00] FO_PlayerStats carregado com sucesso.
+[12:36:00] FO_Inventory carregado com sucesso.
+[12:36:00] FO_EquipmentSystem carregado com sucesso.
+[12:36:00] FO_ItemDatabase carregado com sucesso.
+[12:36:00] FO_CombatSystem carregado com sucesso.
+[12:36:00] FO_TargetSystem carregado com sucesso.
+[12:36:00] FO_AutoAttackSystem carregado com sucesso.
+[12:36:00] FO_EnemySystem carregado com sucesso.
+[12:36:00] FO_AISystem carregado com sucesso.
+[12:36:00] FO_MapEntitySystem carregado com sucesso.
+[12:36:00] FO_EntityVisualSystem carregado com sucesso.
+[12:36:00] FO_TargetVisualSystem carregado com sucesso.
+[12:36:00] FO_FloatingDamageSystem carregado com sucesso.
+[12:36:00] FO_EntityRuntimeSystem carregado com sucesso.
+[12:36:12] NPC registrado: @Blacksmith
+[12:36:12] Mob registrado: $Ghost
+[12:36:12] Boss registrado: !DragonBoss
+[12:36:12] Quest registrada: ?Quest_Inicial
+[12:36:12] Mapa escaneado: 4 entidades encontradas.
+[12:36:12] Runtime criado: Blacksmith
+[12:36:12] Runtime criado: Ghost
+[12:36:12] Runtime criado: DragonBoss
+[12:36:12] Runtime criado: Quest_Inicial
+[12:36:12] Runtimes inicializados.
+[12:36:12] Visual criado para Blacksmith
+[12:36:12] Visual criado para Ghost
+[12:36:12] Visual criado para DragonBoss
+[12:36:12] Visual criado para Quest_Inicial
+[12:36:12] Visuais inicializados.
+[12:36:15] Target selecionado: Ghost
+[12:36:15] Ghost recebeu 25 de dano. HP: 75/100
+[12:36:15] Ghost recebeu 25 de dano. HP: 50/100
+[12:36:15] Player atacou Ghost causando 25.
+[12:36:16] Target selecionado: Ghost
+[12:36:16] Ghost recebeu 25 de dano. HP: 25/100
+[12:36:16] Ghost recebeu 25 de dano. HP: 0/100
+[12:36:16] Target limpo.
+[12:36:16] Target limpo porque Ghost morreu.
+[12:36:16] Ghost morreu.
+[12:36:16] Player atacou Ghost causando 25.
+[12:43:50] FO_Settings carregado com sucesso.
+[12:43:50] FO_Debug carregado com sucesso.
+[12:43:50] FO_DataManager carregado com sucesso.
+[12:43:50] FO_DeveloperMode carregado com sucesso.
+[12:43:50] ========================================
+[12:43:50] FIELDS ONLINE ENGINE BOOT
+[12:43:50] Versão 1.3.0
+[12:43:50] Inicializando engine...
+[12:43:50] Sistema registrado: FO_PlayerData
+[12:43:50] Sistema registrado: FO_PlayerStats
+[12:43:50] Sistema registrado: FO_Inventory
+[12:43:50] Sistema registrado: FO_EquipmentSystem
+[12:43:50] Sistema registrado: FO_ItemDatabase
+[12:43:50] Sistema registrado: FO_CombatSystem
+[12:43:50] Sistema registrado: FO_EnemySystem
+[12:43:50] Sistema registrado: FO_TargetSystem
+[12:43:50] Sistema registrado: FO_AISystem
+[12:43:50] Sistema registrado: FO_MapEntitySystem
+[12:43:50] Sistema registrado: FO_EntityRuntimeSystem
+[12:43:50] Sistema registrado: FO_EntityVisualSystem
+[12:43:50] Sistema registrado: FO_FloatingDamageSystem
+[12:43:50] Engine iniciada com sucesso.
+[12:43:50] ========================================
+[12:43:50] FO_PlayerData carregado com sucesso.
+[12:43:50] FO_PlayerStats carregado com sucesso.
+[12:43:50] FO_Inventory carregado com sucesso.
+[12:43:50] FO_EquipmentSystem carregado com sucesso.
+[12:43:50] FO_ItemDatabase carregado com sucesso.
+[12:43:50] FO_CombatSystem carregado com sucesso.
+[12:43:50] FO_TargetSystem carregado com sucesso.
+[12:43:50] FO_AutoAttackSystem carregado com sucesso.
+[12:43:50] FO_EnemySystem carregado com sucesso.
+[12:43:50] FO_AISystem carregado com sucesso.
+[12:43:50] FO_MapEntitySystem carregado com sucesso.
+[12:43:50] FO_EntityVisualSystem carregado com sucesso.
+[12:43:50] FO_TargetVisualSystem carregado com sucesso.
+[12:43:50] FO_FloatingDamageSystem carregado com sucesso.
+[12:43:50] FO_EntityRuntimeSystem carregado com sucesso.
+[12:43:51] NPC registrado: @Blacksmith
+[12:43:51] Mob registrado: $Ghost
+[12:43:51] Boss registrado: !DragonBoss
+[12:43:51] Quest registrada: ?Quest_Inicial
+[12:43:51] Mapa escaneado: 4 entidades encontradas.
+[12:43:51] Runtime criado: Blacksmith
+[12:43:51] Runtime criado: Ghost
+[12:43:51] Runtime criado: DragonBoss
+[12:43:51] Runtime criado: Quest_Inicial
+[12:43:51] Runtimes inicializados.
+[12:43:51] Visual criado para Blacksmith
+[12:43:51] Visual criado para Ghost
+[12:43:51] Visual criado para DragonBoss
+[12:43:51] Visual criado para Quest_Inicial
+[12:43:51] Visuais inicializados.
+[12:43:53] Target selecionado: Ghost
+[12:43:53] Ghost recebeu 25 de dano. HP: 75/100
+[12:43:53] Ghost recebeu 25 de dano. HP: 50/100
+[12:43:53] Player atacou Ghost causando 25.
+[12:43:54] Target selecionado: Ghost
+[12:43:54] Ghost recebeu 25 de dano. HP: 25/100
+[12:43:54] Ghost recebeu 25 de dano. HP: 0/100
+[12:43:54] Target limpo.
+[12:43:54] Target limpo porque Ghost morreu.
+[12:43:54] Ghost morreu.
+[12:43:54] Player atacou Ghost causando 25.
+[12:46:50] FO_Settings carregado com sucesso.
+[12:46:50] FO_Debug carregado com sucesso.
+[12:46:50] FO_DataManager carregado com sucesso.
+[12:46:50] FO_DeveloperMode carregado com sucesso.
+[12:46:50] ========================================
+[12:46:50] FIELDS ONLINE ENGINE BOOT
+[12:46:50] Versão 1.3.0
+[12:46:50] Inicializando engine...
+[12:46:50] Sistema registrado: FO_PlayerData
+[12:46:50] Sistema registrado: FO_PlayerStats
+[12:46:50] Sistema registrado: FO_Inventory
+[12:46:50] Sistema registrado: FO_EquipmentSystem
+[12:46:50] Sistema registrado: FO_ItemDatabase
+[12:46:50] Sistema registrado: FO_CombatSystem
+[12:46:50] Sistema registrado: FO_EnemySystem
+[12:46:50] Sistema registrado: FO_TargetSystem
+[12:46:50] Sistema registrado: FO_AISystem
+[12:46:50] Sistema registrado: FO_MapEntitySystem
+[12:46:50] Sistema registrado: FO_EntityRuntimeSystem
+[12:46:50] Sistema registrado: FO_EntityVisualSystem
+[12:46:50] Sistema registrado: FO_FloatingDamageSystem
+[12:46:50] Engine iniciada com sucesso.
+[12:46:50] ========================================
+[12:46:50] FO_PlayerData carregado com sucesso.
+[12:46:50] FO_PlayerStats carregado com sucesso.
+[12:46:50] FO_Inventory carregado com sucesso.
+[12:46:50] FO_EquipmentSystem carregado com sucesso.
+[12:46:50] FO_ItemDatabase carregado com sucesso.
+[12:46:50] FO_CombatSystem carregado com sucesso.
+[12:46:50] FO_TargetSystem carregado com sucesso.
+[12:46:50] FO_AutoAttackSystem carregado com sucesso.
+[12:46:50] FO_EnemySystem carregado com sucesso.
+[12:46:50] FO_AISystem carregado com sucesso.
+[12:46:50] FO_MapEntitySystem carregado com sucesso.
+[12:46:50] FO_EntityVisualSystem carregado com sucesso.
+[12:46:50] FO_TargetVisualSystem carregado com sucesso.
+[12:46:50] FO_FloatingDamageSystem carregado com sucesso.
+[12:46:50] FO_EntityRuntimeSystem carregado com sucesso.
+[12:46:52] NPC registrado: @Blacksmith
+[12:46:52] Mob registrado: $Ghost
+[12:46:52] Boss registrado: !DragonBoss
+[12:46:52] Quest registrada: ?Quest_Inicial
+[12:46:52] Mapa escaneado: 4 entidades encontradas.
+[12:46:52] Runtime criado: Blacksmith
+[12:46:52] Runtime criado: Ghost
+[12:46:52] Runtime criado: DragonBoss
+[12:46:52] Runtime criado: Quest_Inicial
+[12:46:52] Runtimes inicializados.
+[12:46:52] Visual criado para Blacksmith
+[12:46:52] Visual criado para Ghost
+[12:46:52] Visual criado para DragonBoss
+[12:46:52] Visual criado para Quest_Inicial
+[12:46:52] Visuais inicializados.
+[12:46:59] Target selecionado: Ghost
+[12:46:59] Ghost recebeu 25 de dano. HP: 75/100
+[12:46:59] Ghost recebeu 25 de dano. HP: 50/100
+[12:46:59] Player atacou Ghost causando 25.
+[12:47:01] Ghost recebeu 25 de dano. HP: 25/100
+[12:47:01] Player atacou Ghost causando 25.
+[12:47:02] Ghost recebeu 25 de dano. HP: 0/100
+[12:47:02] Target limpo.
+[12:47:02] Target limpo porque Ghost morreu.
+[12:47:02] Ghost morreu.
+[12:47:02] Player atacou Ghost causando 25.
+[12:47:10] Ghost renasceu em 1, 8.
+[12:47:15] Target selecionado: Ghost
+[12:47:15] Ghost recebeu 25 de dano. HP: 75/100
+[12:47:15] Ghost recebeu 25 de dano. HP: 50/100
+[12:47:15] Player atacou Ghost causando 25.
+[12:47:16] Ghost recebeu 25 de dano. HP: 25/100
+[12:47:16] Player atacou Ghost causando 25.
+[12:47:18] Ghost recebeu 25 de dano. HP: 0/100
+[12:47:18] Target limpo.
+[12:47:18] Target limpo porque Ghost morreu.
+[12:47:18] Ghost morreu.
+[12:47:18] Player atacou Ghost causando 25.
+[12:47:25] Ghost renasceu em 4, 5.
+[12:50:31] FO_Settings carregado com sucesso.
+[12:50:31] FO_Debug carregado com sucesso.
+[12:50:31] FO_DataManager carregado com sucesso.
+[12:50:31] FO_DeveloperMode carregado com sucesso.
+[12:50:31] ========================================
+[12:50:31] FIELDS ONLINE ENGINE BOOT
+[12:50:31] Versão 1.3.0
+[12:50:31] Inicializando engine...
+[12:50:31] Sistema registrado: FO_PlayerData
+[12:50:31] Sistema registrado: FO_PlayerStats
+[12:50:31] Sistema registrado: FO_Inventory
+[12:50:31] Sistema registrado: FO_EquipmentSystem
+[12:50:31] Sistema registrado: FO_ItemDatabase
+[12:50:31] Sistema registrado: FO_CombatSystem
+[12:50:31] Sistema registrado: FO_EnemySystem
+[12:50:31] Sistema registrado: FO_TargetSystem
+[12:50:31] Sistema registrado: FO_AISystem
+[12:50:31] Sistema registrado: FO_MapEntitySystem
+[12:50:31] Sistema registrado: FO_EntityRuntimeSystem
+[12:50:31] Sistema registrado: FO_EntityVisualSystem
+[12:50:31] Sistema registrado: FO_FloatingDamageSystem
+[12:50:31] Engine iniciada com sucesso.
+[12:50:31] ========================================
+[12:50:31] FO_PlayerData carregado com sucesso.
+[12:50:31] FO_PlayerStats carregado com sucesso.
+[12:50:31] FO_Inventory carregado com sucesso.
+[12:50:31] FO_EquipmentSystem carregado com sucesso.
+[12:50:31] FO_ItemDatabase carregado com sucesso.
+[12:50:31] FO_CombatSystem carregado com sucesso.
+[12:50:31] FO_TargetSystem carregado com sucesso.
+[12:50:31] FO_AutoAttackSystem carregado com sucesso.
+[12:50:31] FO_MobAISystem carregado com sucesso.
+[12:50:31] FO_EnemySystem carregado com sucesso.
+[12:50:31] FO_AISystem carregado com sucesso.
+[12:50:31] FO_MapEntitySystem carregado com sucesso.
+[12:50:31] FO_EntityVisualSystem carregado com sucesso.
+[12:50:31] FO_TargetVisualSystem carregado com sucesso.
+[12:50:31] FO_FloatingDamageSystem carregado com sucesso.
+[12:50:31] FO_EntityRuntimeSystem carregado com sucesso.
+[12:50:32] NPC registrado: @Blacksmith
+[12:50:32] Mob registrado: $Ghost
+[12:50:32] Boss registrado: !DragonBoss
+[12:50:32] Quest registrada: ?Quest_Inicial
+[12:50:32] Mapa escaneado: 4 entidades encontradas.
+[12:50:32] Runtime criado: Blacksmith
+[12:50:32] Runtime criado: Ghost
+[12:50:32] Runtime criado: DragonBoss
+[12:50:32] Runtime criado: Quest_Inicial
+[12:50:32] Runtimes inicializados.
+[12:50:32] Visual criado para Blacksmith
+[12:50:32] Visual criado para Ghost
+[12:50:33] Visual criado para DragonBoss
+[12:50:33] Visual criado para Quest_Inicial
+[12:50:33] Visuais inicializados.
+[12:51:37] Target selecionado: Ghost
+[12:51:37] Ghost recebeu 25 de dano. HP: 75/100
+[12:51:37] Ghost recebeu 25 de dano. HP: 50/100
+[12:51:37] Player atacou Ghost causando 25.
+[12:51:39] Ghost recebeu 25 de dano. HP: 25/100
+[12:51:39] Player atacou Ghost causando 25.
+[12:51:40] Ghost recebeu 25 de dano. HP: 0/100
+[12:51:40] Target limpo.
+[12:51:40] Target limpo porque Ghost morreu.
+[12:51:40] Ghost morreu.
+[12:51:40] Player atacou Ghost causando 25.
+[12:55:19] FO_Settings carregado com sucesso.
+[12:55:19] FO_Debug carregado com sucesso.
+[12:55:19] FO_DataManager carregado com sucesso.
+[12:55:19] FO_DeveloperMode carregado com sucesso.
+[12:55:19] ========================================
+[12:55:19] FIELDS ONLINE ENGINE BOOT
+[12:55:19] Versão 1.3.0
+[12:55:19] Inicializando engine...
+[12:55:19] Sistema registrado: FO_PlayerData
+[12:55:19] Sistema registrado: FO_PlayerStats
+[12:55:19] Sistema registrado: FO_Inventory
+[12:55:19] Sistema registrado: FO_EquipmentSystem
+[12:55:19] Sistema registrado: FO_ItemDatabase
+[12:55:19] Sistema registrado: FO_CombatSystem
+[12:55:19] Sistema registrado: FO_EnemySystem
+[12:55:19] Sistema registrado: FO_TargetSystem
+[12:55:19] Sistema registrado: FO_AISystem
+[12:55:19] Sistema registrado: FO_MapEntitySystem
+[12:55:19] Sistema registrado: FO_EntityRuntimeSystem
+[12:55:19] Sistema registrado: FO_EntityVisualSystem
+[12:55:19] Sistema registrado: FO_FloatingDamageSystem
+[12:55:19] Engine iniciada com sucesso.
+[12:55:19] ========================================
+[12:55:19] FO_PlayerData carregado com sucesso.
+[12:55:19] FO_PlayerStats carregado com sucesso.
+[12:55:19] FO_Inventory carregado com sucesso.
+[12:55:19] FO_EquipmentSystem carregado com sucesso.
+[12:55:19] FO_ItemDatabase carregado com sucesso.
+[12:55:19] FO_CombatSystem carregado com sucesso.
+[12:55:19] FO_TargetSystem carregado com sucesso.
+[12:55:19] FO_AutoAttackSystem carregado com sucesso.
+[12:55:19] FO_MobAISystem carregado com sucesso.
+[12:55:19] FO_EnemySystem carregado com sucesso.
+[12:55:19] FO_AISystem carregado com sucesso.
+[12:55:19] FO_MapEntitySystem carregado com sucesso.
+[12:55:19] FO_EntityVisualSystem carregado com sucesso.
+[12:55:19] FO_TargetVisualSystem carregado com sucesso.
+[12:55:19] FO_FloatingDamageSystem carregado com sucesso.
+[12:55:19] FO_EntityRuntimeSystem carregado com sucesso.
+[12:55:20] NPC registrado: @Blacksmith
+[12:55:20] Mob registrado: $Ghost
+[12:55:20] Boss registrado: !DragonBoss
+[12:55:20] Quest registrada: ?Quest_Inicial
+[12:55:20] Mapa escaneado: 4 entidades encontradas.
+[12:55:20] Runtime criado: Blacksmith
+[12:55:20] Runtime criado: Ghost
+[12:55:20] Runtime criado: DragonBoss
+[12:55:20] Runtime criado: Quest_Inicial
+[12:55:20] Runtimes inicializados.
+[12:55:20] Visual criado para Blacksmith
+[12:55:20] Visual criado para Ghost
+[12:55:20] Visual criado para DragonBoss
+[12:55:20] Visual criado para Quest_Inicial
+[12:55:20] Visuais inicializados.
+[12:55:23] Target selecionado: Ghost
+[12:55:23] Ghost recebeu 25 de dano. HP: 75/100
+[12:55:24] Ghost recebeu 25 de dano. HP: 50/100
+[12:55:24] Player atacou Ghost causando 25.
+[12:55:25] Ghost recebeu 25 de dano. HP: 25/100
+[12:55:25] Player atacou Ghost causando 25.
+[12:55:27] Ghost recebeu 25 de dano. HP: 0/100
+[12:55:27] Target limpo.
+[12:55:27] Target limpo porque Ghost morreu.
+[12:55:27] Ghost morreu.
+[12:55:27] Player atacou Ghost causando 25.
+[12:55:34] Ghost renasceu em 1, 12.
+[12:55:37] Target selecionado: Ghost
+[12:55:37] Ghost recebeu 25 de dano. HP: 75/100
+[12:55:37] Ghost recebeu 25 de dano. HP: 50/100
+[12:55:37] Player atacou Ghost causando 25.
+[12:55:38] Ghost recebeu 25 de dano. HP: 25/100
+[12:55:38] Player atacou Ghost causando 25.
+[12:55:40] Ghost recebeu 25 de dano. HP: 0/100
+[12:55:40] Target limpo.
+[12:55:40] Target limpo porque Ghost morreu.
+[12:55:40] Ghost morreu.
+[12:55:40] Player atacou Ghost causando 25.
+[12:55:47] Ghost renasceu em 3, 10.
+[12:55:52] Target selecionado: Ghost
+[12:55:52] Ghost recebeu 25 de dano. HP: 75/100
+[12:55:52] Ghost recebeu 25 de dano. HP: 50/100
+[12:55:52] Player atacou Ghost causando 25.
+[12:55:55] Ghost recebeu 25 de dano. HP: 25/100
+[12:55:55] Player atacou Ghost causando 25.
+[12:55:57] Ghost recebeu 25 de dano. HP: 0/100
+[12:55:57] Target limpo.
+[12:55:57] Target limpo porque Ghost morreu.
+[12:55:57] Ghost morreu.
+[12:55:57] Player atacou Ghost causando 25.
+[12:56:04] Ghost renasceu em 4, 12.
+[13:00:05] FO_Settings carregado com sucesso.
+[13:00:05] FO_Debug carregado com sucesso.
+[13:00:05] FO_DataManager carregado com sucesso.
+[13:00:05] FO_DeveloperMode carregado com sucesso.
+[13:00:05] ========================================
+[13:00:05] FIELDS ONLINE ENGINE BOOT
+[13:00:05] Versão 1.3.0
+[13:00:05] Inicializando engine...
+[13:00:05] Sistema registrado: FO_PlayerData
+[13:00:05] Sistema registrado: FO_PlayerStats
+[13:00:05] Sistema registrado: FO_Inventory
+[13:00:05] Sistema registrado: FO_EquipmentSystem
+[13:00:05] Sistema registrado: FO_ItemDatabase
+[13:00:05] Sistema registrado: FO_CombatSystem
+[13:00:05] Sistema registrado: FO_EnemySystem
+[13:00:05] Sistema registrado: FO_TargetSystem
+[13:00:05] Sistema registrado: FO_AISystem
+[13:00:05] Sistema registrado: FO_MapEntitySystem
+[13:00:05] Sistema registrado: FO_EntityRuntimeSystem
+[13:00:05] Sistema registrado: FO_EntityVisualSystem
+[13:00:05] Sistema registrado: FO_FloatingDamageSystem
+[13:00:05] Engine iniciada com sucesso.
+[13:00:05] ========================================
+[13:00:05] FO_PlayerData carregado com sucesso.
+[13:00:05] FO_PlayerStats carregado com sucesso.
+[13:00:05] FO_Inventory carregado com sucesso.
+[13:00:05] FO_EquipmentSystem carregado com sucesso.
+[13:00:05] FO_ItemDatabase carregado com sucesso.
+[13:00:05] FO_CombatSystem carregado com sucesso.
+[13:00:05] FO_TargetSystem carregado com sucesso.
+[13:00:05] FO_AutoAttackSystem carregado com sucesso.
+[13:00:05] FO_MobAISystem carregado com sucesso.
+[13:00:05] FO_EnemySystem carregado com sucesso.
+[13:00:05] FO_AISystem carregado com sucesso.
+[13:00:05] FO_MapEntitySystem carregado com sucesso.
+[13:00:05] FO_EntityVisualSystem carregado com sucesso.
+[13:00:05] FO_TargetVisualSystem carregado com sucesso.
+[13:00:05] FO_FloatingDamageSystem carregado com sucesso.
+[13:00:05] FO_EntityRuntimeSystem carregado com sucesso.
+[13:00:06] NPC registrado: @Blacksmith
+[13:00:06] Mob registrado: $Ghost
+[13:00:06] Boss registrado: !DragonBoss
+[13:00:06] Quest registrada: ?Quest_Inicial
+[13:00:06] Mapa escaneado: 4 entidades encontradas.
+[13:00:07] Runtime criado: Blacksmith
+[13:00:07] Runtime criado: Ghost
+[13:00:07] Runtime criado: DragonBoss
+[13:00:07] Runtime criado: Quest_Inicial
+[13:00:07] Runtimes inicializados.
+[13:00:07] Visual criado para Blacksmith
+[13:00:07] Visual criado para Ghost
+[13:00:07] Visual criado para DragonBoss
+[13:00:07] Visual criado para Quest_Inicial
+[13:00:07] Visuais inicializados.
+[13:00:08] Target selecionado: Ghost
+[13:00:08] Ghost recebeu 25 de dano. HP: 75/100
+[13:00:08] Ghost recebeu 25 de dano. HP: 50/100
+[13:00:08] Player atacou Ghost causando 25.
+[13:00:10] Ghost recebeu 25 de dano. HP: 25/100
+[13:00:10] Player atacou Ghost causando 25.
+[13:00:11] Ghost recebeu 25 de dano. HP: 0/100
+[13:00:11] Target limpo.
+[13:00:11] Target limpo porque Ghost morreu.
+[13:00:11] Ghost morreu.
+[13:00:11] Player atacou Ghost causando 25.
+[13:00:19] Ghost renasceu em 3, 7.
+[13:00:21] Target selecionado: Ghost
+[13:00:21] Ghost recebeu 25 de dano. HP: 75/100
+[13:00:21] Ghost recebeu 25 de dano. HP: 50/100
+[13:00:21] Player atacou Ghost causando 25.
+[13:01:15] FO_Settings carregado com sucesso.
+[13:01:15] FO_Debug carregado com sucesso.
+[13:01:15] FO_DataManager carregado com sucesso.
+[13:01:15] FO_DeveloperMode carregado com sucesso.
+[13:01:15] ========================================
+[13:01:15] FIELDS ONLINE ENGINE BOOT
+[13:01:15] Versão 1.3.0
+[13:01:15] Inicializando engine...
+[13:01:15] Sistema registrado: FO_PlayerData
+[13:01:15] Sistema registrado: FO_PlayerStats
+[13:01:15] Sistema registrado: FO_Inventory
+[13:01:15] Sistema registrado: FO_EquipmentSystem
+[13:01:15] Sistema registrado: FO_ItemDatabase
+[13:01:15] Sistema registrado: FO_CombatSystem
+[13:01:15] Sistema registrado: FO_EnemySystem
+[13:01:15] Sistema registrado: FO_TargetSystem
+[13:01:15] Sistema registrado: FO_AISystem
+[13:01:15] Sistema registrado: FO_MapEntitySystem
+[13:01:15] Sistema registrado: FO_EntityRuntimeSystem
+[13:01:15] Sistema registrado: FO_EntityVisualSystem
+[13:01:15] Sistema registrado: FO_FloatingDamageSystem
+[13:01:15] Engine iniciada com sucesso.
+[13:01:15] ========================================
+[13:01:15] FO_PlayerData carregado com sucesso.
+[13:01:15] FO_PlayerStats carregado com sucesso.
+[13:01:15] FO_Inventory carregado com sucesso.
+[13:01:15] FO_EquipmentSystem carregado com sucesso.
+[13:01:15] FO_ItemDatabase carregado com sucesso.
+[13:01:15] FO_CombatSystem carregado com sucesso.
+[13:01:15] FO_TargetSystem carregado com sucesso.
+[13:01:15] FO_AutoAttackSystem carregado com sucesso.
+[13:01:15] FO_MobAISystem carregado com sucesso.
+[13:01:15] FO_EnemySystem carregado com sucesso.
+[13:01:15] FO_AISystem carregado com sucesso.
+[13:01:15] FO_MapEntitySystem carregado com sucesso.
+[13:01:15] FO_EntityVisualSystem carregado com sucesso.
+[13:01:15] FO_TargetVisualSystem carregado com sucesso.
+[13:01:15] FO_FloatingDamageSystem carregado com sucesso.
+[13:01:15] FO_EntityRuntimeSystem carregado com sucesso.
+[13:01:16] NPC registrado: @Blacksmith
+[13:01:16] Mob registrado: $Ghost
+[13:01:16] Boss registrado: !DragonBoss
+[13:01:16] Quest registrada: ?Quest_Inicial
+[13:01:16] Mapa escaneado: 4 entidades encontradas.
+[13:01:16] Runtime criado: Blacksmith
+[13:01:16] Runtime criado: Ghost
+[13:01:16] Runtime criado: DragonBoss
+[13:01:16] Runtime criado: Quest_Inicial
+[13:01:16] Runtimes inicializados.
+[13:01:16] Visual criado para Blacksmith
+[13:01:16] Visual criado para Ghost
+[13:01:16] Visual criado para DragonBoss
+[13:01:16] Visual criado para Quest_Inicial
+[13:01:16] Visuais inicializados.
+[13:01:17] Target selecionado: Ghost
+[13:01:17] Ghost recebeu 25 de dano. HP: 75/100
+[13:01:17] Ghost recebeu 25 de dano. HP: 50/100
+[13:01:17] Player atacou Ghost causando 25.
+[13:04:28] FO_Settings carregado com sucesso.
+[13:04:28] FO_Debug carregado com sucesso.
+[13:04:28] FO_DataManager carregado com sucesso.
+[13:04:28] FO_DeveloperMode carregado com sucesso.
+[13:04:28] ========================================
+[13:04:28] FIELDS ONLINE ENGINE BOOT
+[13:04:28] Versão 1.3.0
+[13:04:28] Inicializando engine...
+[13:04:28] Sistema registrado: FO_PlayerData
+[13:04:28] Sistema registrado: FO_PlayerStats
+[13:04:28] Sistema registrado: FO_Inventory
+[13:04:28] Sistema registrado: FO_EquipmentSystem
+[13:04:28] Sistema registrado: FO_ItemDatabase
+[13:04:28] Sistema registrado: FO_CombatSystem
+[13:04:28] Sistema registrado: FO_EnemySystem
+[13:04:28] Sistema registrado: FO_TargetSystem
+[13:04:28] Sistema registrado: FO_AISystem
+[13:04:28] Sistema registrado: FO_MapEntitySystem
+[13:04:28] Sistema registrado: FO_EntityRuntimeSystem
+[13:04:28] Sistema registrado: FO_EntityVisualSystem
+[13:04:28] Sistema registrado: FO_FloatingDamageSystem
+[13:04:28] Engine iniciada com sucesso.
+[13:04:28] ========================================
+[13:04:28] FO_PlayerData carregado com sucesso.
+[13:04:28] FO_PlayerStats carregado com sucesso.
+[13:04:28] FO_Inventory carregado com sucesso.
+[13:04:28] FO_EquipmentSystem carregado com sucesso.
+[13:04:28] FO_ItemDatabase carregado com sucesso.
+[13:04:28] FO_CombatSystem carregado com sucesso.
+[13:04:28] FO_TargetSystem carregado com sucesso.
+[13:04:28] FO_AutoAttackSystem carregado com sucesso.
+[13:04:28] FO_MobAISystem carregado com sucesso.
+[13:04:28] FO_EnemySystem carregado com sucesso.
+[13:04:28] FO_AISystem carregado com sucesso.
+[13:04:28] FO_MapEntitySystem carregado com sucesso.
+[13:04:28] FO_EntityVisualSystem carregado com sucesso.
+[13:04:28] FO_TargetVisualSystem carregado com sucesso.
+[13:04:28] FO_FloatingDamageSystem carregado com sucesso.
+[13:04:28] FO_EntityRuntimeSystem carregado com sucesso.
+[13:04:29] NPC registrado: @Blacksmith
+[13:04:29] Mob registrado: $Ghost
+[13:04:29] Boss registrado: !DragonBoss
+[13:04:29] Quest registrada: ?Quest_Inicial
+[13:04:29] Mapa escaneado: 4 entidades encontradas.
+[13:04:29] Runtime criado: Blacksmith
+[13:04:29] Runtime criado: Ghost
+[13:04:29] Runtime criado: DragonBoss
+[13:04:29] Runtime criado: Quest_Inicial
+[13:04:29] Runtimes inicializados.
+[13:04:29] Visual criado para Blacksmith
+[13:04:29] Visual criado para Ghost
+[13:04:29] Visual criado para DragonBoss
+[13:04:29] Visual criado para Quest_Inicial
+[13:04:29] Visuais inicializados.
+[13:04:31] Target selecionado: Ghost
+[13:04:31] Ghost recebeu 25 de dano. HP: 75/100
+[13:04:31] Ghost recebeu 25 de dano. HP: 50/100
+[13:04:31] Player atacou Ghost causando 25.
+[13:04:34] Target limpo.
+[13:04:34] Ghost retornou ao spawn e saiu de combate.
+[13:12:58] FO_Settings carregado com sucesso.
+[13:12:58] FO_Debug carregado com sucesso.
+[13:12:58] FO_DataManager carregado com sucesso.
+[13:12:58] FO_DeveloperMode carregado com sucesso.
+[13:12:58] ========================================
+[13:12:58] FIELDS ONLINE ENGINE BOOT
+[13:12:58] Versão 1.3.0
+[13:12:58] Inicializando engine...
+[13:12:58] Sistema registrado: FO_PlayerData
+[13:12:58] Sistema registrado: FO_PlayerStats
+[13:12:58] Sistema registrado: FO_Inventory
+[13:12:58] Sistema registrado: FO_EquipmentSystem
+[13:12:58] Sistema registrado: FO_ItemDatabase
+[13:12:58] Sistema registrado: FO_CombatSystem
+[13:12:58] Sistema registrado: FO_EnemySystem
+[13:12:58] Sistema registrado: FO_TargetSystem
+[13:12:58] Sistema registrado: FO_AISystem
+[13:12:58] Sistema registrado: FO_MapEntitySystem
+[13:12:58] Sistema registrado: FO_EntityRuntimeSystem
+[13:12:58] Sistema registrado: FO_EntityVisualSystem
+[13:12:58] Sistema registrado: FO_FloatingDamageSystem
+[13:12:58] Engine iniciada com sucesso.
+[13:12:58] ========================================
+[13:12:58] FO_PlayerData carregado com sucesso.
+[13:12:58] FO_PlayerStats carregado com sucesso.
+[13:12:58] FO_Inventory carregado com sucesso.
+[13:12:58] FO_EquipmentSystem carregado com sucesso.
+[13:12:58] FO_ItemDatabase carregado com sucesso.
+[13:12:58] FO_CombatSystem carregado com sucesso.
+[13:12:58] FO_TargetSystem carregado com sucesso.
+[13:12:58] FO_AutoAttackSystem carregado com sucesso.
+[13:12:58] FO_MobAISystem carregado com sucesso.
+[13:12:58] FO_EnemySystem carregado com sucesso.
+[13:12:58] FO_AISystem carregado com sucesso.
+[13:12:58] FO_MapEntitySystem carregado com sucesso.
+[13:12:58] FO_EntityVisualSystem carregado com sucesso.
+[13:12:58] FO_TargetVisualSystem carregado com sucesso.
+[13:12:58] FO_FloatingDamageSystem carregado com sucesso.
+[13:12:58] FO_EntityRuntimeSystem carregado com sucesso.
+[13:12:59] NPC registrado: @Blacksmith
+[13:12:59] Mob registrado: $Ghost
+[13:12:59] Boss registrado: !DragonBoss
+[13:12:59] Quest registrada: ?Quest_Inicial
+[13:12:59] Mapa escaneado: 4 entidades encontradas.
+[13:12:59] Runtime criado: Blacksmith
+[13:12:59] Runtime criado: Ghost
+[13:12:59] Runtime criado: DragonBoss
+[13:12:59] Runtime criado: Quest_Inicial
+[13:12:59] Runtimes inicializados.
+[13:12:59] Visual criado para Blacksmith
+[13:12:59] Visual criado para Ghost
+[13:12:59] Visual criado para DragonBoss
+[13:12:59] Visual criado para Quest_Inicial
+[13:12:59] Visuais inicializados.
+[13:13:01] Target selecionado: Ghost
+[13:13:01] Ghost recebeu 25 de dano. HP: 75/100
+[13:13:01] Ghost recebeu 25 de dano. HP: 50/100
+[13:13:01] Player atacou Ghost causando 25.
+[13:13:03] Target limpo.
+[13:13:03] Ghost saiu de combate.
+[13:13:03] Ghost saiu de combate.
+[13:13:03] Ghost saiu de combate.
+[13:13:03] Ghost saiu de combate.
+[13:13:03] Ghost saiu de combate.
+[13:13:03] Ghost saiu de combate.
+[13:13:03] Ghost saiu de combate.
+[13:13:03] Ghost saiu de combate.
+[13:13:03] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:04] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:05] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:06] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:07] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:08] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:09] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:10] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:11] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:12] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:13] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:14] Ghost saiu de combate.
+[13:13:15] Ghost saiu de combate.
+[13:13:16] Ghost saiu de combate.
+[13:13:16] Ghost saiu de combate.
+[13:13:16] Ghost saiu de combate.
+[13:13:16] Ghost saiu de combate.
+[13:13:16] Ghost saiu de combate.
+[13:13:16] Ghost saiu de combate.
+[13:13:16] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:17] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:18] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:19] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:20] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:21] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:22] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:23] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:24] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:25] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:26] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:27] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:28] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:29] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:30] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:31] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:32] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:33] Ghost saiu de combate.
+[13:13:37] Target selecionado: Ghost
+[13:13:37] Ghost recebeu 25 de dano. HP: 25/100
+[13:13:37] Ghost recebeu 25 de dano. HP: 0/100
+[13:13:37] Target limpo.
+[13:13:37] Target limpo porque Ghost morreu.
+[13:13:37] Ghost morreu.
+[13:13:37] Player atacou Ghost causando 25.
+[13:13:44] Ghost renasceu em 40, 5.
+[13:13:44] Ghost saiu de combate.
+[13:13:59] Target selecionado: Ghost
+[13:13:59] Ghost recebeu 25 de dano. HP: 75/100
+[13:13:59] Ghost recebeu 25 de dano. HP: 50/100
+[13:13:59] Player atacou Ghost causando 25.
+[13:14:02] Target limpo.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:02] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:03] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:04] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:05] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:06] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:07] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:08] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:09] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:10] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:11] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:12] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:13] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:14] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:15] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:14:16] Ghost saiu de combate.
+[13:18:11] FO_Settings carregado com sucesso.
+[13:18:11] FO_Debug carregado com sucesso.
+[13:18:11] FO_DataManager carregado com sucesso.
+[13:18:11] FO_DeveloperMode carregado com sucesso.
+[13:18:11] ========================================
+[13:18:11] FIELDS ONLINE ENGINE BOOT
+[13:18:11] Versão 1.3.0
+[13:18:11] Inicializando engine...
+[13:18:11] Sistema registrado: FO_PlayerData
+[13:18:11] Sistema registrado: FO_PlayerStats
+[13:18:11] Sistema registrado: FO_Inventory
+[13:18:11] Sistema registrado: FO_EquipmentSystem
+[13:18:11] Sistema registrado: FO_ItemDatabase
+[13:18:11] Sistema registrado: FO_CombatSystem
+[13:18:11] Sistema registrado: FO_EnemySystem
+[13:18:11] Sistema registrado: FO_TargetSystem
+[13:18:11] Sistema registrado: FO_AISystem
+[13:18:11] Sistema registrado: FO_MapEntitySystem
+[13:18:11] Sistema registrado: FO_EntityRuntimeSystem
+[13:18:11] Sistema registrado: FO_EntityVisualSystem
+[13:18:11] Sistema registrado: FO_FloatingDamageSystem
+[13:18:11] Engine iniciada com sucesso.
+[13:18:11] ========================================
+[13:18:11] FO_PlayerData carregado com sucesso.
+[13:18:11] FO_PlayerStats carregado com sucesso.
+[13:18:11] FO_Inventory carregado com sucesso.
+[13:18:11] FO_EquipmentSystem carregado com sucesso.
+[13:18:11] FO_ItemDatabase carregado com sucesso.
+[13:18:11] FO_CombatSystem carregado com sucesso.
+[13:18:11] FO_TargetSystem carregado com sucesso.
+[13:18:11] FO_AutoAttackSystem carregado com sucesso.
+[13:18:11] FO_MobAISystem carregado com sucesso.
+[13:18:11] FO_EnemySystem carregado com sucesso.
+[13:18:11] FO_AISystem carregado com sucesso.
+[13:18:11] FO_MapEntitySystem carregado com sucesso.
+[13:18:11] FO_EntityVisualSystem carregado com sucesso.
+[13:18:11] FO_TargetVisualSystem carregado com sucesso.
+[13:18:11] FO_FloatingDamageSystem carregado com sucesso.
+[13:18:11] FO_EntityRuntimeSystem carregado com sucesso.
+[13:18:12] NPC registrado: @Blacksmith
+[13:18:12] Mob registrado: $Ghost
+[13:18:12] Boss registrado: !DragonBoss
+[13:18:12] Quest registrada: ?Quest_Inicial
+[13:18:12] Mapa escaneado: 4 entidades encontradas.
+[13:18:12] Runtime criado: Blacksmith
+[13:18:12] Runtime criado: Ghost
+[13:18:12] Runtime criado: DragonBoss
+[13:18:12] Runtime criado: Quest_Inicial
+[13:18:12] Runtimes inicializados.
+[13:18:12] Visual criado para Blacksmith
+[13:18:12] Visual criado para Ghost
+[13:18:12] Visual criado para DragonBoss
+[13:18:12] Visual criado para Quest_Inicial
+[13:18:12] Visuais inicializados.
+[13:18:14] Target selecionado: Ghost
+[13:18:14] Ghost recebeu 25 de dano. HP: 75/100
+[13:18:14] Ghost entrou em combate.
+[13:18:37] FO_Settings carregado com sucesso.
+[13:18:37] FO_Debug carregado com sucesso.
+[13:18:37] FO_DataManager carregado com sucesso.
+[13:18:37] FO_DeveloperMode carregado com sucesso.
+[13:18:37] ========================================
+[13:18:37] FIELDS ONLINE ENGINE BOOT
+[13:18:37] Versão 1.3.0
+[13:18:37] Inicializando engine...
+[13:18:37] Sistema registrado: FO_PlayerData
+[13:18:37] Sistema registrado: FO_PlayerStats
+[13:18:37] Sistema registrado: FO_Inventory
+[13:18:37] Sistema registrado: FO_EquipmentSystem
+[13:18:37] Sistema registrado: FO_ItemDatabase
+[13:18:37] Sistema registrado: FO_CombatSystem
+[13:18:37] Sistema registrado: FO_EnemySystem
+[13:18:37] Sistema registrado: FO_TargetSystem
+[13:18:37] Sistema registrado: FO_AISystem
+[13:18:37] Sistema registrado: FO_MapEntitySystem
+[13:18:37] Sistema registrado: FO_EntityRuntimeSystem
+[13:18:37] Sistema registrado: FO_EntityVisualSystem
+[13:18:37] Sistema registrado: FO_FloatingDamageSystem
+[13:18:37] Engine iniciada com sucesso.
+[13:18:37] ========================================
+[13:18:37] FO_PlayerData carregado com sucesso.
+[13:18:37] FO_PlayerStats carregado com sucesso.
+[13:18:37] FO_Inventory carregado com sucesso.
+[13:18:37] FO_EquipmentSystem carregado com sucesso.
+[13:18:37] FO_ItemDatabase carregado com sucesso.
+[13:18:37] FO_CombatSystem carregado com sucesso.
+[13:18:37] FO_TargetSystem carregado com sucesso.
+[13:18:37] FO_AutoAttackSystem carregado com sucesso.
+[13:18:37] FO_MobAISystem carregado com sucesso.
+[13:18:37] FO_EnemySystem carregado com sucesso.
+[13:18:37] FO_AISystem carregado com sucesso.
+[13:18:37] FO_MapEntitySystem carregado com sucesso.
+[13:18:37] FO_EntityVisualSystem carregado com sucesso.
+[13:18:37] FO_TargetVisualSystem carregado com sucesso.
+[13:18:37] FO_FloatingDamageSystem carregado com sucesso.
+[13:18:37] FO_EntityRuntimeSystem carregado com sucesso.
+[13:18:38] NPC registrado: @Blacksmith
+[13:18:38] Mob registrado: $Ghost
+[13:18:38] Boss registrado: !DragonBoss
+[13:18:38] Quest registrada: ?Quest_Inicial
+[13:18:38] Mapa escaneado: 4 entidades encontradas.
+[13:18:38] Runtime criado: Blacksmith
+[13:18:38] Runtime criado: Ghost
+[13:18:38] Runtime criado: DragonBoss
+[13:18:38] Runtime criado: Quest_Inicial
+[13:18:38] Runtimes inicializados.
+[13:18:38] Visual criado para Blacksmith
+[13:18:38] Visual criado para Ghost
+[13:18:38] Visual criado para DragonBoss
+[13:18:38] Visual criado para Quest_Inicial
+[13:18:38] Visuais inicializados.
+[13:18:39] Target selecionado: Ghost
+[13:18:39] Ghost recebeu 25 de dano. HP: 75/100
+[13:18:39] Ghost entrou em combate.
+[13:18:39] Ghost recebeu 25 de dano. HP: 50/100
+[13:18:39] Player atacou Ghost causando 25.
+[13:18:39] Ghost entrou em combate.
+[13:18:42] Target limpo.
+[13:18:42] Ghost saiu de combate.
+[13:18:42] Ghost regenerou HP. HP: 55/100
+[13:18:44] Ghost regenerou HP. HP: 60/100
+[13:18:45] Ghost regenerou HP. HP: 65/100
+[13:18:47] Ghost regenerou HP. HP: 70/100
+[13:18:48] Ghost regenerou HP. HP: 75/100
+[13:18:50] Ghost regenerou HP. HP: 80/100
+[13:18:51] Ghost regenerou HP. HP: 85/100

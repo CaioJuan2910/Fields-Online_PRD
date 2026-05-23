@@ -1,0 +1,11 @@
+[12:36:00] FO_EntityRuntimeSystem carregado.
+[12:43:50] FO_EntityRuntimeSystem carregado.
+[12:46:50] FO_EntityRuntimeSystem carregado.
+[12:50:31] FO_EntityRuntimeSystem carregado.
+[12:55:19] FO_EntityRuntimeSystem carregado.
+[13:00:05] FO_EntityRuntimeSystem carregado.
+[13:01:15] FO_EntityRuntimeSystem carregado.
+[13:04:28] FO_EntityRuntimeSystem carregado.
+[13:12:58] FO_EntityRuntimeSystem carregado.
+[13:18:11] FO_EntityRuntimeSystem carregado.
+[13:18:37] FO_EntityRuntimeSystem carregado.

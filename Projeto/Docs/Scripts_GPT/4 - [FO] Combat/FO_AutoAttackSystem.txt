@@ -4,19 +4,21 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.1.0
+# Versão....: 1.3.0
 # Data......: 20/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema de auto attack do jogador.
 #------------------------------------------------------------------------------
+# Funções atuais:
+# - Auto attack
+# - Face target
+# - Animação do player
+# - Animação de hit no alvo
+# - Dano runtime
 #==============================================================================
 
 module FO_AutoAttackConfig
-
-  #===========================================================================
-  # ■ CONFIGURAÇÕES
-  #===========================================================================
 
   ATTACK_RANGE = 1
 
@@ -24,19 +26,22 @@ module FO_AutoAttackConfig
 
   BASE_DAMAGE = 25
 
-end
+  ENABLE_FACE_TARGET = true
 
-#==============================================================================
-# ■ FO_AutoAttackSystem
-#==============================================================================
+  ENABLE_PLAYER_ATTACK_ANIMATION = true
+
+  ENABLE_TARGET_HIT_ANIMATION = true
+
+  PLAYER_ATTACK_ANIMATION_ID = 1
+
+  TARGET_HIT_ANIMATION_ID = 2
+
+end
 
 module FO_AutoAttackSystem
 
   @attack_timer = 0
 
-  #===========================================================================
-  # ■ update
-  #===========================================================================
   def self.update
 
     update_attack_timer
@@ -45,9 +50,6 @@ module FO_AutoAttackSystem
 
   end
 
-  #===========================================================================
-  # ■ update_attack_timer
-  #===========================================================================
   def self.update_attack_timer
 
     if @attack_timer > 0
@@ -58,9 +60,6 @@ module FO_AutoAttackSystem
 
   end
 
-  #===========================================================================
-  # ■ process_auto_attack
-  #===========================================================================
   def self.process_auto_attack
 
     return if @attack_timer > 0
@@ -85,23 +84,15 @@ module FO_AutoAttackSystem
 
     return unless in_attack_range?(target)
 
-    execute_attack(runtime)
+    execute_attack(target, runtime)
 
   end
 
-  #===========================================================================
-  # ■ in_attack_range?
-  #===========================================================================
   def self.in_attack_range?(target)
 
-    player_x = $game_player.x
-    player_y = $game_player.y
+    dx = ($game_player.x - target.x).abs
 
-    target_x = target.x
-    target_y = target.y
-
-    dx = (player_x - target_x).abs
-    dy = (player_y - target_y).abs
+    dy = ($game_player.y - target.y).abs
 
     distance = dx + dy
 
@@ -109,10 +100,13 @@ module FO_AutoAttackSystem
 
   end
 
-  #===========================================================================
-  # ■ execute_attack
-  #===========================================================================
-  def self.execute_attack(runtime)
+  def self.execute_attack(target, runtime)
+
+    face_target(target)
+
+    play_player_attack_animation
+
+    play_target_hit_animation(target)
 
     damage = calculate_damage
 
@@ -131,27 +125,72 @@ module FO_AutoAttackSystem
 
   end
 
-  #===========================================================================
-  # ■ calculate_damage
-  #===========================================================================
+  def self.face_target(target)
+
+    return unless FO_AutoAttackConfig::ENABLE_FACE_TARGET
+
+    dx = target.x - $game_player.x
+
+    dy = target.y - $game_player.y
+
+    if dx.abs > dy.abs
+
+      if dx > 0
+
+        $game_player.turn_right
+
+      else
+
+        $game_player.turn_left
+
+      end
+
+    else
+
+      if dy > 0
+
+        $game_player.turn_down
+
+      else
+
+        $game_player.turn_up
+
+      end
+
+    end
+
+  end
+
+  def self.play_player_attack_animation
+
+    return unless FO_AutoAttackConfig::ENABLE_PLAYER_ATTACK_ANIMATION
+
+    $game_player.animation_id =
+      FO_AutoAttackConfig::PLAYER_ATTACK_ANIMATION_ID
+
+  end
+
+  def self.play_target_hit_animation(target)
+
+    return unless FO_AutoAttackConfig::ENABLE_TARGET_HIT_ANIMATION
+
+    target.animation_id =
+      FO_AutoAttackConfig::TARGET_HIT_ANIMATION_ID
+
+  end
+
   def self.calculate_damage
 
     return FO_AutoAttackConfig::BASE_DAMAGE
 
   end
 
-  #===========================================================================
-  # ■ start_attack_cooldown
-  #===========================================================================
   def self.start_attack_cooldown
 
     @attack_timer = FO_AutoAttackConfig::ATTACK_SPEED
 
   end
 
-  #===========================================================================
-  # ■ reset
-  #===========================================================================
   def self.reset
 
     @attack_timer = 0
@@ -160,17 +199,10 @@ module FO_AutoAttackSystem
 
 end
 
-#==============================================================================
-# ■ Scene_Map
-#==============================================================================
-
 class Scene_Map
 
   alias fo_auto_attack_update update
 
-  #===========================================================================
-  # ■ update
-  #===========================================================================
   def update
 
     FO_AutoAttackSystem.update
@@ -180,10 +212,6 @@ class Scene_Map
   end
 
 end
-
-#==============================================================================
-# ■ Inicialização
-#==============================================================================
 
 FO_Logger.action(
   "FO_AutoAttackSystem carregado com sucesso."

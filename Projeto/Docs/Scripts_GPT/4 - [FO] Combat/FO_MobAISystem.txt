@@ -1,0 +1,423 @@
+#==============================================================================
+# ■ FO_MobAISystem
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.5.0
+# Data......: 20/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema inicial de IA dos mobs.
+#------------------------------------------------------------------------------
+# Funções atuais:
+# - Mob/Boss entra em combate somente ao receber novo dano
+# - Estado de fúria
+# - Chase básico
+# - Sai de combate ao perder chase
+# - Target limpa ao sair de combate
+# - Regeneração lenta fora de combate
+#==============================================================================
+
+module FO_MobAIConfig
+
+  ENABLE_FACE_PLAYER = true
+
+  ENABLE_CHASE = true
+
+  CHASE_RANGE = 8
+
+  MOVE_COOLDOWN = 20
+
+  ENABLE_OUT_COMBAT_REGEN = true
+
+  REGEN_COOLDOWN = 60
+
+  REGEN_VALUE = 5
+
+end
+
+module FO_MobAISystem
+
+  def self.update
+
+    update_mobs
+
+  end
+
+  def self.update_mobs
+
+    return if $game_player.nil?
+
+    for runtime in FO_EntityRuntimeManager.runtimes
+
+      next if runtime.nil?
+      next if runtime.dead?
+      next unless mob_entity?(runtime)
+
+      setup_runtime_ai(runtime)
+
+      process_mob_ai(runtime)
+
+    end
+
+  end
+
+  def self.setup_runtime_ai(runtime)
+
+    if runtime.instance_variable_get(:@fo_move_timer).nil?
+
+      runtime.instance_variable_set(:@fo_move_timer, 0)
+      runtime.instance_variable_set(:@fo_regen_timer, 0)
+      runtime.instance_variable_set(:@fo_in_combat, false)
+      runtime.instance_variable_set(:@fo_last_hp, runtime.hp)
+
+    end
+
+  end
+
+  def self.mob_entity?(runtime)
+
+    return true if runtime.entity_type == :mob
+    return true if runtime.entity_type == :boss
+
+    return false
+
+  end
+
+  def self.process_mob_ai(runtime)
+
+    update_move_timer(runtime)
+
+    update_regen_timer(runtime)
+
+    update_damage_detection(runtime)
+
+    if in_combat?(runtime)
+
+      if should_leave_combat?(runtime)
+
+        leave_combat(runtime)
+
+        update_last_hp(runtime)
+
+        return
+
+      end
+
+      face_player(runtime)
+
+      chase_player(runtime) if should_chase_player?(runtime)
+
+    else
+
+      process_out_combat(runtime)
+
+    end
+
+    update_last_hp(runtime)
+
+  end
+
+  def self.update_damage_detection(runtime)
+
+    last_hp = runtime.instance_variable_get(:@fo_last_hp)
+
+    last_hp = runtime.hp if last_hp.nil?
+
+    if runtime.hp < last_hp
+
+      enter_combat(runtime)
+
+    end
+
+  end
+
+  def self.update_last_hp(runtime)
+
+    runtime.instance_variable_set(:@fo_last_hp, runtime.hp)
+
+  end
+
+  def self.enter_combat(runtime)
+
+    runtime.instance_variable_set(:@fo_in_combat, true)
+
+    FO_Logger.action(
+      "#{runtime.name} entrou em combate."
+    )
+
+  end
+
+  def self.in_combat?(runtime)
+
+    return runtime.instance_variable_get(:@fo_in_combat) == true
+
+  end
+
+  def self.update_move_timer(runtime)
+
+    timer = runtime.instance_variable_get(:@fo_move_timer)
+
+    timer = 0 if timer.nil?
+
+    timer -= 1 if timer > 0
+
+    runtime.instance_variable_set(:@fo_move_timer, timer)
+
+  end
+
+  def self.update_regen_timer(runtime)
+
+    timer = runtime.instance_variable_get(:@fo_regen_timer)
+
+    timer = 0 if timer.nil?
+
+    timer -= 1 if timer > 0
+
+    runtime.instance_variable_set(:@fo_regen_timer, timer)
+
+  end
+
+  def self.fury?(runtime)
+
+    return runtime.instance_variable_get(:@fo_fury) == true
+
+  end
+
+  def self.should_chase_player?(runtime)
+
+    return false unless FO_MobAIConfig::ENABLE_CHASE
+
+    return player_in_chase_range?(runtime)
+
+  end
+
+  def self.should_leave_combat?(runtime)
+
+    return false if fury?(runtime)
+
+    return true unless player_in_chase_range?(runtime)
+
+    return false
+
+  end
+
+  def self.player_in_chase_range?(runtime)
+
+    event = runtime.event
+
+    dx = ($game_player.x - event.x).abs
+
+    dy = ($game_player.y - event.y).abs
+
+    distance = dx + dy
+
+    return distance <= FO_MobAIConfig::CHASE_RANGE
+
+  end
+
+  def self.chase_player(runtime)
+
+    return unless can_move?(runtime)
+
+    event = runtime.event
+
+    dx = $game_player.x - event.x
+
+    dy = $game_player.y - event.y
+
+    if dx.abs > dy.abs
+
+      if dx > 0
+        event.move_right
+      else
+        event.move_left
+      end
+
+    else
+
+      if dy > 0
+        event.move_down
+      else
+        event.move_up
+      end
+
+    end
+
+    reset_move_timer(runtime)
+
+  end
+
+  def self.leave_combat(runtime)
+
+    runtime.instance_variable_set(:@fo_fury, false)
+
+    runtime.instance_variable_set(:@fo_in_combat, false)
+
+    clear_target_if_needed(runtime)
+
+    FO_Logger.action(
+      "#{runtime.name} saiu de combate."
+    )
+
+  end
+
+  def self.process_out_combat(runtime)
+
+    regenerate_hp(runtime)
+
+  end
+
+  def self.regenerate_hp(runtime)
+
+    return unless FO_MobAIConfig::ENABLE_OUT_COMBAT_REGEN
+
+    return if runtime.hp >= runtime.max_hp
+
+    timer = runtime.instance_variable_get(:@fo_regen_timer)
+
+    timer = 0 if timer.nil?
+
+    return if timer > 0
+
+    runtime.hp += FO_MobAIConfig::REGEN_VALUE
+
+    runtime.hp = runtime.max_hp if runtime.hp > runtime.max_hp
+
+    runtime.instance_variable_set(
+      :@fo_regen_timer,
+      FO_MobAIConfig::REGEN_COOLDOWN
+    )
+
+    FO_Logger.action(
+      "#{runtime.name} regenerou HP. HP: #{runtime.hp}/#{runtime.max_hp}"
+    )
+
+  end
+
+  def self.clear_target_if_needed(runtime)
+
+    return unless defined?(FO_TargetSystem)
+
+    if FO_TargetSystem.current_target == runtime.event
+
+      FO_TargetSystem.clear_target
+
+    end
+
+  end
+
+  def self.can_move?(runtime)
+
+    timer = runtime.instance_variable_get(:@fo_move_timer)
+
+    timer = 0 if timer.nil?
+
+    return timer <= 0
+
+  end
+
+  def self.reset_move_timer(runtime)
+
+    runtime.instance_variable_set(
+      :@fo_move_timer,
+      FO_MobAIConfig::MOVE_COOLDOWN
+    )
+
+  end
+
+  def self.face_player(runtime)
+
+    return unless FO_MobAIConfig::ENABLE_FACE_PLAYER
+
+    event = runtime.event
+
+    dx = $game_player.x - event.x
+
+    dy = $game_player.y - event.y
+
+    if dx.abs > dy.abs
+
+      if dx > 0
+        event.turn_right
+      else
+        event.turn_left
+      end
+
+    else
+
+      if dy > 0
+        event.turn_down
+      else
+        event.turn_up
+      end
+
+    end
+
+  end
+
+  def self.set_fury(name)
+
+    runtime = FO_EntityRuntimeManager.find_by_name(name)
+
+    return false if runtime.nil?
+
+    runtime.instance_variable_set(:@fo_fury, true)
+
+    runtime.instance_variable_set(:@fo_in_combat, true)
+
+    FO_Logger.action(
+      "#{runtime.name} entrou em estado de fúria."
+    )
+
+    return true
+
+  end
+
+  def self.clear_fury(name)
+
+    runtime = FO_EntityRuntimeManager.find_by_name(name)
+
+    return false if runtime.nil?
+
+    runtime.instance_variable_set(:@fo_fury, false)
+
+    runtime.instance_variable_set(:@fo_in_combat, false)
+
+    FO_Logger.action(
+      "#{runtime.name} saiu do estado de fúria."
+    )
+
+    return true
+
+  end
+
+end
+
+class Scene_Map
+
+  alias fo_mob_ai_update update
+
+  def update
+
+    FO_MobAISystem.update
+
+    fo_mob_ai_update
+
+  end
+
+end
+
+FO_Logger.action(
+  "FO_MobAISystem carregado com sucesso."
+)
+
+FO_Debug.debug_log(
+  "combat",
+  "FO_MobAISystem carregado."
+)
+
+FO_CORE.debug(
+  "FO_MobAISystem carregado com sucesso."
+)
