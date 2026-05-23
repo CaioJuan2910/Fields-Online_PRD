@@ -146,3 +146,9 @@
 [16:21:28] FO_FloatingDamageSystem carregado.
 [16:21:28] Entidades limpas.
 [16:21:28] Scan de entidades concluído.
+[16:29:25] FO_MapEntitySystem carregado.
+[16:29:25] FO_EntityVisualSystem carregado.
+[16:29:25] FO_TargetVisualSystem carregado.
+[16:29:25] FO_FloatingDamageSystem carregado.
+[16:29:25] Entidades limpas.
+[16:29:25] Scan de entidades concluído.

@@ -4,7 +4,7 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.6.1
+# Versão....: 1.8.0
 # Data......: 23/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
@@ -13,12 +13,15 @@
 # Funções atuais:
 # - Mob/Boss entra em combate somente ao receber novo dano
 # - Estado de fúria
+# - Chance configurável de entrar em fúria
+# - Som ao entrar em fúria
 # - Chase básico
 # - Sai de combate ao perder chase
 # - Target limpa ao sair de combate
 # - Regeneração lenta fora de combate
 # - Movimento aleatório fora de combate
 # - Movimento aleatório em sequência
+# - Mob/Boss ataca o Player
 #==============================================================================
 
 module FO_MobAIConfig
@@ -39,15 +42,35 @@ module FO_MobAIConfig
 
   ENABLE_RANDOM_WALK = true
 
-RANDOM_WALK_COOLDOWN = 35
+  RANDOM_WALK_COOLDOWN = 35
 
-RANDOM_WALK_CHANCE = 65
+  RANDOM_WALK_CHANCE = 65
 
-RANDOM_WALK_STOP_CHANCE = 20
+  RANDOM_WALK_STOP_CHANCE = 20
 
-RANDOM_WALK_MIN_STEPS = 2
+  RANDOM_WALK_MIN_STEPS = 2
 
-RANDOM_WALK_MAX_STEPS = 4
+  RANDOM_WALK_MAX_STEPS = 4
+
+  ENABLE_FURY_STATUS = true
+
+  FURY_CHANCE_PERCENT = 20
+
+  FURY_SE_NAME = "015-Jump01"
+
+  FURY_SE_VOLUME = 80
+
+  FURY_SE_PITCH = 100
+
+  ENABLE_MOB_ATTACK = true
+
+  MOB_ATTACK_RANGE = 1
+
+  MOB_ATTACK_COOLDOWN = 60
+
+  MOB_DAMAGE = 15
+
+  MOB_ATTACK_ANIMATION_ID = 1
 
 end
 
@@ -63,13 +86,25 @@ module FO_MobAISystem
 
     return if $game_player.nil?
 
+    return unless defined?(FO_PlayerRuntime)
+
     for runtime in FO_EntityRuntimeManager.runtimes
 
       next if runtime.nil?
-      next if runtime.dead?
-      next unless mob_entity?(runtime)
 
       setup_runtime_ai(runtime)
+
+      if runtime.dead?
+
+        runtime.instance_variable_set(:@fo_was_dead, true)
+
+        next
+
+      end
+
+      reset_after_respawn_if_needed(runtime)
+
+      next unless mob_entity?(runtime)
 
       process_mob_ai(runtime)
 
@@ -84,10 +119,27 @@ module FO_MobAISystem
       runtime.instance_variable_set(:@fo_move_timer, 0)
       runtime.instance_variable_set(:@fo_regen_timer, 0)
       runtime.instance_variable_set(:@fo_random_walk_timer, 0)
+      runtime.instance_variable_set(:@fo_attack_timer, 0)
       runtime.instance_variable_set(:@fo_in_combat, false)
       runtime.instance_variable_set(:@fo_last_hp, runtime.hp)
+      runtime.instance_variable_set(:@fo_was_dead, false)
+      runtime.instance_variable_set(:@fo_fury, false)
 
     end
+
+  end
+
+  def self.reset_after_respawn_if_needed(runtime)
+
+    was_dead = runtime.instance_variable_get(:@fo_was_dead)
+
+    return unless was_dead == true
+
+    runtime.instance_variable_set(:@fo_was_dead, false)
+    runtime.instance_variable_set(:@fo_fury, false)
+    runtime.instance_variable_set(:@fo_in_combat, false)
+    runtime.instance_variable_set(:@fo_last_hp, runtime.hp)
+    runtime.instance_variable_set(:@fo_attack_timer, 0)
 
   end
 
@@ -108,6 +160,8 @@ module FO_MobAISystem
 
     update_random_walk_timer(runtime)
 
+    update_attack_timer(runtime)
+
     update_damage_detection(runtime)
 
     if in_combat?(runtime)
@@ -123,6 +177,8 @@ module FO_MobAISystem
       end
 
       face_player(runtime)
+
+      process_mob_attack(runtime)
 
       chase_player(runtime) if should_chase_player?(runtime)
 
@@ -146,6 +202,8 @@ module FO_MobAISystem
 
       enter_combat(runtime)
 
+      try_enter_fury(runtime)
+
     end
 
   end
@@ -162,6 +220,50 @@ module FO_MobAISystem
 
     FO_Logger.action(
       "#{runtime.name} entrou em combate."
+    )
+
+  end
+
+  def self.try_enter_fury(runtime)
+
+    return unless FO_MobAIConfig::ENABLE_FURY_STATUS
+
+    return if fury?(runtime)
+
+    chance = FO_MobAIConfig::FURY_CHANCE_PERCENT
+
+    chance = 0 if chance < 0
+
+    chance = 100 if chance > 100
+
+    roll = rand(100) + 1
+
+    return if roll > chance
+
+    activate_fury(runtime)
+
+  end
+
+  def self.activate_fury(runtime)
+
+    runtime.instance_variable_set(:@fo_fury, true)
+
+    runtime.instance_variable_set(:@fo_in_combat, true)
+
+    play_fury_sound
+
+    FO_Logger.action(
+      "#{runtime.name} entrou em estado de fúria."
+    )
+
+  end
+
+  def self.play_fury_sound
+
+    Audio.se_play(
+      "Audio/SE/#{FO_MobAIConfig::FURY_SE_NAME}",
+      FO_MobAIConfig::FURY_SE_VOLUME,
+      FO_MobAIConfig::FURY_SE_PITCH
     )
 
   end
@@ -208,6 +310,18 @@ module FO_MobAISystem
 
   end
 
+  def self.update_attack_timer(runtime)
+
+    timer = runtime.instance_variable_get(:@fo_attack_timer)
+
+    timer = 0 if timer.nil?
+
+    timer -= 1 if timer > 0
+
+    runtime.instance_variable_set(:@fo_attack_timer, timer)
+
+  end
+
   def self.fury?(runtime)
 
     return runtime.instance_variable_get(:@fo_fury) == true
@@ -217,6 +331,8 @@ module FO_MobAISystem
   def self.should_chase_player?(runtime)
 
     return false unless FO_MobAIConfig::ENABLE_CHASE
+
+    return false if mob_in_attack_range?(runtime)
 
     return player_in_chase_range?(runtime)
 
@@ -243,6 +359,92 @@ module FO_MobAISystem
     distance = dx + dy
 
     return distance <= FO_MobAIConfig::CHASE_RANGE
+
+  end
+
+  def self.mob_in_attack_range?(runtime)
+
+    event = runtime.event
+
+    dx = ($game_player.x - event.x).abs
+
+    dy = ($game_player.y - event.y).abs
+
+    distance = dx + dy
+
+    return distance <= FO_MobAIConfig::MOB_ATTACK_RANGE
+
+  end
+
+  def self.process_mob_attack(runtime)
+
+    return unless FO_MobAIConfig::ENABLE_MOB_ATTACK
+
+    return if FO_PlayerRuntime.dead?
+
+    return unless mob_in_attack_range?(runtime)
+
+    return unless can_attack?(runtime)
+
+    execute_mob_attack(runtime)
+
+  end
+
+  def self.can_attack?(runtime)
+
+    timer = runtime.instance_variable_get(:@fo_attack_timer)
+
+    timer = 0 if timer.nil?
+
+    return timer <= 0
+
+  end
+
+  def self.execute_mob_attack(runtime)
+
+    face_player(runtime)
+
+    play_mob_attack_animation(runtime)
+
+    FO_PlayerRuntime.damage(
+      calculate_mob_damage(runtime)
+    )
+
+    reset_attack_timer(runtime)
+
+    FO_Logger.action(
+      "#{runtime.name} atacou o Player."
+    )
+
+  end
+
+  def self.calculate_mob_damage(runtime)
+
+    damage = FO_MobAIConfig::MOB_DAMAGE
+
+    if fury?(runtime)
+
+      damage = (damage * 1.5).to_i
+
+    end
+
+    return damage
+
+  end
+
+  def self.play_mob_attack_animation(runtime)
+
+    runtime.event.animation_id =
+      FO_MobAIConfig::MOB_ATTACK_ANIMATION_ID
+
+  end
+
+  def self.reset_attack_timer(runtime)
+
+    runtime.instance_variable_set(
+      :@fo_attack_timer,
+      FO_MobAIConfig::MOB_ATTACK_COOLDOWN
+    )
 
   end
 
@@ -283,6 +485,8 @@ module FO_MobAISystem
     runtime.instance_variable_set(:@fo_fury, false)
 
     runtime.instance_variable_set(:@fo_in_combat, false)
+
+    runtime.instance_variable_set(:@fo_attack_timer, 0)
 
     clear_target_if_needed(runtime)
 
@@ -485,13 +689,7 @@ module FO_MobAISystem
 
     return false if runtime.nil?
 
-    runtime.instance_variable_set(:@fo_fury, true)
-
-    runtime.instance_variable_set(:@fo_in_combat, true)
-
-    FO_Logger.action(
-      "#{runtime.name} entrou em estado de fúria."
-    )
+    activate_fury(runtime)
 
     return true
 
@@ -506,6 +704,8 @@ module FO_MobAISystem
     runtime.instance_variable_set(:@fo_fury, false)
 
     runtime.instance_variable_set(:@fo_in_combat, false)
+
+    runtime.instance_variable_set(:@fo_attack_timer, 0)
 
     FO_Logger.action(
       "#{runtime.name} saiu do estado de fúria."
