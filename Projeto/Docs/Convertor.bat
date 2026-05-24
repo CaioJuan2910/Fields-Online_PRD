@@ -15,16 +15,16 @@ echo Procurando arquivos .txt em todas as subpastas...
 echo ==========================================
 echo.
 
-for /r "%PASTA%" %%F in (*.txt) do (
+for /r "%PASTA%" %%F in (*.rb) do (
 
     set "ARQUIVO=%%~fF"
-    set "NOVO=%%~dpnF.rb"
+    set "NOVO=%%~dpnF.txt"
 
-    ren "%%~fF" "%%~nF.rb"
+    ren "%%~fF" "%%~nF.txt"
 
     echo Convertido:
     echo %%~fF
-    echo ^> %%~dpnF.rb
+    echo ^> %%~dpnF.txt
     echo.
 )
 
