@@ -1,0 +1,2 @@
+[01:34:31] FO_ItemDatabase carregado.
+[01:34:31] FO_PlayerLevelSystem carregado.

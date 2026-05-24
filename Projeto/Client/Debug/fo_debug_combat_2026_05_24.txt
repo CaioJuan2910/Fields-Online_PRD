@@ -1,0 +1,11 @@
+[01:34:31] FO_CombatSystem carregado.
+[01:34:31] FO_TargetSystem carregado.
+[01:34:31] FO_AutoAttackSystem carregado.
+[01:34:31] FO_MobAISystem carregado.
+[01:34:31] FO_LootSystem carregado.
+[01:34:31] FO_EnemySystem carregado.
+[01:34:31] FO_AISystem carregado.
+[01:34:42] Auto attack em Ghost.
+[01:34:43] Auto attack em Ghost.
+[01:34:45] Auto attack em Ghost.
+[01:34:46] Auto attack em Ghost.

@@ -1,0 +1,3 @@
+[01:34:31] FO_PlayerHUDSystem carregado.
+[01:34:31] FO_PlayerEXPBarSystem carregado.
+[01:34:31] FO_FloatingLootSystem carregado.

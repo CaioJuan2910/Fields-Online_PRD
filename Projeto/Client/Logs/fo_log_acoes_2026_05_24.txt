@@ -1,0 +1,128 @@
+[01:34:31] FO_Logger carregado com sucesso.
+[01:34:31] FO_Debug carregado com sucesso.
+[01:34:31] FO_DeveloperMode carregado com sucesso.
+[01:34:31] FO_Utils carregado com sucesso.
+[01:34:31] FO_DataManager carregado com sucesso.
+[01:34:31] ========================================
+[01:34:31] FIELDS ONLINE ENGINE BOOT
+[01:34:31] Versão 1.4.0
+[01:34:31] Inicializando engine...
+[01:34:31] Sistema registrado: FO_Core
+[01:34:31] Sistema registrado: FO_Settings
+[01:34:31] Sistema registrado: FO_Logger
+[01:34:31] Sistema registrado: FO_Debug
+[01:34:31] Sistema registrado: FO_DeveloperMode
+[01:34:31] Sistema registrado: FO_Utils
+[01:34:31] Sistema registrado: FO_DataManager
+[01:34:31] Sistema registrado: FO_DatabaseBridge
+[01:34:31] Sistema registrado: FO_ItemDatabase
+[01:34:31] Sistema registrado: FO_PlayerData
+[01:34:31] Sistema registrado: FO_PlayerStats
+[01:34:31] Sistema registrado: FO_PlayerLevelSystem
+[01:34:31] Sistema registrado: FO_Inventory
+[01:34:31] Sistema registrado: FO_EquipmentSystem
+[01:34:31] Sistema registrado: FO_CombatSystem
+[01:34:31] Sistema registrado: FO_TargetSystem
+[01:34:31] Sistema registrado: FO_AutoAttackSystem
+[01:34:31] Sistema registrado: FO_MobAISystem
+[01:34:31] Sistema registrado: FO_LootSystem
+[01:34:31] Sistema registrado: FO_EnemySystem
+[01:34:31] Sistema registrado: FO_AISystem
+[01:34:31] Sistema registrado: FO_MapEntitySystem
+[01:34:31] Sistema registrado: FO_EntityVisualSystem
+[01:34:31] Sistema registrado: FO_TargetVisualSystem
+[01:34:31] Sistema registrado: FO_FloatingDamageSystem
+[01:34:31] Sistema registrado: FO_InteractionSystem
+[01:34:31] Sistema registrado: FO_EntityRuntimeSystem
+[01:34:31] Sistema registrado: FO_PlayerRuntimeSystem
+[01:34:31] Sistema registrado: FO_PlayerHUDSystem
+[01:34:31] Sistema registrado: FO_PlayerEXPBarSystem
+[01:34:31] Sistema registrado: FO_FloatingLootSystem
+[01:34:31] Engine iniciada com sucesso.
+[01:34:31] ========================================
+[01:34:31] FO_DatabaseBridge carregado com sucesso.
+[01:34:31] FO_ItemDatabase carregado com sucesso.
+[01:34:31] FO_ConsumableSystem v2.0.0 carregado com sucesso.
+[01:34:31] FO_PlayerData carregado com sucesso.
+[01:34:31] FO_PlayerStats carregado com sucesso.
+[01:34:31] Player Level System inicializado.
+[01:34:31] FO_PlayerLevelSystem carregado com sucesso.
+[01:34:31] FO_ConsumableSystem v2.0.1 carregado com sucesso.
+[01:34:31] FO_Inventory v2.0.0 carregado com sucesso.
+[01:34:31] FO_EquipmentSystem carregado com sucesso.
+[01:34:31] FO_CombatSystem carregado com sucesso.
+[01:34:31] FO_TargetSystem carregado com sucesso.
+[01:34:31] FO_AutoAttackSystem carregado com sucesso.
+[01:34:31] FO_MobAISystem carregado com sucesso.
+[01:34:31] FO_LootSystem carregado com sucesso.
+[01:34:31] FO_EnemySystem carregado com sucesso.
+[01:34:31] FO_AISystem carregado com sucesso.
+[01:34:31] FO_MapEntitySystem carregado com sucesso.
+[01:34:31] FO_EntityVisualSystem carregado com sucesso.
+[01:34:31] FO_TargetVisualSystem carregado com sucesso.
+[01:34:31] FO_FloatingDamageSystem carregado com sucesso.
+[01:34:31] FO_InteractionSystem carregado com sucesso.
+[01:34:31] FO_EntityRuntimeSystem carregado com sucesso.
+[01:34:31] FO_PlayerRuntimeSystem carregado com sucesso.
+[01:34:31] FO_PlayerHUDSystem carregado com sucesso.
+[01:34:31] FO_PlayerEXPBarSystem carregado com sucesso.
+[01:34:31] FO_FloatingLootSystem carregado com sucesso.
+[01:34:31] EXP HUD inicializada.
+[01:34:31] Player HUD inicializada.
+[01:34:31] NPC registrado: @Blacksmith
+[01:34:31] Mob registrado: $Ghost
+[01:34:31] Boss registrado: !DragonBoss
+[01:34:31] Quest registrada: ?Quest_Inicial
+[01:34:31] Mapa escaneado: 4 entidades encontradas.
+[01:34:32] Runtime criado: Blacksmith
+[01:34:32] Runtime criado: Ghost
+[01:34:32] Runtime criado: DragonBoss
+[01:34:32] Runtime criado: Quest_Inicial
+[01:34:32] Runtimes inicializados.
+[01:34:32] Visual criado para Blacksmith
+[01:34:32] Visual criado para Ghost
+[01:34:32] Visual criado para DragonBoss
+[01:34:32] Visual criado para Quest_Inicial
+[01:34:32] Visuais inicializados.
+[01:34:36] Inventário limpo.
+[01:34:36] Item 1 adicionado x1. Total: 1.
+[01:34:36] Player recebeu 50 de dano. HP: 150/200
+[01:34:36] Player recuperou 500 HP. HP: 200/200
+[01:34:36] Potion recuperou 500 HP.
+[01:34:36] Item 1 removido x1.
+[01:34:36] Player usou Potion [ID 1].
+[01:34:41] Target selecionado: Ghost
+[01:34:41] Interação selecionou target: Ghost
+[01:34:41] Player recebeu 50 de dano. HP: 150/200
+[01:34:41] Item 1 adicionado x1. Total: 1.
+[01:34:41] Player recuperou 500 HP. HP: 200/200
+[01:34:41] Potion recuperou 500 HP.
+[01:34:41] Item 1 removido x1.
+[01:34:41] Player usou Potion [ID 1].
+[01:34:42] Ghost recebeu 25 de dano. HP: 75/100
+[01:34:42] Player atacou Ghost causando 25.
+[01:34:42] Ghost entrou em combate.
+[01:34:42] Player recebeu 15 de dano. HP: 185/200
+[01:34:42] Ghost atacou o Player.
+[01:34:42] Player recuperou 5 HP. HP: 190/200
+[01:34:43] Ghost recebeu 25 de dano. HP: 50/100
+[01:34:43] Player atacou Ghost causando 25.
+[01:34:43] Ghost entrou em combate.
+[01:34:43] Player recebeu 15 de dano. HP: 175/200
+[01:34:43] Ghost atacou o Player.
+[01:34:45] Ghost recebeu 25 de dano. HP: 25/100
+[01:34:45] Player atacou Ghost causando 25.
+[01:34:45] Ghost entrou em combate.
+[01:34:45] Player recebeu 15 de dano. HP: 160/200
+[01:34:45] Ghost atacou o Player.
+[01:34:45] Player recuperou 5 HP. HP: 165/200
+[01:34:46] Ghost recebeu 25 de dano. HP: 0/100
+[01:34:46] Target limpo.
+[01:34:46] Target limpo porque Ghost morreu.
+[01:34:46] Ghost morreu.
+[01:34:46] Player atacou Ghost causando 25.
+[01:34:46] Item 1 adicionado x1. Total: 1.
+[01:34:46] Ghost dropou: Potion [ID 1]
+[01:34:46] Player recebeu 25 EXP. EXP atual: 25/100
+[01:34:46] Ghost concedeu 25 EXP ao Player.
+[01:34:48] Player recuperou 5 HP. HP: 170/200
