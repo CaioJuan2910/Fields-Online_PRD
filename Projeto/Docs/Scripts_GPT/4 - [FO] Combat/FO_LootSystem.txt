@@ -4,19 +4,19 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.1.0
+# Versão....: 2.0.0
 # Data......: 23/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
-# Sistema inicial de loot/drop dos mobs.
+# Sistema de loot/drop dos mobs.
 #------------------------------------------------------------------------------
 # Funções atuais:
-# - Drop ao matar Mob/Boss
-# - Tabela de loot por nome da entidade
+# - Drop por item_id do Database RMXP
 # - Chance percentual
-# - Log de drops
+# - Integração com FO_Inventory v2
 # - Floating Loot
-# - Preparação para inventário
+# - Log de drops
+# - Preparação para equipamentos e raridades
 #==============================================================================
 
 module FO_LootConfig
@@ -27,24 +27,34 @@ module FO_LootConfig
 
   ENABLE_FLOATING_LOOT = true
 
+  #===========================================================================
+  # ■ DEFAULT_LOOT_TABLE
+  #---------------------------------------------------------------------------
+  # Formato:
+  # [item_id, chance]
+  #===========================================================================
+
   DEFAULT_LOOT_TABLE = [
-    ["Gold", 100],
-    ["Potion", 35]
+    [1, 50],
+    [2, 50]
   ]
+
+  #===========================================================================
+  # ■ LOOT_TABLES
+  #---------------------------------------------------------------------------
+  # Nome da entidade => [item_id, chance]
+  #===========================================================================
 
   LOOT_TABLES = {
 
     "Ghost" => [
-      ["Gold", 100],
-      ["Potion", 40],
-      ["Ghost Essence", 10]
+      [1, 50],
+      [2, 50]
     ],
 
     "DragonBoss" => [
-      ["Gold", 100],
-      ["Potion", 80],
-      ["Dragon Scale", 35],
-      ["Dragon Core", 10]
+      [1, 50],
+      [2, 50]
     ]
 
   }
@@ -55,6 +65,9 @@ module FO_LootSystem
 
   @processed_runtime_ids = []
 
+  #===========================================================================
+  # ■ update
+  #===========================================================================
   def self.update
 
     return unless defined?(FO_EntityRuntimeManager)
@@ -71,6 +84,9 @@ module FO_LootSystem
 
   end
 
+  #===========================================================================
+  # ■ update_runtime_loot
+  #===========================================================================
   def self.update_runtime_loot(runtime)
 
     if runtime.dead?
@@ -85,6 +101,9 @@ module FO_LootSystem
 
   end
 
+  #===========================================================================
+  # ■ process_death_loot_once
+  #===========================================================================
   def self.process_death_loot_once(runtime)
 
     return if loot_already_processed?(runtime)
@@ -95,24 +114,36 @@ module FO_LootSystem
 
   end
 
+  #===========================================================================
+  # ■ loot_already_processed?
+  #===========================================================================
   def self.loot_already_processed?(runtime)
 
     return @processed_runtime_ids.include?(runtime.runtime_id)
 
   end
 
+  #===========================================================================
+  # ■ mark_loot_processed
+  #===========================================================================
   def self.mark_loot_processed(runtime)
 
     @processed_runtime_ids.push(runtime.runtime_id)
 
   end
 
+  #===========================================================================
+  # ■ clear_processed_runtime
+  #===========================================================================
   def self.clear_processed_runtime(runtime)
 
     @processed_runtime_ids.delete(runtime.runtime_id)
 
   end
 
+  #===========================================================================
+  # ■ process_loot
+  #===========================================================================
   def self.process_loot(runtime)
 
     return false unless FO_LootConfig::ENABLE_LOOT
@@ -133,6 +164,9 @@ module FO_LootSystem
 
   end
 
+  #===========================================================================
+  # ■ loot_entity?
+  #===========================================================================
   def self.loot_entity?(runtime)
 
     return true if runtime.entity_type == :mob
@@ -143,6 +177,9 @@ module FO_LootSystem
 
   end
 
+  #===========================================================================
+  # ■ loot_table
+  #===========================================================================
   def self.loot_table(runtime)
 
     name = runtime.name
@@ -155,15 +192,20 @@ module FO_LootSystem
 
   end
 
+  #===========================================================================
+  # ■ roll_loot
+  #===========================================================================
   def self.roll_loot(table)
 
     drops = []
 
     for loot_data in table
 
-      item_name = loot_data[0]
+      item_id = loot_data[0]
 
       chance = loot_data[1]
+
+      next unless valid_item?(item_id)
 
       chance = 0 if chance < 0
 
@@ -173,7 +215,7 @@ module FO_LootSystem
 
       if roll <= chance
 
-        drops.push(item_name)
+        drops.push(item_id)
 
       end
 
@@ -183,6 +225,37 @@ module FO_LootSystem
 
   end
 
+  #===========================================================================
+  # ■ valid_item?
+  #===========================================================================
+  def self.valid_item?(item_id)
+
+    return false unless defined?(FO_DatabaseBridge)
+
+    return false if FO_DatabaseBridge.item(item_id).nil?
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ item_name
+  #===========================================================================
+  def self.item_name(item_id)
+
+    return "Unknown" unless defined?(FO_DatabaseBridge)
+
+    name = FO_DatabaseBridge.item_name(item_id)
+
+    return "Unknown" if name.nil?
+
+    return name
+
+  end
+
+  #===========================================================================
+  # ■ show_floating_loot
+  #===========================================================================
   def self.show_floating_loot(runtime, drops)
 
     return unless FO_LootConfig::ENABLE_FLOATING_LOOT
@@ -193,44 +266,60 @@ module FO_LootSystem
 
     return unless defined?(FO_FloatingLootManager)
 
+    names = []
+
+    for item_id in drops
+
+      names.push(
+        item_name(item_id)
+      )
+
+    end
+
     FO_FloatingLootManager.show_multiple(
       runtime.event,
-      drops
+      names
     )
 
   end
 
+  #===========================================================================
+  # ■ register_drops
+  #===========================================================================
   def self.register_drops(runtime, drops)
 
     if drops.empty?
 
       FO_Logger.action(
         "#{runtime.name} não dropou nenhum item."
-      ) if FO_LootConfig::ENABLE_LOOT_LOG
+      ) if FO_LootConfig::ENABLE_LOOT_LOG && defined?(FO_Logger)
 
       return
 
     end
 
-    for item_name in drops
+    for item_id in drops
 
-      give_item_to_player(item_name)
+      give_item_to_player(item_id)
 
       FO_Logger.action(
-        "#{runtime.name} dropou: #{item_name}"
-      ) if FO_LootConfig::ENABLE_LOOT_LOG
+        "#{runtime.name} dropou: #{item_name(item_id)} [ID #{item_id}]"
+      ) if FO_LootConfig::ENABLE_LOOT_LOG && defined?(FO_Logger)
 
     end
 
   end
 
-  def self.give_item_to_player(item_name)
+  #===========================================================================
+  # ■ give_item_to_player
+  #===========================================================================
+  def self.give_item_to_player(item_id)
 
     if defined?(FO_Inventory)
 
       if FO_Inventory.respond_to?(:add_item)
 
-        FO_Inventory.add_item(item_name)
+        FO_Inventory.add_item(item_id, 1)
 
         return true
 
@@ -239,13 +328,16 @@ module FO_LootSystem
     end
 
     FO_Logger.action(
-      "Loot recebido: #{item_name}"
-    )
+      "Loot recebido: #{item_name(item_id)} [ID #{item_id}]"
+    ) if defined?(FO_Logger)
 
     return true
 
   end
 
+  #===========================================================================
+  # ■ reset
+  #===========================================================================
   def self.reset
 
     @processed_runtime_ids.clear
@@ -270,13 +362,13 @@ end
 
 FO_Logger.action(
   "FO_LootSystem carregado com sucesso."
-)
+) if defined?(FO_Logger)
 
 FO_Debug.debug_log(
   "combat",
   "FO_LootSystem carregado."
-)
+) if defined?(FO_Debug)
 
 FO_CORE.debug(
   "FO_LootSystem carregado com sucesso."
-)
+) if defined?(FO_CORE)

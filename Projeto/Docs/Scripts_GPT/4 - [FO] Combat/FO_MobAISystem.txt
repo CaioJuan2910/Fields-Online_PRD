@@ -54,7 +54,7 @@ module FO_MobAIConfig
 
   ENABLE_FURY_STATUS = true
 
-  FURY_CHANCE_PERCENT = 20
+  FURY_CHANCE_PERCENT = 5
 
   FURY_SE_NAME = "015-Jump01"
 
