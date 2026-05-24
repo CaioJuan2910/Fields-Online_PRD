@@ -283,3 +283,64 @@
 [17:54:25] FO_TargetSystem carregado.
 [17:54:25] FO_AutoAttackSystem carregado.
 [17:54:25] FO_MobAISystem carregado.
+[18:02:52] FO_CombatSystem carregado.
+[18:02:52] FO_TargetSystem carregado.
+[18:02:52] FO_AutoAttackSystem carregado.
+[18:02:52] FO_MobAISystem carregado.
+[18:02:52] FO_LootSystem carregado.
+[18:02:52] FO_EnemySystem carregado.
+[18:02:52] FO_AISystem carregado.
+[18:02:57] Auto attack em Ghost.
+[18:02:58] Auto attack em Ghost.
+[18:03:00] Auto attack em Ghost.
+[18:03:01] Auto attack em Ghost.
+[20:04:14] FO_CombatSystem carregado.
+[20:04:14] FO_TargetSystem carregado.
+[20:04:14] FO_AutoAttackSystem carregado.
+[20:04:14] FO_MobAISystem carregado.
+[20:04:14] FO_LootSystem carregado.
+[20:04:14] FO_EnemySystem carregado.
+[20:04:14] FO_AISystem carregado.
+[20:04:18] Auto attack em Ghost.
+[20:04:19] Auto attack em Ghost.
+[20:04:21] Auto attack em Ghost.
+[20:04:22] Auto attack em Ghost.
+[20:04:45] Auto attack em Ghost.
+[20:04:46] Auto attack em Ghost.
+[20:04:48] Auto attack em Ghost.
+[20:04:49] Auto attack em Ghost.
+[20:10:57] FO_CombatSystem carregado.
+[20:10:57] FO_TargetSystem carregado.
+[20:10:57] FO_AutoAttackSystem carregado.
+[20:10:57] FO_MobAISystem carregado.
+[20:10:57] FO_LootSystem carregado.
+[20:10:57] FO_EnemySystem carregado.
+[20:10:57] FO_AISystem carregado.
+[20:11:20] FO_CombatSystem carregado.
+[20:11:20] FO_TargetSystem carregado.
+[20:11:20] FO_AutoAttackSystem carregado.
+[20:11:20] FO_MobAISystem carregado.
+[20:11:20] FO_LootSystem carregado.
+[20:11:20] FO_EnemySystem carregado.
+[20:11:20] FO_AISystem carregado.
+[20:26:29] FO_CombatSystem carregado.
+[20:26:29] FO_TargetSystem carregado.
+[20:26:29] FO_AutoAttackSystem carregado.
+[20:26:30] FO_MobAISystem carregado.
+[20:26:30] FO_LootSystem carregado.
+[20:26:30] FO_EnemySystem carregado.
+[20:26:30] FO_AISystem carregado.
+[21:03:25] FO_CombatSystem carregado.
+[21:03:25] FO_TargetSystem carregado.
+[21:03:25] FO_AutoAttackSystem carregado.
+[21:03:25] FO_MobAISystem carregado.
+[21:03:25] FO_LootSystem carregado.
+[21:03:25] FO_EnemySystem carregado.
+[21:03:25] FO_AISystem carregado.
+[21:07:57] FO_CombatSystem carregado.
+[21:07:57] FO_TargetSystem carregado.
+[21:07:57] FO_AutoAttackSystem carregado.
+[21:07:57] FO_MobAISystem carregado.
+[21:07:57] FO_LootSystem carregado.
+[21:07:57] FO_EnemySystem carregado.
+[21:07:57] FO_AISystem carregado.

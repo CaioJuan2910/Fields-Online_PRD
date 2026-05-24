@@ -49,3 +49,17 @@
 [17:41:50] FO_PlayerRuntimeSystem carregado.
 [17:47:02] FO_EntityRuntimeSystem carregado.
 [17:47:02] FO_PlayerRuntimeSystem carregado.
+[18:02:52] FO_EntityRuntimeSystem carregado.
+[18:02:52] FO_PlayerRuntimeSystem carregado.
+[20:04:14] FO_EntityRuntimeSystem carregado.
+[20:04:14] FO_PlayerRuntimeSystem carregado.
+[20:10:57] FO_EntityRuntimeSystem carregado.
+[20:10:57] FO_PlayerRuntimeSystem carregado.
+[20:11:20] FO_EntityRuntimeSystem carregado.
+[20:11:20] FO_PlayerRuntimeSystem carregado.
+[20:26:30] FO_EntityRuntimeSystem carregado.
+[20:26:30] FO_PlayerRuntimeSystem carregado.
+[21:03:25] FO_EntityRuntimeSystem carregado.
+[21:03:25] FO_PlayerRuntimeSystem carregado.
+[21:07:57] FO_EntityRuntimeSystem carregado.
+[21:07:57] FO_PlayerRuntimeSystem carregado.

@@ -4,7 +4,7 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.0.0
+# Versão....: 1.1.0
 # Data......: 23/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
@@ -15,6 +15,7 @@
 # - Tabela de loot por nome da entidade
 # - Chance percentual
 # - Log de drops
+# - Floating Loot
 # - Preparação para inventário
 #==============================================================================
 
@@ -23,6 +24,8 @@ module FO_LootConfig
   ENABLE_LOOT = true
 
   ENABLE_LOOT_LOG = true
+
+  ENABLE_FLOATING_LOOT = true
 
   DEFAULT_LOOT_TABLE = [
     ["Gold", 100],
@@ -50,6 +53,66 @@ end
 
 module FO_LootSystem
 
+  @processed_runtime_ids = []
+
+  def self.update
+
+    return unless defined?(FO_EntityRuntimeManager)
+
+    return if FO_EntityRuntimeManager.runtimes.nil?
+
+    for runtime in FO_EntityRuntimeManager.runtimes
+
+      next if runtime.nil?
+
+      update_runtime_loot(runtime)
+
+    end
+
+  end
+
+  def self.update_runtime_loot(runtime)
+
+    if runtime.dead?
+
+      process_death_loot_once(runtime)
+
+    else
+
+      clear_processed_runtime(runtime)
+
+    end
+
+  end
+
+  def self.process_death_loot_once(runtime)
+
+    return if loot_already_processed?(runtime)
+
+    mark_loot_processed(runtime)
+
+    process_loot(runtime)
+
+  end
+
+  def self.loot_already_processed?(runtime)
+
+    return @processed_runtime_ids.include?(runtime.runtime_id)
+
+  end
+
+  def self.mark_loot_processed(runtime)
+
+    @processed_runtime_ids.push(runtime.runtime_id)
+
+  end
+
+  def self.clear_processed_runtime(runtime)
+
+    @processed_runtime_ids.delete(runtime.runtime_id)
+
+  end
+
   def self.process_loot(runtime)
 
     return false unless FO_LootConfig::ENABLE_LOOT
@@ -61,6 +124,8 @@ module FO_LootSystem
     table = loot_table(runtime)
 
     drops = roll_loot(table)
+
+    show_floating_loot(runtime, drops)
 
     register_drops(runtime, drops)
 
@@ -118,6 +183,23 @@ module FO_LootSystem
 
   end
 
+  def self.show_floating_loot(runtime, drops)
+
+    return unless FO_LootConfig::ENABLE_FLOATING_LOOT
+
+    return if drops.nil?
+
+    return if drops.empty?
+
+    return unless defined?(FO_FloatingLootManager)
+
+    FO_FloatingLootManager.show_multiple(
+      runtime.event,
+      drops
+    )
+
+  end
+
   def self.register_drops(runtime, drops)
 
     if drops.empty?
@@ -164,27 +246,23 @@ module FO_LootSystem
 
   end
 
+  def self.reset
+
+    @processed_runtime_ids.clear
+
+  end
+
 end
 
-#==============================================================================
-# ■ FO_EntityRuntime
-#------------------------------------------------------------------------------
-# Integração do loot com a morte da entidade.
-#==============================================================================
+class Scene_Map
 
-class FO_EntityRuntime
+  alias fo_loot_system_update update
 
-  alias fo_loot_system_die die
+  def update
 
-  def die
+    FO_LootSystem.update
 
-    already_dead = dead?
-
-    fo_loot_system_die
-
-    return if already_dead
-
-    FO_LootSystem.process_loot(self)
+    fo_loot_system_update
 
   end
 
