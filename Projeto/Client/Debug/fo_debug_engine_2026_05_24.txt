@@ -7,3 +7,22 @@
 [00:38:43] FO_PlayerStats carregado.
 [00:38:43] FO_EquipmentSystem carregado.
 [00:38:44] Scene_Map iniciada.
+[00:49:17] FO_Debug carregado com sucesso.
+[00:49:17] FO_DeveloperMode carregado.
+[00:49:17] FO_DataManager carregado.
+[00:49:17] Sistemas registrados.
+[00:49:17] Boot iniciado.
+[00:49:17] FO_PlayerData carregado.
+[00:49:17] FO_PlayerStats carregado.
+[00:49:17] FO_EquipmentSystem carregado.
+[00:49:17] Scene_Map iniciada.
+[00:51:36] FO_Debug carregado com sucesso.
+[00:51:36] FO_DeveloperMode carregado.
+[00:51:36] FO_DataManager carregado.
+[00:51:36] Sistemas registrados.
+[00:51:36] Boot iniciado.
+[00:51:36] FO_PlayerData carregado.
+[00:51:36] FO_PlayerStats carregado.
+[00:51:36] FO_EquipmentSystem carregado.
+[00:51:37] Scene_Map iniciada.
+[00:51:50] Scene_Map iniciada.

@@ -1,3 +1,9 @@
 [00:38:43] FO_PlayerHUDSystem carregado.
 [00:38:43] FO_PlayerEXPBarSystem carregado.
 [00:38:43] FO_FloatingLootSystem carregado.
+[00:49:17] FO_PlayerHUDSystem carregado.
+[00:49:17] FO_PlayerEXPBarSystem carregado.
+[00:49:17] FO_FloatingLootSystem carregado.
+[00:51:36] FO_PlayerHUDSystem carregado.
+[00:51:36] FO_PlayerEXPBarSystem carregado.
+[00:51:36] FO_FloatingLootSystem carregado.

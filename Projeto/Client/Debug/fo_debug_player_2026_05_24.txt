@@ -2,3 +2,11 @@
 [00:38:43] FO_PlayerLevelSystem carregado.
 [00:38:43] FO_ConsumableSystem carregado.
 [00:38:43] FO_Inventory carregado.
+[00:49:17] FO_ItemDatabase carregado.
+[00:49:17] FO_PlayerLevelSystem carregado.
+[00:49:17] FO_ConsumableSystem carregado.
+[00:49:17] FO_Inventory carregado.
+[00:51:36] FO_ItemDatabase carregado.
+[00:51:36] FO_PlayerLevelSystem carregado.
+[00:51:36] FO_ConsumableSystem carregado.
+[00:51:36] FO_Inventory carregado.

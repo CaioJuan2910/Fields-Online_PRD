@@ -5,3 +5,19 @@
 [00:38:43] FO_InteractionSystem carregado.
 [00:38:44] Entidades limpas.
 [00:38:44] Scan de entidades concluído.
+[00:49:17] FO_MapEntitySystem carregado.
+[00:49:17] FO_EntityVisualSystem carregado.
+[00:49:17] FO_TargetVisualSystem carregado.
+[00:49:17] FO_FloatingDamageSystem carregado.
+[00:49:17] FO_InteractionSystem carregado.
+[00:49:17] Entidades limpas.
+[00:49:17] Scan de entidades concluído.
+[00:51:36] FO_MapEntitySystem carregado.
+[00:51:36] FO_EntityVisualSystem carregado.
+[00:51:36] FO_TargetVisualSystem carregado.
+[00:51:36] FO_FloatingDamageSystem carregado.
+[00:51:36] FO_InteractionSystem carregado.
+[00:51:37] Entidades limpas.
+[00:51:37] Scan de entidades concluído.
+[00:51:50] Entidades limpas.
+[00:51:50] Scan de entidades concluído.
