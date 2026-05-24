@@ -1,0 +1,14 @@
+[00:08:01] FO_CombatSystem carregado.
+[00:08:01] FO_TargetSystem carregado.
+[00:08:01] FO_AutoAttackSystem carregado.
+[00:08:01] FO_MobAISystem carregado.
+[00:08:01] FO_LootSystem carregado.
+[00:08:01] FO_EnemySystem carregado.
+[00:08:01] FO_AISystem carregado.
+[00:13:09] FO_CombatSystem carregado.
+[00:13:09] FO_TargetSystem carregado.
+[00:13:09] FO_AutoAttackSystem carregado.
+[00:13:09] FO_MobAISystem carregado.
+[00:13:09] FO_LootSystem carregado.
+[00:13:09] FO_EnemySystem carregado.
+[00:13:09] FO_AISystem carregado.

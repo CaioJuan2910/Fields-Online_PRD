@@ -4,34 +4,17 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.0.0
-# Data......: 18/05/2026
+# Versão....: 1.0.1
+# Data......: 23/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema de gerenciamento de dados do projeto Fields Online.
-#------------------------------------------------------------------------------
-# Funções atuais:
-# - Criação automática da pasta Data
-# - Save de arquivos
-# - Load de arquivos
-# - Verificação de existência
-# - Preparação para PostgreSQL
-#------------------------------------------------------------------------------
 #==============================================================================
 
 module FO_DataManager
 
-  #===========================================================================
-  # ■ CONFIGURAÇÕES
-  #===========================================================================
+  DATA_FOLDER = "FO_Data"
 
-  DATA_FOLDER = "Data"
-
-  #===========================================================================
-  # ■ create_data_folder
-  #--------------------------------------------------------------------------
-  # Cria a pasta Data automaticamente.
-  #===========================================================================
   def self.create_data_folder
 
     unless FileTest.exist?(DATA_FOLDER)
@@ -40,11 +23,6 @@ module FO_DataManager
 
   end
 
-  #===========================================================================
-  # ■ save_data
-  #--------------------------------------------------------------------------
-  # Salva dados serializados.
-  #===========================================================================
   def self.save_data(file_name, data)
 
     begin
@@ -59,17 +37,22 @@ module FO_DataManager
 
       file.close
 
-      FO_Logger.action("Arquivo salvo: #{file_name}")
+      FO_Logger.action(
+        "Arquivo salvo: #{file_name}"
+      ) if defined?(FO_Logger)
 
-      FO_Debug.debug_log("engine", "Save executado: #{file_name}")
+      FO_Debug.debug_log(
+        "engine",
+        "Save executado: #{file_name}"
+      ) if defined?(FO_Debug)
 
       return true
 
     rescue => error
 
-      FO_Logger.error("Erro ao salvar #{file_name}: #{error}")
-
-      FO_Debug.debug_log("engine", "Erro save: #{error}")
+      FO_Logger.error(
+        "Erro ao salvar #{file_name}: #{error}"
+      ) if defined?(FO_Logger)
 
       return false
 
@@ -77,11 +60,6 @@ module FO_DataManager
 
   end
 
-  #===========================================================================
-  # ■ load_data
-  #--------------------------------------------------------------------------
-  # Carrega dados serializados.
-  #===========================================================================
   def self.load_data(file_name)
 
     begin
@@ -90,7 +68,9 @@ module FO_DataManager
 
       unless FileTest.exist?(file_path)
 
-        FO_Logger.error("Arquivo não encontrado: #{file_name}")
+        FO_Logger.error(
+          "Arquivo não encontrado: #{file_name}"
+        ) if defined?(FO_Logger)
 
         return nil
 
@@ -102,17 +82,17 @@ module FO_DataManager
 
       file.close
 
-      FO_Logger.action("Arquivo carregado: #{file_name}")
-
-      FO_Debug.debug_log("engine", "Load executado: #{file_name}")
+      FO_Logger.action(
+        "Arquivo carregado: #{file_name}"
+      ) if defined?(FO_Logger)
 
       return data
 
     rescue => error
 
-      FO_Logger.error("Erro ao carregar #{file_name}: #{error}")
-
-      FO_Debug.debug_log("engine", "Erro load: #{error}")
+      FO_Logger.error(
+        "Erro ao carregar #{file_name}: #{error}"
+      ) if defined?(FO_Logger)
 
       return nil
 
@@ -120,11 +100,6 @@ module FO_DataManager
 
   end
 
-  #===========================================================================
-  # ■ file_exists?
-  #--------------------------------------------------------------------------
-  # Verifica se o arquivo existe.
-  #===========================================================================
   def self.file_exists?(file_name)
 
     file_path = "#{DATA_FOLDER}/#{file_name}"
@@ -133,38 +108,27 @@ module FO_DataManager
 
   end
 
-  #===========================================================================
-  # ■ delete_data
-  #--------------------------------------------------------------------------
-  # Remove um arquivo.
-  #===========================================================================
   def self.delete_data(file_name)
 
     begin
 
       file_path = "#{DATA_FOLDER}/#{file_name}"
 
-      unless FileTest.exist?(file_path)
-
-        FO_Logger.error("Tentativa de deletar arquivo inexistente.")
-
-        return false
-
-      end
+      return false unless FileTest.exist?(file_path)
 
       File.delete(file_path)
 
-      FO_Logger.action("Arquivo deletado: #{file_name}")
-
-      FO_Debug.debug_log("engine", "Delete executado: #{file_name}")
+      FO_Logger.action(
+        "Arquivo deletado: #{file_name}"
+      ) if defined?(FO_Logger)
 
       return true
 
     rescue => error
 
-      FO_Logger.error("Erro ao deletar #{file_name}: #{error}")
-
-      FO_Debug.debug_log("engine", "Erro delete: #{error}")
+      FO_Logger.error(
+        "Erro ao deletar #{file_name}: #{error}"
+      ) if defined?(FO_Logger)
 
       return false
 
@@ -174,14 +138,13 @@ module FO_DataManager
 
 end
 
-#==============================================================================
-# ■ Inicialização
-#==============================================================================
-
 FO_DataManager.create_data_folder
 
-FO_Logger.action("FO_DataManager carregado com sucesso.")
+FO_Logger.action(
+  "FO_DataManager carregado com sucesso."
+) if defined?(FO_Logger)
 
-FO_Debug.debug_log("engine", "FO_DataManager carregado.")
-
-FO_CORE.debug("FO_DataManager carregado com sucesso.")
+FO_Debug.debug_log(
+  "engine",
+  "FO_DataManager carregado."
+) if defined?(FO_Debug)

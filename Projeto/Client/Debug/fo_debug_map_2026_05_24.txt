@@ -1,0 +1,14 @@
+[00:08:01] FO_MapEntitySystem carregado.
+[00:08:01] FO_EntityVisualSystem carregado.
+[00:08:01] FO_TargetVisualSystem carregado.
+[00:08:01] FO_FloatingDamageSystem carregado.
+[00:08:01] FO_InteractionSystem carregado.
+[00:08:02] Entidades limpas.
+[00:08:02] Scan de entidades concluído.
+[00:13:09] FO_MapEntitySystem carregado.
+[00:13:09] FO_EntityVisualSystem carregado.
+[00:13:09] FO_TargetVisualSystem carregado.
+[00:13:09] FO_FloatingDamageSystem carregado.
+[00:13:09] FO_InteractionSystem carregado.
+[00:13:10] Entidades limpas.
+[00:13:10] Scan de entidades concluído.

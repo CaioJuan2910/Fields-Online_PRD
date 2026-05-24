@@ -4,36 +4,19 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.0.0
-# Data......: 18/05/2026
+# Versão....: 1.1.0
+# Data......: 23/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
-# Sistema de Debug técnico do projeto Fields Online.
-#------------------------------------------------------------------------------
-# Funções atuais:
-# - HUD Debug
-# - FPS
-# - Informações do jogador
-# - Logs técnicos
-# - Diretório Debug
-#------------------------------------------------------------------------------
+# Sistema de debug técnico do projeto Fields Online.
 #==============================================================================
 
 module FO_Debug
 
-  #===========================================================================
-  # ■ CONFIGURAÇÕES
-  #===========================================================================
+  ENABLE_DEBUG_HUD = false
 
-  ENABLE_DEBUG_HUD = true
+  DEBUG_FOLDER = "Debug"
 
-  DEBUG_FOLDER     = "Debug"
-
-  #===========================================================================
-  # ■ create_debug_folder
-  #--------------------------------------------------------------------------
-  # Cria a pasta Debug automaticamente.
-  #===========================================================================
   def self.create_debug_folder
 
     unless FileTest.exist?(DEBUG_FOLDER)
@@ -42,14 +25,12 @@ module FO_Debug
 
   end
 
-  #===========================================================================
-  # ■ current_date
-  #===========================================================================
   def self.current_date
 
     time = Time.now
 
-    return sprintf("%04d_%02d_%02d",
+    return sprintf(
+      "%04d_%02d_%02d",
       time.year,
       time.month,
       time.day
@@ -57,14 +38,12 @@ module FO_Debug
 
   end
 
-  #===========================================================================
-  # ■ current_time
-  #===========================================================================
   def self.current_time
 
     time = Time.now
 
-    return sprintf("%02d:%02d:%02d",
+    return sprintf(
+      "%02d:%02d:%02d",
       time.hour,
       time.min,
       time.sec
@@ -72,12 +51,10 @@ module FO_Debug
 
   end
 
-  #===========================================================================
-  # ■ debug_log
-  #--------------------------------------------------------------------------
-  # Salva logs técnicos.
-  #===========================================================================
   def self.debug_log(type, message)
+
+    return if defined?(FO_Settings) &&
+      FO_Settings::ENABLE_DEBUG == false
 
     begin
 
@@ -95,7 +72,9 @@ module FO_Debug
 
     rescue => error
 
-      FO_Logger.error("FO_Debug ERROR: #{error}")
+      if defined?(FO_Logger)
+        FO_Logger.error("FO_Debug ERROR: #{error}")
+      end
 
     end
 
@@ -103,17 +82,8 @@ module FO_Debug
 
 end
 
-#==============================================================================
-# ■ FO_Debug_HUD
-#------------------------------------------------------------------------------
-# HUD visual de debug na tela.
-#==============================================================================
-
 class FO_Debug_HUD
 
-  #===========================================================================
-  # ■ initialize
-  #===========================================================================
   def initialize
 
     @sprite = Sprite.new
@@ -128,9 +98,6 @@ class FO_Debug_HUD
 
   end
 
-  #===========================================================================
-  # ■ refresh
-  #===========================================================================
   def refresh
 
     @sprite.bitmap.clear
@@ -138,81 +105,67 @@ class FO_Debug_HUD
     return unless $game_player
     return unless $game_map
 
-    fps = Graphics.frame_rate
-
-    map_id = $game_map.map_id
-
-    player_x = $game_player.x
-    player_y = $game_player.y
-
     text = ""
 
     text += "FIELDS ONLINE DEBUG\n"
-    text += "FPS: #{fps}\n"
-    text += "MAP ID: #{map_id}\n"
-    text += "PLAYER X: #{player_x}\n"
-    text += "PLAYER Y: #{player_y}\n"
+    text += "FPS: #{Graphics.frame_rate}\n"
+    text += "MAP ID: #{$game_map.map_id}\n"
+    text += "PLAYER X: #{$game_player.x}\n"
+    text += "PLAYER Y: #{$game_player.y}\n"
 
     @sprite.bitmap.font.size = 18
 
-    @sprite.bitmap.draw_text(0, 0, 300, 120, text)
+    @sprite.bitmap.draw_text(
+      0,
+      0,
+      300,
+      120,
+      text
+    )
 
   end
 
-  #===========================================================================
-  # ■ update
-  #===========================================================================
   def update
 
     refresh
 
   end
 
-  #===========================================================================
-  # ■ dispose
-  #===========================================================================
   def dispose
 
-    @sprite.bitmap.dispose
-    @sprite.dispose
+    @sprite.bitmap.dispose if @sprite && @sprite.bitmap
+
+    @sprite.dispose if @sprite
 
   end
 
 end
-
-#==============================================================================
-# ■ Scene_Map
-#------------------------------------------------------------------------------
-# Integração do Debug HUD ao mapa.
-#==============================================================================
 
 class Scene_Map
 
   alias fo_debug_main main
   alias fo_debug_update update
 
-  #===========================================================================
-  # ■ main
-  #===========================================================================
   def main
 
     if FO_Debug::ENABLE_DEBUG_HUD
       @fo_debug_hud = FO_Debug_HUD.new
     end
 
-    FO_Debug.debug_log("engine", "Scene_Map iniciada.")
+    FO_Debug.debug_log(
+      "engine",
+      "Scene_Map iniciada."
+    )
 
     fo_debug_main
 
     if @fo_debug_hud
       @fo_debug_hud.dispose
+      @fo_debug_hud = nil
     end
 
   end
 
-  #===========================================================================
-  # ■ update
-  #===========================================================================
   def update
 
     fo_debug_update
@@ -225,14 +178,13 @@ class Scene_Map
 
 end
 
-#==============================================================================
-# ■ Inicialização
-#==============================================================================
-
 FO_Debug.create_debug_folder
 
-FO_Debug.debug_log("engine", "FO_Debug carregado com sucesso.")
+FO_Debug.debug_log(
+  "engine",
+  "FO_Debug carregado com sucesso."
+)
 
-FO_Logger.action("FO_Debug carregado com sucesso.")
-
-FO_CORE.debug("FO_Debug carregado com sucesso.")
+FO_Logger.action(
+  "FO_Debug carregado com sucesso."
+) if defined?(FO_Logger)

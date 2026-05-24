@@ -4,33 +4,17 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.0.0
-# Data......: 18/05/2026
+# Versão....: 1.1.0
+# Data......: 23/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema de logs do projeto Fields Online.
-#------------------------------------------------------------------------------
-# Funções atuais:
-# - Criação automática da pasta Logs
-# - Criação automática de arquivos
-# - Logs separados por categoria
-# - Logs com data e hora
-#------------------------------------------------------------------------------
 #==============================================================================
 
 module FO_Logger
 
-  #===========================================================================
-  # ■ CONFIGURAÇÕES
-  #===========================================================================
-
   LOG_FOLDER = "Logs"
 
-  #===========================================================================
-  # ■ create_log_folder
-  #--------------------------------------------------------------------------
-  # Cria a pasta de logs caso ela não exista.
-  #===========================================================================
   def self.create_log_folder
 
     unless FileTest.exist?(LOG_FOLDER)
@@ -39,39 +23,25 @@ module FO_Logger
 
   end
 
-  #===========================================================================
-  # ■ current_date
-  #--------------------------------------------------------------------------
-  # Retorna a data atual formatada.
-  #
-  # Exemplo:
-  # 2026_05_18
-  #===========================================================================
   def self.current_date
 
     time = Time.now
 
-    year  = time.year
-    month = sprintf("%02d", time.month)
-    day   = sprintf("%02d", time.day)
-
-    return "#{year}_#{month}_#{day}"
+    return sprintf(
+      "%04d_%02d_%02d",
+      time.year,
+      time.month,
+      time.day
+    )
 
   end
 
-  #===========================================================================
-  # ■ current_time
-  #--------------------------------------------------------------------------
-  # Retorna horário formatado.
-  #
-  # Exemplo:
-  # 14:35:10
-  #===========================================================================
   def self.current_time
 
     time = Time.now
 
-    return sprintf("%02d:%02d:%02d",
+    return sprintf(
+      "%02d:%02d:%02d",
       time.hour,
       time.min,
       time.sec
@@ -79,12 +49,37 @@ module FO_Logger
 
   end
 
-  #===========================================================================
-  # ■ log
-  #--------------------------------------------------------------------------
-  # Método principal de gravação de logs.
-  #===========================================================================
+  def self.log_enabled?(type)
+
+    return true unless defined?(FO_Settings)
+
+    case type
+
+    when "erros"
+
+      return FO_Settings::ENABLE_ERROR_LOG
+
+    when "acoes"
+
+      return FO_Settings::ENABLE_ACTION_LOG
+
+    when "chat"
+
+      return FO_Settings::ENABLE_CHAT_LOG
+
+    when "network"
+
+      return FO_Settings::ENABLE_NETWORK_LOG
+
+    end
+
+    return true
+
+  end
+
   def self.log(type, message)
+
+    return unless log_enabled?(type)
 
     begin
 
@@ -100,59 +95,34 @@ module FO_Logger
 
       file.close
 
-      FO_CORE.debug("[LOGGER] #{message}")
+      if defined?(FO_CORE)
+        FO_CORE.debug("[LOGGER] #{message}")
+      end
 
-    rescue => error
-
-      print "\n"
-      print "========================================\n"
-      print "FO_Logger ERROR\n"
-      print "========================================\n"
-      print "#{error}\n"
-      print "========================================\n"
+    rescue
 
     end
 
   end
 
-  #===========================================================================
-  # ■ error
-  #--------------------------------------------------------------------------
-  # Log de erros.
-  #===========================================================================
   def self.error(message)
 
     log("erros", message)
 
   end
 
-  #===========================================================================
-  # ■ action
-  #--------------------------------------------------------------------------
-  # Log de ações.
-  #===========================================================================
   def self.action(message)
 
     log("acoes", message)
 
   end
 
-  #===========================================================================
-  # ■ chat
-  #--------------------------------------------------------------------------
-  # Log de chat.
-  #===========================================================================
   def self.chat(message)
 
     log("chat", message)
 
   end
 
-  #===========================================================================
-  # ■ network
-  #--------------------------------------------------------------------------
-  # Log de rede/network.
-  #===========================================================================
   def self.network(message)
 
     log("network", message)
@@ -161,10 +131,8 @@ module FO_Logger
 
 end
 
-#==============================================================================
-# ■ Inicialização
-#==============================================================================
-
 FO_Logger.create_log_folder
 
-FO_CORE.debug("FO_Logger carregado com sucesso.")
+FO_Logger.action(
+  "FO_Logger carregado com sucesso."
+)

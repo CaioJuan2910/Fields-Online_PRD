@@ -4,63 +4,27 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.0.0
-# Data......: 18/05/2026
+# Versão....: 1.1.0
+# Data......: 23/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema central de desenvolvimento do projeto Fields Online.
-#------------------------------------------------------------------------------
-# Funções atuais:
-# - Controle de Debug
-# - Controle de Console
-# - Controle de Testes
-# - Controle de HUD
-#------------------------------------------------------------------------------
 #==============================================================================
 
 module FO_DeveloperMode
 
-  #===========================================================================
-  # ■ CONFIGURAÇÕES GERAIS
-  #===========================================================================
-
   ENABLE_DEVELOPER_MODE = true
-
-  #===========================================================================
-  # ■ CONSOLE / OUTPUT
-  #===========================================================================
 
   ENABLE_CONSOLE_OUTPUT = false
 
-  #===========================================================================
-  # ■ DEBUG HUD
-  #===========================================================================
-
-  ENABLE_DEBUG_HUD = true
-
-  #===========================================================================
-  # ■ TEST SYSTEMS
-  #===========================================================================
+  ENABLE_DEBUG_HUD = false
 
   ENABLE_TEST_SYSTEMS = false
 
-  #===========================================================================
-  # ■ DEBUG LOGS
-  #===========================================================================
-
   ENABLE_DEBUG_LOGS = true
-
-  #===========================================================================
-  # ■ GM MODE
-  #===========================================================================
 
   ENABLE_GM_MODE = false
 
-  #===========================================================================
-  # ■ console_output
-  #--------------------------------------------------------------------------
-  # Exibe mensagens apenas se console estiver ativo.
-  #===========================================================================
   def self.console_output(message)
 
     return unless ENABLE_DEVELOPER_MODE
@@ -71,14 +35,25 @@ module FO_DeveloperMode
 
   end
 
+  def self.developer_mode?
+
+    return ENABLE_DEVELOPER_MODE
+
+  end
+
+  def self.gm_mode?
+
+    return ENABLE_GM_MODE
+
+  end
+
 end
 
-#==============================================================================
-# ■ Inicialização
-#==============================================================================
+FO_Logger.action(
+  "FO_DeveloperMode carregado com sucesso."
+) if defined?(FO_Logger)
 
-FO_Logger.action("FO_DeveloperMode carregado com sucesso.")
-
-FO_Debug.debug_log("engine", "FO_DeveloperMode carregado.")
-
-FO_CORE.debug("FO_DeveloperMode carregado com sucesso.")
+FO_Debug.debug_log(
+  "engine",
+  "FO_DeveloperMode carregado."
+) if defined?(FO_Debug)

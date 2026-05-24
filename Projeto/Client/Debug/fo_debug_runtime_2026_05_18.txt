@@ -1,5 +1,0 @@
-[18:39:33] FO_EntityRuntimeSystem carregado.
-[18:39:34] Runtime 803106 criado.
-[18:39:34] Runtime 636848 criado.
-[18:39:34] Runtime 926739 criado.
-[18:39:34] Runtime 314553 criado.

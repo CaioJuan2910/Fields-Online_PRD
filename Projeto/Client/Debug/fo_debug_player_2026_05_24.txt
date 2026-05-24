@@ -1,0 +1,6 @@
+[00:08:01] FO_ItemDatabase carregado.
+[00:08:01] FO_PlayerLevelSystem carregado.
+[00:08:01] FO_Inventory carregado.
+[00:13:09] FO_ItemDatabase carregado.
+[00:13:09] FO_PlayerLevelSystem carregado.
+[00:13:09] FO_Inventory carregado.
