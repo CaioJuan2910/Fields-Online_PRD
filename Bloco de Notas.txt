@@ -1,4 +1,4 @@
-Chat, boa tarde!
+Chat, boa noite!
 
 Me chamo Caio e juntos vamos criar o MMORPG clássico 2D, utilizando o Rpg Maker XP, no qual eu já tenho conhecimento básico da ferramenta. A ideia é que nosso MMORPG seja baseado nos clássicos como Tibia Online, Ultima Online, Ragnarok e a Saga Diablo, acredito que essa seja uma boa base para construímos nosso jogo, para ser jogado Online com amigos.
 
@@ -18,14 +18,9 @@ Vamos precisar seguir alguns padrões, que entendo ser mais fácil para mim:
 - As categorias devem levar o padrão de nome: [FO] Nome_da_Sessão
 - Vamos trabalhar em ETAPAS e Fases e sempre avise quando uma delas for começar e acabar.
 
-Materiais para consulta e inspirações:
+Nosso diretório do GitHub:
 
-https://aldeiarpgbr.forumeiros.com/t1860-net-play-1-7-especial-edit
-https://aldeiarpgbr.forumeiros.com/t3096-novo-hyper-netplay-v1-1
-https://aldeiarpgbr.forumeiros.com/t11463-netplay-master-v4-9-2-custom-resolution
-https://aldeiarpgbr.forumeiros.com/t13566-netmaker-1-0-2-modificado
-https://aldeiarpgbr.forumeiros.com/t13477-netplay-crystal-download
-https://aldeiarpgbr.forumeiros.com/f49-scripts-para-netplays
+https://github.com/CaioJuan2910/Fields-Online_PRD/tree/master/Projeto/Docs
 
 Link de expiração de outro projeto no GitHub:
 https://github.com/Valentine90/vxa-os/tree/master

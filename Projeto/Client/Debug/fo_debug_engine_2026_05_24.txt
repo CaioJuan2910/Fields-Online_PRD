@@ -1,9 +1,48 @@
-[01:34:31] FO_Debug carregado com sucesso.
-[01:34:31] FO_DeveloperMode carregado.
-[01:34:31] FO_DataManager carregado.
-[01:34:31] Sistemas registrados.
-[01:34:31] Boot iniciado.
-[01:34:31] FO_PlayerData carregado.
-[01:34:31] FO_PlayerStats carregado.
-[01:34:31] FO_EquipmentSystem carregado.
-[01:34:31] Scene_Map iniciada.
+[13:08:40] FO_Debug carregado com sucesso.
+[13:08:40] FO_DeveloperMode carregado.
+[13:08:40] FO_DataManager carregado.
+[13:08:40] Sistemas registrados.
+[13:08:40] Boot iniciado.
+[13:08:40] FO_PlayerData carregado.
+[13:08:40] FO_PlayerStats carregado.
+[13:08:41] Scene_Map iniciada.
+[13:10:02] FO_Debug carregado com sucesso.
+[13:10:02] FO_DeveloperMode carregado.
+[13:10:02] FO_DataManager carregado.
+[13:10:02] Sistemas registrados.
+[13:10:02] Boot iniciado.
+[13:10:02] FO_PlayerData carregado.
+[13:10:02] FO_PlayerStats carregado.
+[13:10:04] Scene_Map iniciada.
+[13:10:35] FO_Debug carregado com sucesso.
+[13:10:35] FO_DeveloperMode carregado.
+[13:10:35] FO_DataManager carregado.
+[13:10:35] Sistemas registrados.
+[13:10:35] Boot iniciado.
+[13:10:35] FO_PlayerData carregado.
+[13:10:35] FO_PlayerStats carregado.
+[13:10:36] Scene_Map iniciada.
+[13:12:21] FO_Debug carregado com sucesso.
+[13:12:21] FO_DeveloperMode carregado.
+[13:12:21] FO_DataManager carregado.
+[13:12:21] Sistemas registrados.
+[13:12:21] Boot iniciado.
+[13:12:21] FO_PlayerData carregado.
+[13:12:21] FO_PlayerStats carregado.
+[13:12:22] Scene_Map iniciada.
+[13:18:36] FO_Debug carregado com sucesso.
+[13:18:36] FO_DeveloperMode carregado.
+[13:18:36] FO_DataManager carregado.
+[13:18:36] Sistemas registrados.
+[13:18:36] Boot iniciado.
+[13:18:36] FO_PlayerData carregado.
+[13:18:36] FO_PlayerStats carregado.
+[13:18:38] Scene_Map iniciada.
+[13:19:48] FO_Debug carregado com sucesso.
+[13:19:48] FO_DeveloperMode carregado.
+[13:19:48] FO_DataManager carregado.
+[13:19:48] Sistemas registrados.
+[13:19:48] Boot iniciado.
+[13:19:48] FO_PlayerData carregado.
+[13:19:48] FO_PlayerStats carregado.
+[13:19:50] Scene_Map iniciada.

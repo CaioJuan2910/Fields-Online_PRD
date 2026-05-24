@@ -1,7 +1,42 @@
-[01:34:31] FO_MapEntitySystem carregado.
-[01:34:31] FO_EntityVisualSystem carregado.
-[01:34:31] FO_TargetVisualSystem carregado.
-[01:34:31] FO_FloatingDamageSystem carregado.
-[01:34:31] FO_InteractionSystem carregado.
-[01:34:31] Entidades limpas.
-[01:34:31] Scan de entidades concluído.
+[13:08:40] FO_MapEntitySystem carregado.
+[13:08:40] FO_EntityVisualSystem carregado.
+[13:08:40] FO_TargetVisualSystem carregado.
+[13:08:40] FO_FloatingDamageSystem carregado.
+[13:08:40] FO_InteractionSystem carregado.
+[13:08:41] Entidades limpas.
+[13:08:41] Scan de entidades concluído.
+[13:10:03] FO_MapEntitySystem carregado.
+[13:10:03] FO_EntityVisualSystem carregado.
+[13:10:03] FO_TargetVisualSystem carregado.
+[13:10:03] FO_FloatingDamageSystem carregado.
+[13:10:03] FO_InteractionSystem carregado.
+[13:10:04] Entidades limpas.
+[13:10:04] Scan de entidades concluído.
+[13:10:35] FO_MapEntitySystem carregado.
+[13:10:35] FO_EntityVisualSystem carregado.
+[13:10:35] FO_TargetVisualSystem carregado.
+[13:10:35] FO_FloatingDamageSystem carregado.
+[13:10:35] FO_InteractionSystem carregado.
+[13:10:36] Entidades limpas.
+[13:10:36] Scan de entidades concluído.
+[13:12:21] FO_MapEntitySystem carregado.
+[13:12:21] FO_EntityVisualSystem carregado.
+[13:12:21] FO_TargetVisualSystem carregado.
+[13:12:21] FO_FloatingDamageSystem carregado.
+[13:12:21] FO_InteractionSystem carregado.
+[13:12:22] Entidades limpas.
+[13:12:22] Scan de entidades concluído.
+[13:18:37] FO_MapEntitySystem carregado.
+[13:18:37] FO_EntityVisualSystem carregado.
+[13:18:37] FO_TargetVisualSystem carregado.
+[13:18:37] FO_FloatingDamageSystem carregado.
+[13:18:37] FO_InteractionSystem carregado.
+[13:18:38] Entidades limpas.
+[13:18:38] Scan de entidades concluído.
+[13:19:49] FO_MapEntitySystem carregado.
+[13:19:49] FO_EntityVisualSystem carregado.
+[13:19:49] FO_TargetVisualSystem carregado.
+[13:19:49] FO_FloatingDamageSystem carregado.
+[13:19:49] FO_InteractionSystem carregado.
+[13:19:50] Entidades limpas.
+[13:19:50] Scan de entidades concluído.
