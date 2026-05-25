@@ -1,0 +1,557 @@
+#==============================================================================
+# ■ FO_LootSystem
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 2.2.1
+# Data......: 25/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema de loot/drop dos mobs com integração de EXP.
+#------------------------------------------------------------------------------
+# Funções atuais:
+# - Drop multi-tipo: item, weapon, armor
+# - Chance percentual
+# - Integração com FO_Inventory v2.1.1
+# - Floating Loot
+# - Log de drops
+# - Ganho de EXP ao matar Mob/Boss
+# - Integração com FO_PlayerLevelSystem
+# - Métodos curtos de teste para RMXP
+#------------------------------------------------------------------------------
+# Formato novo da tabela:
+#
+#   [:item,   1, 50]
+#   [:weapon, 1, 20]
+#   [:armor,  1, 15]
+#
+# Formato antigo ainda aceito:
+#
+#   [1, 50]
+#
+# No formato antigo, o sistema assume :item.
+#==============================================================================
+
+module FO_LootConfig
+
+  ENABLE_LOOT = true
+  ENABLE_LOOT_LOG = true
+  ENABLE_FLOATING_LOOT = true
+
+  ENABLE_EXP_REWARD = true
+  ENABLE_EXP_LOG = true
+
+  DEFAULT_EXP_REWARD = 10
+
+  EXP_REWARDS = {
+    "Ghost" => 25,
+    "DragonBoss" => 250
+  }
+
+  DEFAULT_LOOT_TABLE = [
+    [:item, 1, 50],
+    [:item, 2, 50]
+  ]
+
+  LOOT_TABLES = {
+
+    "Ghost" => [
+      [:item, 1, 50],
+      [:item, 2, 50],
+      [:weapon, 1, 10],
+      [:armor, 1, 10]
+    ],
+
+    "DragonBoss" => [
+      [:item, 1, 80],
+      [:item, 2, 80],
+      [:weapon, 1, 40],
+      [:armor, 1, 40]
+    ]
+
+  }
+
+end
+
+module FO_LootSystem
+
+  @processed_runtime_ids = []
+
+  #===========================================================================
+  # ■ update
+  #===========================================================================
+  def self.update
+
+    return unless defined?(FO_EntityRuntimeManager)
+    return if FO_EntityRuntimeManager.runtimes.nil?
+
+    for runtime in FO_EntityRuntimeManager.runtimes
+
+      next if runtime.nil?
+
+      update_runtime_loot(runtime)
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ update_runtime_loot
+  #===========================================================================
+  def self.update_runtime_loot(runtime)
+
+    if runtime.dead?
+
+      process_death_rewards_once(runtime)
+
+    else
+
+      clear_processed_runtime(runtime)
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ process_death_rewards_once
+  #===========================================================================
+  def self.process_death_rewards_once(runtime)
+
+    return if loot_already_processed?(runtime)
+
+    mark_loot_processed(runtime)
+
+    process_loot(runtime)
+
+    process_exp_reward(runtime)
+
+  end
+
+  #===========================================================================
+  # ■ loot_already_processed?
+  #===========================================================================
+  def self.loot_already_processed?(runtime)
+
+    return @processed_runtime_ids.include?(runtime.runtime_id)
+
+  end
+
+  #===========================================================================
+  # ■ mark_loot_processed
+  #===========================================================================
+  def self.mark_loot_processed(runtime)
+
+    @processed_runtime_ids.push(runtime.runtime_id)
+
+  end
+
+  #===========================================================================
+  # ■ clear_processed_runtime
+  #===========================================================================
+  def self.clear_processed_runtime(runtime)
+
+    @processed_runtime_ids.delete(runtime.runtime_id)
+
+  end
+
+  #===========================================================================
+  # ■ process_loot
+  #===========================================================================
+  def self.process_loot(runtime)
+
+    return false unless FO_LootConfig::ENABLE_LOOT
+    return false if runtime.nil?
+    return false unless loot_entity?(runtime)
+
+    table = loot_table(runtime)
+
+    drops = roll_loot(table)
+
+    show_floating_loot(runtime, drops)
+
+    register_drops(runtime, drops)
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ process_exp_reward
+  #===========================================================================
+  def self.process_exp_reward(runtime)
+
+    return false unless FO_LootConfig::ENABLE_EXP_REWARD
+    return false if runtime.nil?
+    return false unless loot_entity?(runtime)
+    return false unless defined?(FO_PlayerLevelSystem)
+    return false unless FO_PlayerLevelSystem.respond_to?(:gain_exp)
+
+    exp = exp_reward(runtime)
+
+    return false if exp.nil?
+    return false if exp <= 0
+
+    FO_PlayerLevelSystem.gain_exp(exp)
+
+    FO_Logger.action(
+      "#{runtime.name} concedeu #{exp} EXP ao Player."
+    ) if FO_LootConfig::ENABLE_EXP_LOG && defined?(FO_Logger)
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ exp_reward
+  #===========================================================================
+  def self.exp_reward(runtime)
+
+    reward = FO_LootConfig::EXP_REWARDS[runtime.name]
+
+    return reward if reward
+
+    return FO_LootConfig::DEFAULT_EXP_REWARD
+
+  end
+
+  #===========================================================================
+  # ■ loot_entity?
+  #===========================================================================
+  def self.loot_entity?(runtime)
+
+    return true if runtime.entity_type == :mob
+    return true if runtime.entity_type == :boss
+
+    return false
+
+  end
+
+  #===========================================================================
+  # ■ loot_table
+  #===========================================================================
+  def self.loot_table(runtime)
+
+    name = runtime.name
+
+    table = FO_LootConfig::LOOT_TABLES[name]
+
+    return table if table
+
+    return FO_LootConfig::DEFAULT_LOOT_TABLE
+
+  end
+
+  #===========================================================================
+  # ■ roll_loot
+  #===========================================================================
+  def self.roll_loot(table)
+
+    drops = []
+
+    for loot_data in table
+
+      parsed = parse_loot_data(loot_data)
+
+      next if parsed.nil?
+
+      type = parsed[0]
+      item_id = parsed[1]
+      chance = parsed[2]
+
+      next unless valid_drop?(type, item_id)
+
+      chance = 0 if chance < 0
+      chance = 100 if chance > 100
+
+      roll = rand(100) + 1
+
+      if roll <= chance
+
+        drops.push([type, item_id])
+
+      end
+
+    end
+
+    return drops
+
+  end
+
+  #===========================================================================
+  # ■ parse_loot_data
+  #===========================================================================
+  def self.parse_loot_data(loot_data)
+
+    return nil if loot_data.nil?
+    return nil unless loot_data.is_a?(Array)
+
+    if loot_data[0].is_a?(Symbol) || loot_data[0].is_a?(String)
+
+      type = normalize_type(loot_data[0])
+      item_id = loot_data[1].to_i
+      chance = loot_data[2].to_i
+
+      return [type, item_id, chance]
+
+    end
+
+    type = :item
+    item_id = loot_data[0].to_i
+    chance = loot_data[1].to_i
+
+    return [type, item_id, chance]
+
+  end
+
+  #===========================================================================
+  # ■ normalize_type
+  #===========================================================================
+  def self.normalize_type(type)
+
+    return :item if type.nil?
+
+    return type if type.is_a?(Symbol)
+
+    return type.downcase.to_sym if type.is_a?(String)
+
+    return :item
+
+  end
+
+  #===========================================================================
+  # ■ valid_drop?
+  #===========================================================================
+  def self.valid_drop?(type, item_id)
+
+    return false if item_id.nil?
+    return false if item_id <= 0
+
+    type = normalize_type(type)
+
+    case type
+    when :item
+
+      return false unless defined?(FO_DatabaseBridge)
+      return false if FO_DatabaseBridge.item(item_id).nil?
+      return true
+
+    when :weapon
+
+      return false unless defined?($data_weapons)
+      return false if $data_weapons[item_id].nil?
+      return true
+
+    when :armor
+
+      return false unless defined?($data_armors)
+      return false if $data_armors[item_id].nil?
+      return true
+
+    end
+
+    return false
+
+  end
+
+  #===========================================================================
+  # ■ item_name
+  #===========================================================================
+  def self.item_name(type, item_id)
+
+    type = normalize_type(type)
+
+    case type
+    when :item
+
+      return "Unknown" unless defined?(FO_DatabaseBridge)
+
+      name = FO_DatabaseBridge.item_name(item_id)
+
+      return "Unknown" if name.nil?
+
+      return name
+
+    when :weapon
+
+      return "Unknown Weapon" unless defined?($data_weapons)
+      return "Unknown Weapon" if $data_weapons[item_id].nil?
+
+      return $data_weapons[item_id].name
+
+    when :armor
+
+      return "Unknown Armor" unless defined?($data_armors)
+      return "Unknown Armor" if $data_armors[item_id].nil?
+
+      return $data_armors[item_id].name
+
+    end
+
+    return "Unknown"
+
+  end
+
+  #===========================================================================
+  # ■ show_floating_loot
+  #===========================================================================
+  def self.show_floating_loot(runtime, drops)
+
+    return unless FO_LootConfig::ENABLE_FLOATING_LOOT
+    return if drops.nil?
+    return if drops.empty?
+    return unless defined?(FO_FloatingLootManager)
+
+    names = []
+
+    for drop in drops
+
+      type = drop[0]
+      item_id = drop[1]
+
+      names.push(item_name(type, item_id))
+
+    end
+
+    FO_FloatingLootManager.show_multiple(
+      runtime.event,
+      names
+    )
+
+  end
+
+  #===========================================================================
+  # ■ register_drops
+  #===========================================================================
+  def self.register_drops(runtime, drops)
+
+    if drops.empty?
+
+      FO_Logger.action(
+        "#{runtime.name} não dropou nenhum item."
+      ) if FO_LootConfig::ENABLE_LOOT_LOG && defined?(FO_Logger)
+
+      return
+
+    end
+
+    for drop in drops
+
+      type = drop[0]
+      item_id = drop[1]
+
+      give_item_to_player(type, item_id)
+
+      FO_Logger.action(
+        "#{runtime.name} dropou: #{item_name(type, item_id)} [#{type} ID #{item_id}]"
+      ) if FO_LootConfig::ENABLE_LOOT_LOG && defined?(FO_Logger)
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ give_item_to_player
+  #===========================================================================
+  def self.give_item_to_player(type, item_id)
+
+    return false unless defined?(FO_Inventory)
+    return false unless FO_Inventory.respond_to?(:add_item)
+
+    type = normalize_type(type)
+
+    FO_Inventory.add_item(type, item_id, 1)
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ test_item
+  #===========================================================================
+  def self.test_item
+
+    give_item_to_player(:item, 1)
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ test_weapon
+  #===========================================================================
+  def self.test_weapon
+
+    give_item_to_player(:weapon, 1)
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ test_armor
+  #===========================================================================
+  def self.test_armor
+
+    give_item_to_player(:armor, 1)
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ test_all
+  #===========================================================================
+  def self.test_all
+
+    test_item
+    test_weapon
+    test_armor
+
+    FO_Inventory.debug_print if defined?(FO_Inventory)
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ reset
+  #===========================================================================
+  def self.reset
+
+    @processed_runtime_ids.clear
+
+  end
+
+end
+
+#==============================================================================
+# ■ Scene_Map
+#==============================================================================
+
+class Scene_Map
+
+  alias fo_loot_system_update update
+
+  def update
+
+    FO_LootSystem.update
+
+    fo_loot_system_update
+
+  end
+
+end
+
+FO_Logger.action(
+  "FO_LootSystem v2.2.1 carregado com sucesso."
+) if defined?(FO_Logger)
+
+FO_Debug.debug_log(
+  "combat",
+  "FO_LootSystem v2.2.1 carregado."
+) if defined?(FO_Debug)
+
+FO_CORE.debug(
+  "FO_LootSystem v2.2.1 carregado com sucesso."
+) if defined?(FO_CORE)

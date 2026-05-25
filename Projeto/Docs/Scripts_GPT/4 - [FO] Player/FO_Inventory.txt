@@ -1,0 +1,377 @@
+#==============================================================================
+# ■ FO_Inventory
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 2.1.1
+# Data......: 24/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema de inventário multi-tipo com compatibilidade antiga.
+#------------------------------------------------------------------------------
+# Compatível com:
+#
+# Formato antigo:
+#   FO_Inventory.add_item(1, 1)
+#   FO_Inventory.remove_item(1, 1)
+#   FO_Inventory.has_item?(1)
+#   FO_Inventory.item_count(1)
+#
+# Formato novo:
+#   FO_Inventory.add_item(:item, 1, 5)
+#   FO_Inventory.add_item(:weapon, 1, 1)
+#   FO_Inventory.add_item(:armor, 1, 1)
+#   FO_Inventory.remove_item(:item, 1, 1)
+#   FO_Inventory.has_item?(:item, 1, 1)
+#   FO_Inventory.item_count(:item, 1)
+#==============================================================================
+
+module FO_InventoryConfig
+
+  ENABLE_LOG = true
+
+  VALID_TYPES = [:item, :weapon, :armor]
+
+end
+
+module FO_Inventory
+
+  @items   = {}
+  @weapons = {}
+  @armors  = {}
+
+  #===========================================================================
+  # ■ setup
+  #===========================================================================
+  def self.setup
+
+    @items   = {} if @items.nil?
+    @weapons = {} if @weapons.nil?
+    @armors  = {} if @armors.nil?
+
+  end
+
+  #===========================================================================
+  # ■ items
+  # Compatibilidade: retorna somente os consumíveis/itens comuns.
+  #===========================================================================
+  def self.items
+
+    setup
+
+    return @items
+
+  end
+
+  #===========================================================================
+  # ■ weapons
+  #===========================================================================
+  def self.weapons
+
+    setup
+
+    return @weapons
+
+  end
+
+  #===========================================================================
+  # ■ armors
+  #===========================================================================
+  def self.armors
+
+    setup
+
+    return @armors
+
+  end
+
+  #===========================================================================
+  # ■ inventory_by_type
+  #===========================================================================
+  def self.inventory_by_type(type)
+
+    setup
+
+    type = normalize_type(type)
+
+    case type
+    when :item
+      return @items
+    when :weapon
+      return @weapons
+    when :armor
+      return @armors
+    end
+
+    return nil
+
+  end
+
+  #===========================================================================
+  # ■ normalize_type
+  #===========================================================================
+  def self.normalize_type(type)
+
+    return :item if type.nil?
+
+    if type.is_a?(Symbol)
+      return type
+    end
+
+    if type.is_a?(String)
+      return type.downcase.to_sym
+    end
+
+    return :item
+
+  end
+
+  #===========================================================================
+  # ■ parse_args
+  # Aceita:
+  #   parse_args(1, 5, nil)              => [:item, 1, 5]
+  #   parse_args(:item, 1, 5)            => [:item, 1, 5]
+  #   parse_args(:weapon, 1, 1)          => [:weapon, 1, 1]
+  #===========================================================================
+  def self.parse_args(arg1, arg2 = nil, arg3 = nil)
+
+    if arg1.is_a?(Symbol) || arg1.is_a?(String)
+
+      type = normalize_type(arg1)
+      item_id = arg2.to_i
+      amount = arg3.nil? ? 1 : arg3.to_i
+
+    else
+
+      type = :item
+      item_id = arg1.to_i
+      amount = arg2.nil? ? 1 : arg2.to_i
+
+    end
+
+    return [type, item_id, amount]
+
+  end
+
+  #===========================================================================
+  # ■ valid_type?
+  #===========================================================================
+  def self.valid_type?(type)
+
+    type = normalize_type(type)
+
+    return FO_InventoryConfig::VALID_TYPES.include?(type)
+
+  end
+
+  #===========================================================================
+  # ■ add_item
+  #===========================================================================
+  def self.add_item(arg1, arg2 = nil, arg3 = nil)
+
+    type, item_id, amount = parse_args(arg1, arg2, arg3)
+
+    return false unless valid_type?(type)
+    return false if item_id <= 0
+    return false if amount <= 0
+
+    inventory = inventory_by_type(type)
+
+    return false if inventory.nil?
+
+    inventory[item_id] = 0 if inventory[item_id].nil?
+    inventory[item_id] += amount
+
+    log_action(
+      "Item adicionado: #{type} ID #{item_id} x#{amount}. Total: #{inventory[item_id]}"
+    )
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ remove_item
+  #===========================================================================
+  def self.remove_item(arg1, arg2 = nil, arg3 = nil)
+
+    type, item_id, amount = parse_args(arg1, arg2, arg3)
+
+    return false unless valid_type?(type)
+    return false if item_id <= 0
+    return false if amount <= 0
+    return false unless has_item?(type, item_id, amount)
+
+    inventory = inventory_by_type(type)
+
+    inventory[item_id] -= amount
+
+    if inventory[item_id] <= 0
+      inventory.delete(item_id)
+    end
+
+    log_action(
+      "Item removido: #{type} ID #{item_id} x#{amount}."
+    )
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ has_item?
+  #===========================================================================
+  def self.has_item?(arg1, arg2 = nil, arg3 = nil)
+
+    type, item_id, amount = parse_args(arg1, arg2, arg3)
+
+    return false unless valid_type?(type)
+    return false if item_id <= 0
+    return false if amount <= 0
+
+    inventory = inventory_by_type(type)
+
+    return false if inventory.nil?
+    return false if inventory[item_id].nil?
+
+    return inventory[item_id] >= amount
+
+  end
+
+  #===========================================================================
+  # ■ item_count
+  #===========================================================================
+  def self.item_count(arg1, arg2 = nil)
+
+    if arg1.is_a?(Symbol) || arg1.is_a?(String)
+
+      type = normalize_type(arg1)
+      item_id = arg2.to_i
+
+    else
+
+      type = :item
+      item_id = arg1.to_i
+
+    end
+
+    return 0 unless valid_type?(type)
+    return 0 if item_id <= 0
+
+    inventory = inventory_by_type(type)
+
+    return 0 if inventory.nil?
+    return 0 if inventory[item_id].nil?
+
+    return inventory[item_id]
+
+  end
+
+  #===========================================================================
+  # ■ full?
+  # Compatibilidade antiga. Por enquanto sempre false.
+  #===========================================================================
+  def self.full?
+
+    return false
+
+  end
+
+  #===========================================================================
+  # ■ empty?
+  #===========================================================================
+  def self.empty?
+
+    setup
+
+    return @items.empty? && @weapons.empty? && @armors.empty?
+
+  end
+
+  #===========================================================================
+  # ■ clear
+  #===========================================================================
+  def self.clear
+
+    @items   = {}
+    @weapons = {}
+    @armors  = {}
+
+    log_action("Inventário limpo.")
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ debug_print
+  #===========================================================================
+  def self.debug_print
+
+    setup
+
+    log_action("===== INVENTÁRIO =====")
+
+    debug_inventory(:item, @items)
+    debug_inventory(:weapon, @weapons)
+    debug_inventory(:armor, @armors)
+
+    log_action("======================")
+
+  end
+
+  #===========================================================================
+  # ■ debug_inventory
+  #===========================================================================
+  def self.debug_inventory(type, inventory)
+
+    if inventory.empty?
+
+      log_action("#{type}: vazio")
+      return
+
+    end
+
+    inventory.each do |item_id, amount|
+
+      log_action("#{type}: ID #{item_id} x#{amount}")
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ log_action
+  #===========================================================================
+  def self.log_action(message)
+
+    return unless FO_InventoryConfig::ENABLE_LOG
+
+    if defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    elsif defined?(FO_Debug)
+
+      FO_Debug.debug_log("inventory", message)
+
+    elsif defined?(FO_CORE)
+
+      FO_CORE.debug(message)
+
+    else
+
+      p message
+
+    end
+
+  end
+
+end
+
+FO_Inventory.setup
+
+FO_Inventory.log_action(
+  "FO_Inventory v2.1.1 carregado com sucesso."
+)

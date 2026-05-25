@@ -1,0 +1,529 @@
+#==============================================================================
+# ■ FO_EquipmentSystem
+#------------------------------------------------------------------------------
+# Fields Online MMORPG
+#------------------------------------------------------------------------------
+# Autor.....: ChatGPT & Caio
+# Versão....: 1.0.1
+# Data......: 24/05/2026
+#------------------------------------------------------------------------------
+# Descrição:
+# Sistema inicial de equipamentos do player.
+#------------------------------------------------------------------------------
+# Funções:
+# - Equipar arma
+# - Equipar armadura/acessório
+# - Desequipar item
+# - Controlar slots
+# - Integrar com FO_Inventory v2.1.1
+# - Preparado para stats futuros
+#------------------------------------------------------------------------------
+# Compatibilidade:
+# - RPG Maker XP / RGSS1
+# - FO_Inventory v2.1.1
+# - $data_weapons
+# - $data_armors
+#==============================================================================
+
+module FO_EquipmentConfig
+
+  ENABLE_EQUIPMENT = true
+  ENABLE_LOG = true
+
+  SLOT_WEAPON    = :weapon
+  SLOT_SHIELD    = :shield
+  SLOT_HELMET    = :helmet
+  SLOT_ARMOR     = :armor
+  SLOT_BOOTS     = :boots
+  SLOT_ACCESSORY = :accessory
+
+end
+
+module FO_EquipmentSystem
+
+  @equips = {
+    FO_EquipmentConfig::SLOT_WEAPON    => nil,
+    FO_EquipmentConfig::SLOT_SHIELD    => nil,
+    FO_EquipmentConfig::SLOT_HELMET    => nil,
+    FO_EquipmentConfig::SLOT_ARMOR     => nil,
+    FO_EquipmentConfig::SLOT_BOOTS     => nil,
+    FO_EquipmentConfig::SLOT_ACCESSORY => nil
+  }
+
+  #===========================================================================
+  # ■ equips
+  #===========================================================================
+  def self.equips
+
+    @equips = {} if @equips.nil?
+
+    default_slots.each do |slot|
+      @equips[slot] = nil unless @equips.has_key?(slot)
+    end
+
+    return @equips
+
+  end
+
+  #===========================================================================
+  # ■ default_slots
+  #===========================================================================
+  def self.default_slots
+
+    return [
+      FO_EquipmentConfig::SLOT_WEAPON,
+      FO_EquipmentConfig::SLOT_SHIELD,
+      FO_EquipmentConfig::SLOT_HELMET,
+      FO_EquipmentConfig::SLOT_ARMOR,
+      FO_EquipmentConfig::SLOT_BOOTS,
+      FO_EquipmentConfig::SLOT_ACCESSORY
+    ]
+
+  end
+
+  #===========================================================================
+  # ■ equip_weapon
+  #===========================================================================
+  def self.equip_weapon(weapon_id)
+
+    return false unless FO_EquipmentConfig::ENABLE_EQUIPMENT
+    return false if weapon_id.nil?
+    return false unless inventory_ready?
+    return false unless weapon_database_ready?
+
+    weapon_id = weapon_id.to_i
+
+    return false if weapon_id <= 0
+
+    weapon = $data_weapons[weapon_id]
+
+    if weapon.nil?
+
+      log_action(
+        "Arma ID #{weapon_id} não encontrada."
+      )
+
+      return false
+
+    end
+
+    unless FO_Inventory.has_item?(:weapon, weapon_id, 1)
+
+      log_action(
+        "Player não possui a arma #{weapon.name} [ID #{weapon_id}]."
+      )
+
+      return false
+
+    end
+
+    old_weapon_id = equips[FO_EquipmentConfig::SLOT_WEAPON]
+
+    if old_weapon_id != nil
+
+      FO_Inventory.add_item(:weapon, old_weapon_id, 1)
+
+      log_action(
+        "Arma anterior retornou ao inventário."
+      )
+
+    end
+
+    FO_Inventory.remove_item(:weapon, weapon_id, 1)
+
+    equips[FO_EquipmentConfig::SLOT_WEAPON] = weapon_id
+
+    log_action(
+      "Player equipou arma: #{weapon.name} [ID #{weapon_id}]."
+    )
+
+    refresh_stats
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ equip_armor
+  #===========================================================================
+  def self.equip_armor(armor_id)
+
+    return false unless FO_EquipmentConfig::ENABLE_EQUIPMENT
+    return false if armor_id.nil?
+    return false unless inventory_ready?
+    return false unless armor_database_ready?
+
+    armor_id = armor_id.to_i
+
+    return false if armor_id <= 0
+
+    armor = $data_armors[armor_id]
+
+    if armor.nil?
+
+      log_action(
+        "Equipamento ID #{armor_id} não encontrado."
+      )
+
+      return false
+
+    end
+
+    unless FO_Inventory.has_item?(:armor, armor_id, 1)
+
+      log_action(
+        "Player não possui o equipamento #{armor.name} [ID #{armor_id}]."
+      )
+
+      return false
+
+    end
+
+    slot = armor_slot(armor)
+
+    if slot.nil?
+
+      log_action(
+        "Slot não identificado para #{armor.name}."
+      )
+
+      return false
+
+    end
+
+    old_armor_id = equips[slot]
+
+    if old_armor_id != nil
+
+      FO_Inventory.add_item(:armor, old_armor_id, 1)
+
+      log_action(
+        "Equipamento anterior do slot #{slot.to_s} retornou ao inventário."
+      )
+
+    end
+
+    FO_Inventory.remove_item(:armor, armor_id, 1)
+
+    equips[slot] = armor_id
+
+    log_action(
+      "Player equipou #{armor.name} [ID #{armor_id}] no slot #{slot.to_s}."
+    )
+
+    refresh_stats
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ unequip
+  #===========================================================================
+  def self.unequip(slot)
+
+    return false unless FO_EquipmentConfig::ENABLE_EQUIPMENT
+    return false if slot.nil?
+    return false unless inventory_ready?
+
+    slot = slot.to_sym
+
+    unless equips.has_key?(slot)
+
+      log_action(
+        "Slot inválido: #{slot.to_s}."
+      )
+
+      return false
+
+    end
+
+    item_id = equips[slot]
+
+    if item_id.nil?
+
+      log_action(
+        "Slot #{slot.to_s} já está vazio."
+      )
+
+      return false
+
+    end
+
+    if slot == FO_EquipmentConfig::SLOT_WEAPON
+
+      FO_Inventory.add_item(:weapon, item_id, 1)
+
+    else
+
+      FO_Inventory.add_item(:armor, item_id, 1)
+
+    end
+
+    equips[slot] = nil
+
+    log_action(
+      "Player desequipou item do slot #{slot.to_s}."
+    )
+
+    refresh_stats
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ equipped?
+  #===========================================================================
+  def self.equipped?(slot)
+
+    return false if slot.nil?
+
+    slot = slot.to_sym
+
+    return false unless equips.has_key?(slot)
+
+    return equips[slot] != nil
+
+  end
+
+  #===========================================================================
+  # ■ equipped_item_id
+  #===========================================================================
+  def self.equipped_item_id(slot)
+
+    return nil if slot.nil?
+
+    slot = slot.to_sym
+
+    return nil unless equips.has_key?(slot)
+
+    return equips[slot]
+
+  end
+
+  #===========================================================================
+  # ■ armor_slot
+  #===========================================================================
+  def self.armor_slot(armor)
+
+    return nil if armor.nil?
+
+    # RMXP usa kind para armors:
+    # 0 = Shield
+    # 1 = Helmet
+    # 2 = Body Armor
+    # 3 = Accessory
+
+    if armor.respond_to?(:kind)
+
+      case armor.kind
+      when 0
+        return FO_EquipmentConfig::SLOT_SHIELD
+      when 1
+        return FO_EquipmentConfig::SLOT_HELMET
+      when 2
+        return FO_EquipmentConfig::SLOT_ARMOR
+      when 3
+        return FO_EquipmentConfig::SLOT_ACCESSORY
+      end
+
+    end
+
+    return FO_EquipmentConfig::SLOT_ARMOR
+
+  end
+
+  #===========================================================================
+  # ■ total_atk_bonus
+  #===========================================================================
+  def self.total_atk_bonus
+
+    total = 0
+
+    weapon_id = equips[FO_EquipmentConfig::SLOT_WEAPON]
+
+    if weapon_id != nil && defined?($data_weapons) && $data_weapons[weapon_id] != nil
+
+      weapon = $data_weapons[weapon_id]
+
+      total += weapon.atk.to_i if weapon.respond_to?(:atk)
+
+    end
+
+    return total
+
+  end
+
+  #===========================================================================
+  # ■ total_pdef_bonus
+  #===========================================================================
+  def self.total_pdef_bonus
+
+    total = 0
+
+    equips.each do |slot, item_id|
+
+      next if item_id.nil?
+      next if slot == FO_EquipmentConfig::SLOT_WEAPON
+      next unless defined?($data_armors)
+      next if $data_armors[item_id].nil?
+
+      armor = $data_armors[item_id]
+
+      total += armor.pdef.to_i if armor.respond_to?(:pdef)
+
+    end
+
+    return total
+
+  end
+
+  #===========================================================================
+  # ■ total_mdef_bonus
+  #===========================================================================
+  def self.total_mdef_bonus
+
+    total = 0
+
+    equips.each do |slot, item_id|
+
+      next if item_id.nil?
+      next if slot == FO_EquipmentConfig::SLOT_WEAPON
+      next unless defined?($data_armors)
+      next if $data_armors[item_id].nil?
+
+      armor = $data_armors[item_id]
+
+      total += armor.mdef.to_i if armor.respond_to?(:mdef)
+
+    end
+
+    return total
+
+  end
+
+  #===========================================================================
+  # ■ debug_print
+  #===========================================================================
+  def self.debug_print
+
+    log_action(
+      "===== EQUIPAMENTOS ====="
+    )
+
+    equips.each do |slot, item_id|
+
+      if item_id.nil?
+
+        log_action(
+          "#{slot.to_s}: vazio"
+        )
+
+      else
+
+        log_action(
+          "#{slot.to_s}: ID #{item_id}"
+        )
+
+      end
+
+    end
+
+    log_action(
+      "ATK bônus: #{total_atk_bonus}"
+    )
+
+    log_action(
+      "PDEF bônus: #{total_pdef_bonus}"
+    )
+
+    log_action(
+      "MDEF bônus: #{total_mdef_bonus}"
+    )
+
+    log_action(
+      "========================"
+    )
+
+  end
+
+  #===========================================================================
+  # ■ refresh_stats
+  #===========================================================================
+  def self.refresh_stats
+
+    if defined?(FO_PlayerStats) && FO_PlayerStats.respond_to?(:refresh)
+
+      FO_PlayerStats.refresh
+
+    end
+
+    log_action(
+      "Stats de equipamentos atualizados."
+    )
+
+  end
+
+  #===========================================================================
+  # ■ inventory_ready?
+  #===========================================================================
+  def self.inventory_ready?
+
+    return defined?(FO_Inventory)
+
+  end
+
+  #===========================================================================
+  # ■ weapon_database_ready?
+  #===========================================================================
+  def self.weapon_database_ready?
+
+    return defined?($data_weapons)
+
+  end
+
+  #===========================================================================
+  # ■ armor_database_ready?
+  #===========================================================================
+  def self.armor_database_ready?
+
+    return defined?($data_armors)
+
+  end
+
+  #===========================================================================
+  # ■ log_action
+  #===========================================================================
+  def self.log_action(message)
+
+    return unless FO_EquipmentConfig::ENABLE_LOG
+
+    if defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    elsif defined?(FO_Debug)
+
+      FO_Debug.debug_log(
+        "equipment",
+        message
+      )
+
+    elsif defined?(FO_CORE)
+
+      FO_CORE.debug(message)
+
+    else
+
+      p message
+
+    end
+
+  end
+
+end
+
+FO_EquipmentSystem.log_action(
+  "FO_EquipmentSystem v1.0.1 carregado com sucesso."
+)

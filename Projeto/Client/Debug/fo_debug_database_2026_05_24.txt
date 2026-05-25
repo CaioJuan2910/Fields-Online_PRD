@@ -1,6 +1,0 @@
-[13:08:40] FO_DatabaseBridge carregado.
-[13:10:02] FO_DatabaseBridge carregado.
-[13:10:35] FO_DatabaseBridge carregado.
-[13:12:21] FO_DatabaseBridge carregado.
-[13:18:36] FO_DatabaseBridge carregado.
-[13:19:48] FO_DatabaseBridge carregado.
