@@ -82,3 +82,10 @@
 [15:35:08] FO_LootSystem v2.2.1 carregado.
 [15:35:08] FO_EnemySystem carregado.
 [15:35:08] FO_AISystem carregado.
+[16:28:30] FO_CombatSystem carregado.
+[16:28:30] FO_TargetSystem carregado.
+[16:28:30] FO_AutoAttackSystem carregado.
+[16:28:30] FO_MobAISystem carregado.
+[16:28:30] FO_LootSystem v2.2.1 carregado.
+[16:28:30] FO_EnemySystem carregado.
+[16:28:30] FO_AISystem carregado.

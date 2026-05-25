@@ -106,3 +106,12 @@
 [15:35:08] FO_PlayerData carregado.
 [15:35:08] FO_PlayerStats carregado.
 [15:35:09] Scene_Map iniciada.
+[16:28:30] FO_Debug carregado com sucesso.
+[16:28:30] FO_DeveloperMode carregado.
+[16:28:30] FO_DataManager carregado.
+[16:28:30] Sistemas registrados.
+[16:28:30] Boot iniciado.
+[16:28:30] FO_ItemDatabase carregado.
+[16:28:30] FO_PlayerData carregado.
+[16:28:30] FO_PlayerStats carregado.
+[16:28:31] Scene_Map iniciada.

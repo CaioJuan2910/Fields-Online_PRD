@@ -82,3 +82,10 @@
 [15:35:08] FO_InteractionSystem carregado.
 [15:35:09] Entidades limpas.
 [15:35:09] Scan de entidades concluído.
+[16:28:30] FO_MapEntitySystem carregado.
+[16:28:30] FO_EntityVisualSystem carregado.
+[16:28:30] FO_TargetVisualSystem carregado.
+[16:28:30] FO_FloatingDamageSystem carregado.
+[16:28:30] FO_InteractionSystem carregado.
+[16:28:31] Entidades limpas.
+[16:28:31] Scan de entidades concluído.

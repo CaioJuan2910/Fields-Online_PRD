@@ -4,32 +4,30 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 2.1.0
-# Data......: 24/05/2026
+# Versão....: 2.2.1
+# Data......: 25/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
-# Sistema de consumíveis do player.
+# Sistema consolidado de consumíveis do player.
 #------------------------------------------------------------------------------
-# Funções atuais:
-# - Usar item consumível por ID
-# - Usar item consumível por nome
-# - Recuperar HP
-# - Remover item do inventário
-# - Integração com Database RMXP
-# - Integração com FO_PlayerRuntime
-# - Integração explícita com FO_Inventory v2.1.1 usando :item
+# Funções:
+# - Usa itens consumíveis do Database nativo do RMXP
+# - Compatível com FO_Inventory v2.1.1
+# - Usa inventário multi-tipo (:item)
+# - Recupera HP fixo
+# - Recupera HP percentual
+# - Recupera SP fixo
+# - Recupera SP percentual
+# - Compatível com FO_PlayerRuntime e FO_PlayerRuntimeSystem
 #------------------------------------------------------------------------------
-# Compatibilidade:
-# - RPG Maker XP / RGSS1
-# - FO_Inventory v2.1.1
-# - FO_DatabaseBridge
-# - FO_PlayerRuntime
+# Observação:
+# Este sistema NÃO precisa ser registrado no FO_EngineBoot por enquanto.
+# Ele só será chamado quando o jogador usar um item.
 #==============================================================================
 
 module FO_ConsumableConfig
 
   ENABLE_CONSUMABLES = true
-
   ENABLE_LOG = true
 
   DEFAULT_POTION_HEAL = 50
@@ -44,30 +42,58 @@ module FO_ConsumableSystem
   def self.use_item(item_id)
 
     return false unless FO_ConsumableConfig::ENABLE_CONSUMABLES
-
     return false if item_id.nil?
-
-    return false unless inventory_ready?
-
-    return false unless database_ready?
-
-    return false unless player_runtime_ready?
 
     item_id = item_id.to_i
 
     return false if item_id <= 0
+    return false unless inventory_ready?
+    return false unless database_ready?
+    return false unless player_runtime_ready?
 
-    return false unless FO_Inventory.has_item?(:item, item_id, 1)
+    unless FO_Inventory.has_item?(:item, item_id, 1)
 
-    item = FO_DatabaseBridge.item(item_id)
+      log_action(
+        "Player não possui o item ID #{item_id}."
+      )
 
-    return false if item.nil?
+      return false
 
-    return false unless consumable?(item)
+    end
 
-    result = apply_item_effect(item)
+    item = get_item(item_id)
 
-    return false unless result
+    if item.nil?
+
+      log_action(
+        "Item ID #{item_id} não encontrado no Database RMXP."
+      )
+
+      return false
+
+    end
+
+    unless consumable?(item)
+
+      log_action(
+        "#{item.name} não é consumível."
+      )
+
+      return false
+
+    end
+
+    applied = apply_item_effect(item)
+
+    unless applied
+
+      log_action(
+        "#{item.name} não aplicou nenhum efeito."
+      )
+
+      return false
+
+    end
 
     FO_Inventory.remove_item(:item, item_id, 1)
 
@@ -85,14 +111,64 @@ module FO_ConsumableSystem
   def self.use_item_by_name(item_name)
 
     return false if item_name.nil?
-
     return false unless database_ready?
 
-    item_id = FO_DatabaseBridge.item_id_by_name(item_name)
+    item_id = find_item_id_by_name(item_name)
 
     return false if item_id.nil?
 
     return use_item(item_id)
+
+  end
+
+  #===========================================================================
+  # ■ get_item
+  #===========================================================================
+  def self.get_item(item_id)
+
+    if defined?(FO_DatabaseBridge) && FO_DatabaseBridge.respond_to?(:item)
+
+      return FO_DatabaseBridge.item(item_id)
+
+    end
+
+    if defined?($data_items) && $data_items[item_id] != nil
+
+      return $data_items[item_id]
+
+    end
+
+    return nil
+
+  end
+
+  #===========================================================================
+  # ■ find_item_id_by_name
+  #===========================================================================
+  def self.find_item_id_by_name(item_name)
+
+    if defined?(FO_DatabaseBridge) && FO_DatabaseBridge.respond_to?(:item_id_by_name)
+
+      return FO_DatabaseBridge.item_id_by_name(item_name)
+
+    end
+
+    return nil unless defined?($data_items)
+
+    $data_items.each_index do |i|
+
+      next if i == 0
+      next if $data_items[i].nil?
+
+      if $data_items[i].name.to_s.downcase == item_name.to_s.downcase
+
+        return i
+
+      end
+
+    end
+
+    return nil
 
   end
 
@@ -102,6 +178,12 @@ module FO_ConsumableSystem
   def self.consumable?(item)
 
     return false if item.nil?
+
+    if item.respond_to?(:consumable)
+
+      return item.consumable == true
+
+    end
 
     return true
 
@@ -114,22 +196,158 @@ module FO_ConsumableSystem
 
     return false if item.nil?
 
-    heal_value = get_heal_value(item)
+    applied = false
 
-    if heal_value > 0
+    hp_value = recover_hp_value(item)
+    sp_value = recover_sp_value(item)
 
-      FO_PlayerRuntime.heal(heal_value)
+    if hp_value > 0
 
-      log_action(
-        "#{item.name} recuperou #{heal_value} HP."
-      )
+      if heal_player_hp(hp_value)
+
+        log_action(
+          "#{item.name} recuperou #{hp_value} HP."
+        )
+
+        applied = true
+
+      end
+
+    end
+
+    if sp_value > 0
+
+      if heal_player_sp(sp_value)
+
+        log_action(
+          "#{item.name} recuperou #{sp_value} SP."
+        )
+
+        applied = true
+
+      end
+
+    end
+
+    return applied
+
+  end
+
+  #===========================================================================
+  # ■ recover_hp_value
+  #===========================================================================
+  def self.recover_hp_value(item)
+
+    return 0 if item.nil?
+
+    value = 0
+
+    if item.respond_to?(:recover_hp) && item.recover_hp != nil
+
+      value += item.recover_hp.to_i
+
+    end
+
+    if item.respond_to?(:recover_hp_rate) && item.recover_hp_rate != nil
+
+      rate = item.recover_hp_rate.to_i
+
+      if rate > 0
+
+        value += (player_max_hp * rate / 100).to_i
+
+      end
+
+    end
+
+    if value <= 0 && item.respond_to?(:name)
+
+      if item.name.to_s.downcase == "potion"
+
+        value = FO_ConsumableConfig::DEFAULT_POTION_HEAL
+
+      end
+
+    end
+
+    return value
+
+  end
+
+  #===========================================================================
+  # ■ recover_sp_value
+  #===========================================================================
+  def self.recover_sp_value(item)
+
+    return 0 if item.nil?
+
+    value = 0
+
+    if item.respond_to?(:recover_sp) && item.recover_sp != nil
+
+      value += item.recover_sp.to_i
+
+    end
+
+    if item.respond_to?(:recover_sp_rate) && item.recover_sp_rate != nil
+
+      rate = item.recover_sp_rate.to_i
+
+      if rate > 0
+
+        value += (player_max_sp * rate / 100).to_i
+
+      end
+
+    end
+
+    return value
+
+  end
+
+  #===========================================================================
+  # ■ player_runtime
+  #===========================================================================
+  def self.player_runtime
+
+    return FO_PlayerRuntime if defined?(FO_PlayerRuntime)
+    return FO_PlayerRuntimeSystem if defined?(FO_PlayerRuntimeSystem)
+
+    return nil
+
+  end
+
+  #===========================================================================
+  # ■ heal_player_hp
+  #===========================================================================
+  def self.heal_player_hp(value)
+
+    value = value.to_i
+
+    return false if value <= 0
+
+    runtime = player_runtime
+
+    return false if runtime.nil?
+
+    if runtime.respond_to?(:heal)
+
+      runtime.heal(value)
+
+      return true
+
+    end
+
+    if runtime.respond_to?(:heal_hp)
+
+      runtime.heal_hp(value)
 
       return true
 
     end
 
     log_action(
-      "#{item.name} não possui efeito configurado."
+      "Runtime do player não possui método heal/heal_hp."
     )
 
     return false
@@ -137,39 +355,77 @@ module FO_ConsumableSystem
   end
 
   #===========================================================================
-  # ■ get_heal_value
+  # ■ heal_player_sp
   #===========================================================================
-  def self.get_heal_value(item)
+  def self.heal_player_sp(value)
 
-    return 0 if item.nil?
+    value = value.to_i
 
-    if item.respond_to?(:recover_hp)
+    return false if value <= 0
 
-      return item.recover_hp if item.recover_hp > 0
+    runtime = player_runtime
 
-    end
+    return false if runtime.nil?
 
-    if item.respond_to?(:recover_hp_rate)
+    if runtime.respond_to?(:heal_sp)
 
-      rate = item.recover_hp_rate
+      runtime.heal_sp(value)
 
-      if rate && rate > 0
-
-        value = (FO_PlayerRuntime.max_hp * rate / 100).to_i
-
-        return value
-
-      end
+      return true
 
     end
 
-    if item.name != nil && item.name.downcase == "potion"
+    if runtime.respond_to?(:recover_sp)
 
-      return FO_ConsumableConfig::DEFAULT_POTION_HEAL
+      runtime.recover_sp(value)
+
+      return true
 
     end
 
-    return 0
+    log_action(
+      "Runtime do player ainda não possui método de recuperar SP."
+    )
+
+    return false
+
+  end
+
+  #===========================================================================
+  # ■ player_max_hp
+  #===========================================================================
+  def self.player_max_hp
+
+    runtime = player_runtime
+
+    return 1 if runtime.nil?
+
+    if runtime.respond_to?(:max_hp)
+
+      return runtime.max_hp.to_i
+
+    end
+
+    return 1
+
+  end
+
+  #===========================================================================
+  # ■ player_max_sp
+  #===========================================================================
+  def self.player_max_sp
+
+    runtime = player_runtime
+
+    return 1 if runtime.nil?
+
+    if runtime.respond_to?(:max_sp)
+
+      return runtime.max_sp.to_i
+
+    end
+
+    return 1
 
   end
 
@@ -187,7 +443,7 @@ module FO_ConsumableSystem
   #===========================================================================
   def self.database_ready?
 
-    return defined?(FO_DatabaseBridge)
+    return defined?($data_items) || defined?(FO_DatabaseBridge)
 
   end
 
@@ -196,7 +452,7 @@ module FO_ConsumableSystem
   #===========================================================================
   def self.player_runtime_ready?
 
-    return defined?(FO_PlayerRuntime)
+    return !player_runtime.nil?
 
   end
 
@@ -213,10 +469,7 @@ module FO_ConsumableSystem
 
     elsif defined?(FO_Debug)
 
-      FO_Debug.debug_log(
-        "player",
-        message
-      )
+      FO_Debug.debug_log("consumable", message)
 
     elsif defined?(FO_CORE)
 
@@ -231,15 +484,11 @@ module FO_ConsumableSystem
   end
 
   #===========================================================================
-  # ■ test_use_first_item
+  # ■ test_use_item
   #===========================================================================
-  def self.test_use_first_item
+  def self.test_use_item(item_id = 1)
 
-    return false unless inventory_ready?
-
-    return false if FO_Inventory.items.empty?
-
-    item_id = FO_Inventory.items.keys[0]
+    FO_Inventory.add_item(:item, item_id, 1)
 
     return use_item(item_id)
 
@@ -248,5 +497,5 @@ module FO_ConsumableSystem
 end
 
 FO_ConsumableSystem.log_action(
-  "FO_ConsumableSystem v2.1.0 carregado com sucesso."
+  "FO_ConsumableSystem v2.2.1 carregado com sucesso."
 )
