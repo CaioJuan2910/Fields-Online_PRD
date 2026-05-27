@@ -4,18 +4,136 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.0.0
-# Data......: 18/05/2026
+# Versão....: 1.1.0
+# Data......: 25/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema de atributos do personagem.
 #------------------------------------------------------------------------------
-# Funções atuais:
+# Funções:
 # - Atributos primários
 # - Atributos derivados
 # - Fórmulas MMORPG
-# - Progressão base
+# - Integração com FO_PlayerData
+# - Integração com FO_EquipmentSystem
+# - Bônus de ATK, PDEF e MDEF vindos dos equipamentos
 #------------------------------------------------------------------------------
+# FO_EngineBoot:
+# - NÃO precisa alterar o FO_EngineBoot agora.
+# - Este sistema já é carregado no boot atual.
+# - O refresh é chamado quando equipamentos são alterados.
+#==============================================================================
+
+module FO_PlayerStatsConfig
+
+  ENABLE_LOG = true
+
+  DEFAULT_STRENGTH     = 10
+  DEFAULT_AGILITY      = 10
+  DEFAULT_INTELLIGENCE = 10
+  DEFAULT_VITALITY     = 10
+  DEFAULT_DEXTERITY    = 10
+
+end
+
+module FO_PlayerStats
+
+  #===========================================================================
+  # ■ refresh
+  #---------------------------------------------------------------------------
+  # Chamado por outros sistemas, principalmente FO_EquipmentSystem.
+  # Por enquanto ele apenas registra o refresh global.
+  # Os valores finais são calculados diretamente em FO_PlayerData.
+  #===========================================================================
+  def self.refresh
+
+    log_action("FO_PlayerStats refresh executado.")
+
+    return true
+
+  end
+
+  #===========================================================================
+  # ■ equipment_atk_bonus
+  #===========================================================================
+  def self.equipment_atk_bonus
+
+    if defined?(FO_EquipmentSystem) &&
+       FO_EquipmentSystem.respond_to?(:total_atk_bonus)
+
+      return FO_EquipmentSystem.total_atk_bonus.to_i
+
+    end
+
+    return 0
+
+  end
+
+  #===========================================================================
+  # ■ equipment_pdef_bonus
+  #===========================================================================
+  def self.equipment_pdef_bonus
+
+    if defined?(FO_EquipmentSystem) &&
+       FO_EquipmentSystem.respond_to?(:total_pdef_bonus)
+
+      return FO_EquipmentSystem.total_pdef_bonus.to_i
+
+    end
+
+    return 0
+
+  end
+
+  #===========================================================================
+  # ■ equipment_mdef_bonus
+  #===========================================================================
+  def self.equipment_mdef_bonus
+
+    if defined?(FO_EquipmentSystem) &&
+       FO_EquipmentSystem.respond_to?(:total_mdef_bonus)
+
+      return FO_EquipmentSystem.total_mdef_bonus.to_i
+
+    end
+
+    return 0
+
+  end
+
+  #===========================================================================
+  # ■ log_action
+  #===========================================================================
+  def self.log_action(message)
+
+    return unless FO_PlayerStatsConfig::ENABLE_LOG
+
+    if defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    elsif defined?(FO_Debug)
+
+      FO_Debug.debug_log("player_stats", message)
+
+    elsif defined?(FO_CORE)
+
+      FO_CORE.debug(message)
+
+    else
+
+      p message
+
+    end
+
+  end
+
+end
+
+#==============================================================================
+# ■ Expansão da classe FO_PlayerData
+#------------------------------------------------------------------------------
+# Mantém a estrutura atual do projeto e adiciona integração com equipamentos.
 #==============================================================================
 
 class FO_PlayerData
@@ -30,105 +148,243 @@ class FO_PlayerData
   attr_accessor :vitality
   attr_accessor :dexterity
 
+  attr_accessor :base_attack_power
+  attr_accessor :base_defense
+  attr_accessor :base_magic_defense
+
+  attr_accessor :final_attack_power
+  attr_accessor :final_defense
+  attr_accessor :final_magic_defense
+
   #===========================================================================
   # ■ setup_stats
-  #--------------------------------------------------------------------------
-  # Inicializa atributos do personagem.
+  #---------------------------------------------------------------------------
+  # Inicializa atributos primários do personagem.
   #===========================================================================
   def setup_stats
 
-    @strength     = 10
-    @agility      = 10
-    @intelligence = 10
-    @vitality     = 10
-    @dexterity    = 10
+    @strength     = FO_PlayerStatsConfig::DEFAULT_STRENGTH
+    @agility      = FO_PlayerStatsConfig::DEFAULT_AGILITY
+    @intelligence = FO_PlayerStatsConfig::DEFAULT_INTELLIGENCE
+    @vitality     = FO_PlayerStatsConfig::DEFAULT_VITALITY
+    @dexterity    = FO_PlayerStatsConfig::DEFAULT_DEXTERITY
 
-    FO_Logger.action("#{@name} atributos inicializados.")
+    @base_attack_power    = 0
+    @base_defense         = 0
+    @base_magic_defense   = 0
+    @final_attack_power   = 0
+    @final_defense        = 0
+    @final_magic_defense  = 0
 
-    FO_Debug.debug_log("engine", "Stats inicializados.")
+    log_stats_action("#{@name} atributos inicializados.")
 
   end
 
   #===========================================================================
   # ■ attack_power
-  #--------------------------------------------------------------------------
-  # Fórmula de ataque físico.
+  #---------------------------------------------------------------------------
+  # Ataque físico final.
+  # Fórmula:
+  # ATK final = ATK base + bônus de equipamento
   #===========================================================================
   def attack_power
 
-    return (@strength * 2) + (@level * 3)
+    return base_attack_power_value + equipment_atk_bonus
+
+  end
+
+  #===========================================================================
+  # ■ base_attack_power_value
+  #===========================================================================
+  def base_attack_power_value
+
+    level_value = 1
+
+    if defined?(@level) && @level != nil
+
+      level_value = @level.to_i
+
+    end
+
+    return (@strength.to_i * 2) + (level_value * 3)
 
   end
 
   #===========================================================================
   # ■ magic_power
-  #--------------------------------------------------------------------------
-  # Fórmula de ataque mágico.
+  #---------------------------------------------------------------------------
+  # Ataque mágico.
   #===========================================================================
   def magic_power
 
-    return (@intelligence * 2) + (@level * 2)
+    level_value = 1
+
+    if defined?(@level) && @level != nil
+
+      level_value = @level.to_i
+
+    end
+
+    return (@intelligence.to_i * 2) + (level_value * 2)
 
   end
 
   #===========================================================================
   # ■ defense
-  #--------------------------------------------------------------------------
-  # Fórmula de defesa.
+  #---------------------------------------------------------------------------
+  # Defesa física final.
+  # Fórmula:
+  # DEF final = DEF base + PDEF dos equipamentos
   #===========================================================================
   def defense
 
-    return (@vitality * 2) + (@level * 2)
+    return base_defense_value + equipment_pdef_bonus
+
+  end
+
+  #===========================================================================
+  # ■ base_defense_value
+  #===========================================================================
+  def base_defense_value
+
+    level_value = 1
+
+    if defined?(@level) && @level != nil
+
+      level_value = @level.to_i
+
+    end
+
+    return (@vitality.to_i * 2) + (level_value * 2)
+
+  end
+
+  #===========================================================================
+  # ■ magic_defense
+  #---------------------------------------------------------------------------
+  # Defesa mágica final.
+  # Fórmula:
+  # MDEF final = MDEF base + MDEF dos equipamentos
+  #===========================================================================
+  def magic_defense
+
+    return base_magic_defense_value + equipment_mdef_bonus
+
+  end
+
+  #===========================================================================
+  # ■ base_magic_defense_value
+  #===========================================================================
+  def base_magic_defense_value
+
+    level_value = 1
+
+    if defined?(@level) && @level != nil
+
+      level_value = @level.to_i
+
+    end
+
+    return (@intelligence.to_i * 2) + (level_value * 2)
 
   end
 
   #===========================================================================
   # ■ attack_speed
-  #--------------------------------------------------------------------------
-  # Fórmula de velocidade de ataque.
+  #---------------------------------------------------------------------------
+  # Velocidade de ataque.
   #===========================================================================
   def attack_speed
 
-    return 100 + (@agility * 2)
+    return 100 + (@agility.to_i * 2)
 
   end
 
   #===========================================================================
   # ■ critical_chance
-  #--------------------------------------------------------------------------
-  # Fórmula de crítico.
+  #---------------------------------------------------------------------------
+  # Chance de crítico.
   #===========================================================================
   def critical_chance
 
-    return (@dexterity * 0.5)
+    return (@dexterity.to_i * 0.5)
 
   end
 
   #===========================================================================
   # ■ max_hp_formula
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Fórmula HP máximo.
   #===========================================================================
   def max_hp_formula
 
-    return 100 + (@vitality * 10) + (@level * 5)
+    level_value = 1
+
+    if defined?(@level) && @level != nil
+
+      level_value = @level.to_i
+
+    end
+
+    return 100 + (@vitality.to_i * 10) + (level_value * 5)
 
   end
 
   #===========================================================================
   # ■ max_mp_formula
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Fórmula MP máximo.
   #===========================================================================
   def max_mp_formula
 
-    return 50 + (@intelligence * 10) + (@level * 3)
+    level_value = 1
+
+    if defined?(@level) && @level != nil
+
+      level_value = @level.to_i
+
+    end
+
+    return 50 + (@intelligence.to_i * 10) + (level_value * 3)
+
+  end
+
+  #===========================================================================
+  # ■ equipment_atk_bonus
+  #===========================================================================
+  def equipment_atk_bonus
+
+    return FO_PlayerStats.equipment_atk_bonus if defined?(FO_PlayerStats)
+
+    return 0
+
+  end
+
+  #===========================================================================
+  # ■ equipment_pdef_bonus
+  #===========================================================================
+  def equipment_pdef_bonus
+
+    return FO_PlayerStats.equipment_pdef_bonus if defined?(FO_PlayerStats)
+
+    return 0
+
+  end
+
+  #===========================================================================
+  # ■ equipment_mdef_bonus
+  #===========================================================================
+  def equipment_mdef_bonus
+
+    return FO_PlayerStats.equipment_mdef_bonus if defined?(FO_PlayerStats)
+
+    return 0
 
   end
 
   #===========================================================================
   # ■ recalculate_stats
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Recalcula atributos derivados.
   #===========================================================================
   def recalculate_stats
@@ -136,10 +392,95 @@ class FO_PlayerData
     @max_hp = max_hp_formula
     @max_mp = max_mp_formula
 
-    @hp = FO_Utils.clamp(@hp, 0, @max_hp)
-    @mp = FO_Utils.clamp(@mp, 0, @max_mp)
+    @base_attack_power   = base_attack_power_value
+    @base_defense        = base_defense_value
+    @base_magic_defense  = base_magic_defense_value
 
-    FO_Debug.debug_log("engine", "Stats recalculados.")
+    @final_attack_power  = attack_power
+    @final_defense       = defense
+    @final_magic_defense = magic_defense
+
+    if defined?(FO_Utils)
+
+      @hp = FO_Utils.clamp(@hp, 0, @max_hp)
+      @mp = FO_Utils.clamp(@mp, 0, @max_mp)
+
+    else
+
+      @hp = [[@hp, 0].max, @max_hp].min
+      @mp = [[@mp, 0].max, @max_mp].min
+
+    end
+
+    log_stats_debug("Stats recalculados.")
+
+  end
+
+  #===========================================================================
+  # ■ debug_stats
+  #===========================================================================
+  def debug_stats
+
+    log_stats_action("===== PLAYER STATS =====")
+    log_stats_action("STR: #{@strength}")
+    log_stats_action("AGI: #{@agility}")
+    log_stats_action("INT: #{@intelligence}")
+    log_stats_action("VIT: #{@vitality}")
+    log_stats_action("DEX: #{@dexterity}")
+    log_stats_action("Base ATK: #{@base_attack_power}")
+    log_stats_action("Equip ATK: #{equipment_atk_bonus}")
+    log_stats_action("Final ATK: #{attack_power}")
+    log_stats_action("Base DEF: #{@base_defense}")
+    log_stats_action("Equip PDEF: #{equipment_pdef_bonus}")
+    log_stats_action("Final DEF: #{defense}")
+    log_stats_action("Base MDEF: #{@base_magic_defense}")
+    log_stats_action("Equip MDEF: #{equipment_mdef_bonus}")
+    log_stats_action("Final MDEF: #{magic_defense}")
+    log_stats_action("Max HP: #{@max_hp}")
+    log_stats_action("Max MP: #{@max_mp}")
+    log_stats_action("========================")
+
+  end
+
+  #===========================================================================
+  # ■ log_stats_action
+  #===========================================================================
+  def log_stats_action(message)
+
+    if defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    elsif defined?(FO_Debug)
+
+      FO_Debug.debug_log("player_stats", message)
+
+    elsif defined?(FO_CORE)
+
+      FO_CORE.debug(message)
+
+    else
+
+      p message
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ log_stats_debug
+  #===========================================================================
+  def log_stats_debug(message)
+
+    if defined?(FO_Debug)
+
+      FO_Debug.debug_log("engine", message)
+
+    elsif defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    end
 
   end
 
@@ -153,31 +494,29 @@ end
 
 class FO_PlayerData
 
-  alias fo_playerstats_initialize initialize
+  unless method_defined?(:fo_playerstats_v110_initialize)
+
+    alias fo_playerstats_v110_initialize initialize
+
+  end
 
   #===========================================================================
   # ■ initialize
   #===========================================================================
   def initialize(name = "Player")
 
-    fo_playerstats_initialize(name)
+    fo_playerstats_v110_initialize(name)
 
     setup_stats
 
     recalculate_stats
 
-    FO_Logger.action("#{@name} stats carregados.")
+    log_stats_action("#{@name} stats carregados.")
 
   end
 
 end
 
-#==============================================================================
-# ■ Inicialização
-#==============================================================================
-
-FO_Logger.action("FO_PlayerStats carregado com sucesso.")
-
-FO_Debug.debug_log("engine", "FO_PlayerStats carregado.")
-
-FO_CORE.debug("FO_PlayerStats carregado com sucesso.")
+FO_PlayerStats.log_action(
+  "FO_PlayerStats v1.1.0 carregado com sucesso."
+)

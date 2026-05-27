@@ -1,0 +1,8 @@
+[21:00:58] FO_PlayerRuntimeSystem carregado.
+[21:00:58] FO_EntityRuntimeSystem carregado.
+[21:06:35] FO_PlayerRuntimeSystem carregado.
+[21:06:35] FO_EntityRuntimeSystem carregado.
+[21:12:27] FO_PlayerRuntimeSystem carregado.
+[21:12:27] FO_EntityRuntimeSystem carregado.
+[21:17:12] FO_PlayerRuntimeSystem carregado.
+[21:17:12] FO_EntityRuntimeSystem carregado.

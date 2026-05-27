@@ -1,0 +1,42 @@
+[22:29:07] FO_CombatSystem carregado.
+[22:29:07] FO_TargetSystem carregado.
+[22:29:07] FO_AutoAttackSystem carregado.
+[22:29:07] FO_MobAISystem carregado.
+[22:29:07] FO_LootSystem v2.2.1 carregado.
+[22:29:07] FO_EnemySystem carregado.
+[22:29:07] FO_AISystem carregado.
+[22:33:15] FO_CombatSystem carregado.
+[22:33:15] FO_TargetSystem carregado.
+[22:33:15] FO_AutoAttackSystem carregado.
+[22:33:15] FO_MobAISystem carregado.
+[22:33:15] FO_LootSystem v2.2.1 carregado.
+[22:33:15] FO_EnemySystem carregado.
+[22:33:15] FO_AISystem carregado.
+[22:37:13] FO_CombatSystem carregado.
+[22:37:13] FO_TargetSystem carregado.
+[22:37:13] FO_AutoAttackSystem carregado.
+[22:37:13] FO_MobAISystem carregado.
+[22:37:13] FO_LootSystem v2.2.1 carregado.
+[22:37:14] FO_EnemySystem carregado.
+[22:37:14] FO_AISystem carregado.
+[22:46:15] FO_TargetSystem carregado.
+[22:46:15] FO_AutoAttackSystem carregado.
+[22:46:15] FO_MobAISystem carregado.
+[22:46:15] FO_LootSystem v2.2.1 carregado.
+[22:46:15] FO_EnemySystem carregado.
+[22:46:15] FO_AISystem carregado.
+[22:53:07] FO_TargetSystem carregado.
+[22:53:07] FO_AutoAttackSystem carregado.
+[22:53:07] FO_MobAISystem carregado.
+[22:53:07] FO_LootSystem v2.2.1 carregado.
+[22:53:07] FO_EnemySystem carregado.
+[22:53:07] FO_AISystem carregado.
+[22:53:09] Dano aplicado. ATK 23 / DEF 0 / DMG 23
+[22:56:39] FO_TargetSystem carregado.
+[22:56:39] FO_AutoAttackSystem carregado.
+[22:56:39] FO_MobAISystem carregado.
+[22:56:39] FO_LootSystem v2.2.1 carregado.
+[22:56:39] FO_EnemySystem carregado.
+[22:56:39] FO_AISystem carregado.
+[22:56:41] Miss executado.
+[22:56:41] Dano aplicado. ATK 135 / DEF 0 / DMG 135

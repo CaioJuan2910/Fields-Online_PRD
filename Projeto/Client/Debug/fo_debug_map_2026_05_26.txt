@@ -1,0 +1,42 @@
+[22:29:07] FO_MapEntitySystem carregado.
+[22:29:07] FO_EntityVisualSystem carregado.
+[22:29:07] FO_TargetVisualSystem carregado.
+[22:29:07] FO_FloatingDamageSystem carregado.
+[22:29:07] FO_InteractionSystem carregado.
+[22:29:08] Entidades limpas.
+[22:29:08] Scan de entidades concluído.
+[22:33:15] FO_MapEntitySystem carregado.
+[22:33:15] FO_EntityVisualSystem carregado.
+[22:33:15] FO_TargetVisualSystem carregado.
+[22:33:15] FO_FloatingDamageSystem carregado.
+[22:33:15] FO_InteractionSystem carregado.
+[22:33:15] Entidades limpas.
+[22:33:15] Scan de entidades concluído.
+[22:37:14] FO_MapEntitySystem carregado.
+[22:37:14] FO_EntityVisualSystem carregado.
+[22:37:14] FO_TargetVisualSystem carregado.
+[22:37:14] FO_FloatingDamageSystem carregado.
+[22:37:14] FO_InteractionSystem carregado.
+[22:37:14] Entidades limpas.
+[22:37:14] Scan de entidades concluído.
+[22:46:15] FO_MapEntitySystem carregado.
+[22:46:15] FO_EntityVisualSystem carregado.
+[22:46:15] FO_TargetVisualSystem carregado.
+[22:46:15] FO_FloatingDamageSystem carregado.
+[22:46:15] FO_InteractionSystem carregado.
+[22:46:20] Entidades limpas.
+[22:46:20] Scan de entidades concluído.
+[22:53:07] FO_MapEntitySystem carregado.
+[22:53:07] FO_EntityVisualSystem carregado.
+[22:53:07] FO_TargetVisualSystem carregado.
+[22:53:07] FO_FloatingDamageSystem carregado.
+[22:53:07] FO_InteractionSystem carregado.
+[22:53:08] Entidades limpas.
+[22:53:08] Scan de entidades concluído.
+[22:56:39] FO_MapEntitySystem carregado.
+[22:56:39] FO_EntityVisualSystem carregado.
+[22:56:39] FO_TargetVisualSystem carregado.
+[22:56:39] FO_FloatingDamageSystem carregado.
+[22:56:39] FO_InteractionSystem carregado.
+[22:56:40] Entidades limpas.
+[22:56:40] Scan de entidades concluído.

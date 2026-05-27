@@ -4,15 +4,29 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.0.1
-# Data......: 18/05/2026
+# Versão....: 1.1.0
+# Data......: 25/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Estrutura principal do personagem do jogador.
 #------------------------------------------------------------------------------
+# Funções:
+# - Dados principais do personagem
+# - HP / MP
+# - EXP / Level
+# - Gold
+# - Posição
+# - Save / Load
+# - Player atual oficial
+#------------------------------------------------------------------------------
+# FO_EngineBoot:
+# - NÃO precisa alterar o FO_EngineBoot agora.
+# - Este sistema já está registrado no boot atual.
 #==============================================================================
 
 class FO_PlayerData
+
+  @current = nil
 
   #===========================================================================
   # ■ ATTR_ACCESSOR
@@ -36,6 +50,91 @@ class FO_PlayerData
   attr_accessor :y
 
   attr_accessor :inventory
+
+  #===========================================================================
+  # ■ self.current
+  #---------------------------------------------------------------------------
+  # Retorna o player atual oficial.
+  #===========================================================================
+  def self.current
+
+    return @current
+
+  end
+
+  #===========================================================================
+  # ■ self.current?
+  #---------------------------------------------------------------------------
+  # Verifica se existe player atual.
+  #===========================================================================
+  def self.current?
+
+    return !@current.nil?
+
+  end
+
+  #===========================================================================
+  # ■ self.set_current
+  #---------------------------------------------------------------------------
+  # Define o player atual oficial.
+  #===========================================================================
+  def self.set_current(player)
+
+    if player.nil?
+
+      @current = nil
+
+      log_class_action("Player atual limpo.")
+
+      return nil
+
+    end
+
+    unless player.is_a?(FO_PlayerData)
+
+      log_class_error("Tentativa de definir player atual inválido.")
+
+      return nil
+
+    end
+
+    @current = player
+
+    log_class_action("Player atual definido: #{@current.name}")
+
+    return @current
+
+  end
+
+  #===========================================================================
+  # ■ self.create_current
+  #---------------------------------------------------------------------------
+  # Cria e define um novo player atual.
+  #===========================================================================
+  def self.create_current(name = "Player")
+
+    player = FO_PlayerData.new(name)
+
+    set_current(player)
+
+    return player
+
+  end
+
+  #===========================================================================
+  # ■ self.clear_current
+  #---------------------------------------------------------------------------
+  # Limpa o player atual.
+  #===========================================================================
+  def self.clear_current
+
+    @current = nil
+
+    log_class_action("Player atual removido.")
+
+    return true
+
+  end
 
   #===========================================================================
   # ■ initialize
@@ -63,20 +162,15 @@ class FO_PlayerData
 
     @inventory = []
 
-    FO_Logger.action(
-      "Personagem criado: #{@name}"
-    )
+    log_action("Personagem criado: #{@name}")
 
-    FO_Debug.debug_log(
-      "engine",
-      "FO_PlayerData criado."
-    )
+    debug_log("FO_PlayerData criado.")
 
   end
 
   #===========================================================================
   # ■ alive?
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Verifica se jogador está vivo.
   #===========================================================================
   def alive?
@@ -87,7 +181,7 @@ class FO_PlayerData
 
   #===========================================================================
   # ■ dead?
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Verifica se jogador morreu.
   #===========================================================================
   def dead?
@@ -98,31 +192,39 @@ class FO_PlayerData
 
   #===========================================================================
   # ■ gain_exp
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Adiciona experiência.
   #===========================================================================
   def gain_exp(value)
 
+    value = value.to_i
+
+    return false if value <= 0
+
     @exp += value
 
-    FO_Logger.action(
-      "#{@name} ganhou #{value} EXP."
-    )
+    log_action("#{@name} ganhou #{value} EXP.")
 
     check_level_up
+
+    return true
 
   end
 
   #===========================================================================
   # ■ check_level_up
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Verifica level up.
   #===========================================================================
   def check_level_up
 
-    required_exp = @level * 100
+    leveled = false
 
-    if @exp >= required_exp
+    loop do
+
+      required_exp = @level * 100
+
+      break if @exp < required_exp
 
       @exp -= required_exp
 
@@ -136,65 +238,80 @@ class FO_PlayerData
 
       @mp = @max_mp
 
-      FO_Logger.action(
-        "#{@name} subiu para o nível #{@level}"
-      )
+      leveled = true
 
-      FO_Debug.debug_log(
-        "engine",
-        "Level Up executado."
-      )
+      log_action("#{@name} subiu para o nível #{@level}")
+
+      debug_log("Level Up executado.")
 
     end
+
+    if leveled && self.respond_to?(:recalculate_stats)
+
+      recalculate_stats
+
+    end
+
+    return leveled
 
   end
 
   #===========================================================================
   # ■ gain_gold
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Adiciona gold.
   #===========================================================================
   def gain_gold(value)
 
+    value = value.to_i
+
+    return false if value <= 0
+
     @gold += value
 
-    @gold = FO_Utils.clamp(
-      @gold,
-      0,
-      FO_Settings::MAX_GOLD
-    )
+    if defined?(FO_Utils) && defined?(FO_Settings)
 
-    FO_Logger.action(
-      "#{@name} ganhou #{value} gold."
-    )
+      @gold = FO_Utils.clamp(
+        @gold,
+        0,
+        FO_Settings::MAX_GOLD
+      )
+
+    end
+
+    log_action("#{@name} ganhou #{value} gold.")
+
+    return true
 
   end
 
   #===========================================================================
   # ■ move_to
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Move personagem.
   #===========================================================================
   def move_to(map_id, x, y)
 
-    @map_id = map_id
+    @map_id = map_id.to_i
 
-    @x = x
+    @x = x.to_i
 
-    @y = y
+    @y = y.to_i
 
-    FO_Logger.action(
-      "#{@name} moveu para mapa #{map_id} (#{x}, #{y})"
-    )
+    log_action("#{@name} moveu para mapa #{@map_id} (#{@x}, #{@y})")
+
+    return true
 
   end
 
   #===========================================================================
   # ■ save
-  #--------------------------------------------------------------------------
+  #---------------------------------------------------------------------------
   # Salva personagem.
   #===========================================================================
   def save
+
+    return false unless defined?(FO_DataManager)
 
     file_name = "#{@name.downcase}.rxdata"
 
@@ -205,26 +322,26 @@ class FO_PlayerData
 
     if result
 
-      FO_Logger.action(
-        "Personagem salvo: #{@name}"
-      )
+      log_action("Personagem salvo: #{@name}")
 
     else
 
-      FO_Logger.error(
-        "Falha ao salvar personagem."
-      )
+      log_error("Falha ao salvar personagem.")
 
     end
+
+    return result
 
   end
 
   #===========================================================================
   # ■ self.load
-  #--------------------------------------------------------------------------
-  # Carrega personagem.
+  #---------------------------------------------------------------------------
+  # Carrega personagem e define como player atual.
   #===========================================================================
   def self.load(name)
+
+    return nil unless defined?(FO_DataManager)
 
     file_name = "#{name.downcase}.rxdata"
 
@@ -232,17 +349,15 @@ class FO_PlayerData
 
     if player
 
-      FO_Logger.action(
-        "Personagem carregado: #{name}"
-      )
+      log_class_action("Personagem carregado: #{name}")
+
+      set_current(player)
 
       return player
 
     else
 
-      FO_Logger.error(
-        "Falha ao carregar personagem."
-      )
+      log_class_error("Falha ao carregar personagem.")
 
       return nil
 
@@ -250,21 +365,182 @@ class FO_PlayerData
 
   end
 
+  #===========================================================================
+  # ■ self.current_attack_power
+  #---------------------------------------------------------------------------
+  # Atalho para o ataque do player atual.
+  #===========================================================================
+  def self.current_attack_power
+
+    return 0 if @current.nil?
+
+    if @current.respond_to?(:attack_power)
+
+      return @current.attack_power.to_i
+
+    end
+
+    return 0
+
+  end
+
+  #===========================================================================
+  # ■ self.current_defense
+  #---------------------------------------------------------------------------
+  # Atalho para defesa física do player atual.
+  #===========================================================================
+  def self.current_defense
+
+    return 0 if @current.nil?
+
+    if @current.respond_to?(:defense)
+
+      return @current.defense.to_i
+
+    end
+
+    return 0
+
+  end
+
+  #===========================================================================
+  # ■ self.current_magic_defense
+  #---------------------------------------------------------------------------
+  # Atalho para defesa mágica do player atual.
+  #===========================================================================
+  def self.current_magic_defense
+
+    return 0 if @current.nil?
+
+    if @current.respond_to?(:magic_defense)
+
+      return @current.magic_defense.to_i
+
+    end
+
+    return 0
+
+  end
+
+  #===========================================================================
+  # ■ log_action
+  #===========================================================================
+  def log_action(message)
+
+    if defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    elsif defined?(FO_Debug)
+
+      FO_Debug.debug_log("player_data", message)
+
+    elsif defined?(FO_CORE)
+
+      FO_CORE.debug(message)
+
+    else
+
+      p message
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ log_error
+  #===========================================================================
+  def log_error(message)
+
+    if defined?(FO_Logger) && FO_Logger.respond_to?(:error)
+
+      FO_Logger.error(message)
+
+    elsif defined?(FO_Logger)
+
+      FO_Logger.action("ERRO: #{message}")
+
+    elsif defined?(FO_Debug)
+
+      FO_Debug.debug_log("player_data", "ERRO: #{message}")
+
+    else
+
+      p "ERRO: #{message}"
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ debug_log
+  #===========================================================================
+  def debug_log(message)
+
+    if defined?(FO_Debug)
+
+      FO_Debug.debug_log("engine", message)
+
+    elsif defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ self.log_class_action
+  #===========================================================================
+  def self.log_class_action(message)
+
+    if defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    elsif defined?(FO_Debug)
+
+      FO_Debug.debug_log("player_data", message)
+
+    elsif defined?(FO_CORE)
+
+      FO_CORE.debug(message)
+
+    else
+
+      p message
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ self.log_class_error
+  #===========================================================================
+  def self.log_class_error(message)
+
+    if defined?(FO_Logger) && FO_Logger.respond_to?(:error)
+
+      FO_Logger.error(message)
+
+    elsif defined?(FO_Logger)
+
+      FO_Logger.action("ERRO: #{message}")
+
+    elsif defined?(FO_Debug)
+
+      FO_Debug.debug_log("player_data", "ERRO: #{message}")
+
+    else
+
+      p "ERRO: #{message}"
+
+    end
+
+  end
+
 end
 
-#==============================================================================
-# ■ Inicialização
-#==============================================================================
-
-FO_Logger.action(
-  "FO_PlayerData carregado com sucesso."
-)
-
-FO_Debug.debug_log(
-  "engine",
-  "FO_PlayerData carregado."
-)
-
-FO_CORE.debug(
-  "FO_PlayerData carregado com sucesso."
+FO_PlayerData.log_class_action(
+  "FO_PlayerData v1.1.0 carregado com sucesso."
 )

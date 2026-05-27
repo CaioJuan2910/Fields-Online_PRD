@@ -1,0 +1,60 @@
+[22:29:07] FO_Debug carregado com sucesso.
+[22:29:07] FO_DeveloperMode carregado.
+[22:29:07] FO_DataManager carregado.
+[22:29:07] Sistemas registrados.
+[22:29:07] Boot iniciado.
+[22:29:07] FO_ItemDatabase carregado.
+[22:29:08] Scene_Map iniciada.
+[22:29:10] FO_PlayerData criado.
+[22:29:10] Stats recalculados.
+[22:33:15] FO_Debug carregado com sucesso.
+[22:33:15] FO_DeveloperMode carregado.
+[22:33:15] FO_DataManager carregado.
+[22:33:15] Sistemas registrados.
+[22:33:15] Boot iniciado.
+[22:33:15] FO_ItemDatabase carregado.
+[22:33:15] Scene_Map iniciada.
+[22:33:17] FO_PlayerData criado.
+[22:33:17] Stats recalculados.
+[22:37:13] FO_Debug carregado com sucesso.
+[22:37:13] FO_DeveloperMode carregado.
+[22:37:13] FO_DataManager carregado.
+[22:37:13] Sistemas registrados.
+[22:37:13] Boot iniciado.
+[22:37:13] FO_ItemDatabase carregado.
+[22:37:14] Scene_Map iniciada.
+[22:37:15] FO_PlayerData criado.
+[22:37:15] Stats recalculados.
+[22:37:15] Stats recalculados.
+[22:37:18] Stats recalculados.
+[22:37:18] Stats recalculados.
+[22:46:15] FO_Debug carregado com sucesso.
+[22:46:15] FO_DeveloperMode carregado.
+[22:46:15] FO_DataManager carregado.
+[22:46:15] Sistemas registrados.
+[22:46:15] Boot iniciado.
+[22:46:15] FO_ItemDatabase carregado.
+[22:46:20] Scene_Map iniciada.
+[22:46:22] FO_PlayerData criado.
+[22:46:22] Stats recalculados.
+[22:53:07] FO_Debug carregado com sucesso.
+[22:53:07] FO_DeveloperMode carregado.
+[22:53:07] FO_DataManager carregado.
+[22:53:07] Sistemas registrados.
+[22:53:07] Boot iniciado.
+[22:53:07] FO_ItemDatabase carregado.
+[22:53:08] Scene_Map iniciada.
+[22:53:09] FO_PlayerData criado.
+[22:53:09] Stats recalculados.
+[22:53:09] Stats recalculados.
+[22:56:39] FO_Debug carregado com sucesso.
+[22:56:39] FO_DeveloperMode carregado.
+[22:56:39] FO_DataManager carregado.
+[22:56:39] Sistemas registrados.
+[22:56:39] Boot iniciado.
+[22:56:39] FO_ItemDatabase carregado.
+[22:56:40] Scene_Map iniciada.
+[22:56:41] FO_PlayerData criado.
+[22:56:41] Stats recalculados.
+[22:56:41] Stats recalculados.
+[22:56:41] Stats recalculados.

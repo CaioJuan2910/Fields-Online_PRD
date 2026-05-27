@@ -4,41 +4,43 @@
 # Fields Online MMORPG
 #------------------------------------------------------------------------------
 # Autor.....: ChatGPT & Caio
-# Versão....: 1.0.0
-# Data......: 18/05/2026
+# Versão....: 1.1.2
+# Data......: 26/05/2026
 #------------------------------------------------------------------------------
 # Descrição:
 # Sistema de combate do projeto Fields Online.
 #------------------------------------------------------------------------------
-# Funções atuais:
+# Funções:
 # - Ataque
 # - Dano
 # - Crítico
 # - Miss
 # - Morte
+# - Compatibilidade com attacker.attack_power
+# - Compatibilidade com FO_PlayerData.current_attack_power
+# - Compatibilidade com alvos Runtime
+# - Métodos internos de teste com nomes curtos para eventos RMXP
 #------------------------------------------------------------------------------
+# FO_EngineBoot:
+# - NÃO precisa alterar o FO_EngineBoot agora.
+# - Este sistema já está registrado no boot atual.
 #==============================================================================
 
 module FO_CombatSystem
 
-  #===========================================================================
-  # ■ CONFIGURAÇÕES
-  #===========================================================================
-
   CRITICAL_DAMAGE_MULTIPLIER = 2.0
-
-  BASE_MISS_CHANCE           = 5
+  BASE_MISS_CHANCE = 5
+  DEFAULT_ATTACK_POWER = 10
+  DEFAULT_DEFENSE = 0
+  DEFAULT_CRITICAL_CHANCE = 0
 
   #===========================================================================
   # ■ calculate_damage
-  #--------------------------------------------------------------------------
-  # Calcula dano do atacante contra defensor.
   #===========================================================================
   def self.calculate_damage(attacker, target)
 
-    attack = attacker.attack_power
-
-    defense = target.defense
+    attack = attacker_attack_power(attacker)
+    defense = target_defense(target)
 
     base_damage = attack - (defense / 2)
 
@@ -49,29 +51,106 @@ module FO_CombatSystem
     critical = critical_hit?(attacker)
 
     if critical
-
-      base_damage *= CRITICAL_DAMAGE_MULTIPLIER
-
+      base_damage = (base_damage * CRITICAL_DAMAGE_MULTIPLIER).to_i
     end
 
     base_damage = base_damage.to_i
 
     return {
       :damage   => base_damage,
-      :critical => critical
+      :critical => critical,
+      :attack   => attack,
+      :defense  => defense
     }
 
   end
 
   #===========================================================================
+  # ■ attacker_attack_power
+  #===========================================================================
+  def self.attacker_attack_power(attacker)
+
+    if player_attacker?(attacker)
+
+      if defined?(FO_PlayerData) &&
+         FO_PlayerData.respond_to?(:current_attack_power)
+
+        value = FO_PlayerData.current_attack_power.to_i
+
+        return value if value > 0
+
+      end
+
+    end
+
+    if attacker != nil && attacker.respond_to?(:attack_power)
+
+      value = attacker.attack_power.to_i
+
+      return value if value > 0
+
+    end
+
+    if attacker != nil && attacker.respond_to?(:atk)
+
+      value = attacker.atk.to_i
+
+      return value if value > 0
+
+    end
+
+    return DEFAULT_ATTACK_POWER
+
+  end
+
+  #===========================================================================
+  # ■ target_defense
+  #===========================================================================
+  def self.target_defense(target)
+
+    return DEFAULT_DEFENSE if target.nil?
+
+    if target.respond_to?(:defense)
+      return target.defense.to_i
+    end
+
+    if target.respond_to?(:pdef)
+      return target.pdef.to_i
+    end
+
+    return DEFAULT_DEFENSE
+
+  end
+
+  #===========================================================================
+  # ■ attacker_critical_chance
+  #===========================================================================
+  def self.attacker_critical_chance(attacker)
+
+    if player_attacker?(attacker)
+
+      player = current_player
+
+      if player != nil && player.respond_to?(:critical_chance)
+        return player.critical_chance.to_i
+      end
+
+    end
+
+    if attacker != nil && attacker.respond_to?(:critical_chance)
+      return attacker.critical_chance.to_i
+    end
+
+    return DEFAULT_CRITICAL_CHANCE
+
+  end
+
+  #===========================================================================
   # ■ critical_hit?
-  #--------------------------------------------------------------------------
-  # Verifica crítico.
   #===========================================================================
   def self.critical_hit?(attacker)
 
-    chance = attacker.critical_chance
-
+    chance = attacker_critical_chance(attacker)
     roll = rand(100)
 
     return roll < chance
@@ -80,8 +159,6 @@ module FO_CombatSystem
 
   #===========================================================================
   # ■ miss_attack?
-  #--------------------------------------------------------------------------
-  # Verifica miss.
   #===========================================================================
   def self.miss_attack?
 
@@ -93,18 +170,28 @@ module FO_CombatSystem
 
   #===========================================================================
   # ■ attack
-  #--------------------------------------------------------------------------
-  # Executa ataque.
   #===========================================================================
   def self.attack(attacker, target)
 
+    attacker_name_value = attacker_name(attacker)
+    target_name_value   = target_name(target)
+
+    if target.nil?
+
+      log_action("#{attacker_name_value} tentou atacar, mas o alvo é inválido.")
+
+      return {
+        :result => :invalid_target,
+        :damage => 0
+      }
+
+    end
+
     if miss_attack?
 
-      FO_Logger.action(
-        "#{attacker.name} errou o ataque."
-      )
+      log_action("#{attacker_name_value} errou o ataque.")
 
-      FO_Debug.debug_log("combat", "Miss executado.")
+      debug_log("Miss executado.")
 
       return {
         :result => :miss,
@@ -116,30 +203,27 @@ module FO_CombatSystem
     result = calculate_damage(attacker, target)
 
     damage = result[:damage]
-
     critical = result[:critical]
 
-    target.hp -= damage
-
-    if target.hp < 0
-      target.hp = 0
-    end
+    apply_damage(target, damage)
 
     if critical
 
-      FO_Logger.action(
-        "#{attacker.name} causou CRÍTICO em #{target.name} (#{damage})"
+      log_action(
+        "#{attacker_name_value} causou CRÍTICO em #{target_name_value} (#{damage})"
       )
 
     else
 
-      FO_Logger.action(
-        "#{attacker.name} atacou #{target.name} (#{damage})"
+      log_action(
+        "#{attacker_name_value} atacou #{target_name_value} (#{damage})"
       )
 
     end
 
-    FO_Debug.debug_log("combat", "Dano aplicado.")
+    debug_log(
+      "Dano aplicado. ATK #{result[:attack]} / DEF #{result[:defense]} / DMG #{damage}"
+    )
 
     dead = target_dead?(target)
 
@@ -147,25 +231,316 @@ module FO_CombatSystem
       :result   => :hit,
       :damage   => damage,
       :critical => critical,
-      :dead     => dead
+      :dead     => dead,
+      :attack   => result[:attack],
+      :defense  => result[:defense]
     }
 
   end
 
   #===========================================================================
+  # ■ apply_damage
+  #===========================================================================
+  def self.apply_damage(target, damage)
+
+    damage = damage.to_i
+
+    return false if target.nil?
+    return false if damage <= 0
+
+    if target.respond_to?(:damage)
+
+      target.damage(damage)
+
+      return true
+
+    end
+
+    if target.respond_to?(:hp) && target.respond_to?(:hp=)
+
+      target.hp -= damage
+
+      if target.hp < 0
+        target.hp = 0
+      end
+
+      return true
+
+    end
+
+    return false
+
+  end
+
+  #===========================================================================
   # ■ target_dead?
-  #--------------------------------------------------------------------------
-  # Verifica morte.
   #===========================================================================
   def self.target_dead?(target)
 
-    if target.hp <= 0
+    return false if target.nil?
 
-      FO_Logger.action(
-        "#{target.name} morreu."
-      )
+    if target.respond_to?(:dead?)
 
-      FO_Debug.debug_log("combat", "Target morto.")
+      if target.dead?
+
+        log_action("#{target_name(target)} morreu.")
+        debug_log("Target morto.")
+        return true
+
+      end
+
+      return false
+
+    end
+
+    if target.respond_to?(:hp)
+
+      if target.hp <= 0
+
+        log_action("#{target_name(target)} morreu.")
+        debug_log("Target morto.")
+        return true
+
+      end
+
+    end
+
+    return false
+
+  end
+
+  #===========================================================================
+  # ■ player_attacker?
+  #===========================================================================
+  def self.player_attacker?(attacker)
+
+    return true if attacker == :player
+    return true if attacker == "player"
+
+    player = current_player
+
+    return false if player.nil?
+
+    return attacker.equal?(player)
+
+  end
+
+  #===========================================================================
+  # ■ current_player
+  #===========================================================================
+  def self.current_player
+
+    if defined?(FO_PlayerData) &&
+       FO_PlayerData.respond_to?(:current)
+
+      return FO_PlayerData.current
+
+    end
+
+    return nil
+
+  end
+
+  #===========================================================================
+  # ■ attacker_name
+  #===========================================================================
+  def self.attacker_name(attacker)
+
+    if player_attacker?(attacker)
+
+      player = current_player
+
+      return player.name if player != nil && player.respond_to?(:name)
+
+      return "Player"
+
+    end
+
+    if attacker != nil && attacker.respond_to?(:name)
+      return attacker.name.to_s
+    end
+
+    return "Atacante"
+
+  end
+
+  #===========================================================================
+  # ■ target_name
+  #===========================================================================
+  def self.target_name(target)
+
+    if target != nil && target.respond_to?(:name)
+      return target.name.to_s
+    end
+
+    return "Alvo"
+
+  end
+
+  #===========================================================================
+  # ■ log_action
+  #===========================================================================
+  def self.log_action(message)
+
+    if defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    elsif defined?(FO_Debug)
+
+      FO_Debug.debug_log("combat", message)
+
+    elsif defined?(FO_CORE)
+
+      FO_CORE.debug(message)
+
+    else
+
+      p message
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ debug_log
+  #===========================================================================
+  def self.debug_log(message)
+
+    if defined?(FO_Debug)
+
+      FO_Debug.debug_log("combat", message)
+
+    elsif defined?(FO_Logger)
+
+      FO_Logger.action(message)
+
+    end
+
+  end
+
+  #===========================================================================
+  # ■ test_base
+  #---------------------------------------------------------------------------
+  # Teste curto sem arma.
+  # Use no evento:
+  #   FO_CombatSystem.test_base
+  #===========================================================================
+  def self.test_base
+
+    create_test_player
+
+    FO_Inventory.clear if defined?(FO_Inventory)
+    FO_EquipmentSystem.clear if defined?(FO_EquipmentSystem)
+
+    recalc_current_player
+
+    target = FO_CombatTestTarget.new
+
+    log_action("===== TESTE COMBATE SEM ARMA =====")
+
+    result = attack(:player, target)
+
+    log_action("HP restante do alvo: #{target.hp}")
+
+    return result
+
+  end
+
+  #===========================================================================
+  # ■ test_weapon
+  #---------------------------------------------------------------------------
+  # Teste curto com arma ID 1.
+  # Use no evento:
+  #   FO_CombatSystem.test_weapon
+  #===========================================================================
+  def self.test_weapon
+
+    create_test_player
+
+    FO_Inventory.clear if defined?(FO_Inventory)
+    FO_EquipmentSystem.clear if defined?(FO_EquipmentSystem)
+
+    if defined?(FO_Inventory)
+      FO_Inventory.add_item(:weapon, 1, 1)
+    end
+
+    if defined?(FO_EquipmentSystem)
+      FO_EquipmentSystem.equip_weapon(1)
+    end
+
+    recalc_current_player
+
+    target = FO_CombatTestTarget.new
+
+    log_action("===== TESTE COMBATE COM ARMA =====")
+
+    result = attack(:player, target)
+
+    log_action("HP restante do alvo: #{target.hp}")
+
+    return result
+
+  end
+
+  #===========================================================================
+  # ■ test_player_damage
+  # Compatibilidade com o nome anterior.
+  #===========================================================================
+  def self.test_player_damage
+
+    return test_base
+
+  end
+
+  #===========================================================================
+  # ■ test_player_damage_with_weapon
+  # Compatibilidade com o nome anterior.
+  #===========================================================================
+  def self.test_player_damage_with_weapon
+
+    return test_weapon
+
+  end
+
+  #===========================================================================
+  # ■ create_test_player
+  #===========================================================================
+  def self.create_test_player
+
+    if defined?(FO_PlayerData)
+
+      if FO_PlayerData.respond_to?(:current?) &&
+         FO_PlayerData.current?
+
+        return FO_PlayerData.current
+
+      end
+
+      if FO_PlayerData.respond_to?(:create_current)
+
+        return FO_PlayerData.create_current("Caio")
+
+      end
+
+    end
+
+    return nil
+
+  end
+
+  #===========================================================================
+  # ■ recalc_current_player
+  #===========================================================================
+  def self.recalc_current_player
+
+    player = current_player
+
+    return false if player.nil?
+
+    if player.respond_to?(:recalculate_stats)
+
+      player.recalculate_stats
 
       return true
 
@@ -178,11 +553,31 @@ module FO_CombatSystem
 end
 
 #==============================================================================
-# ■ Inicialização
+# ■ FO_CombatTestTarget
+#------------------------------------------------------------------------------
+# Alvo fake para testes de dano.
 #==============================================================================
 
-FO_Logger.action("FO_CombatSystem carregado com sucesso.")
+class FO_CombatTestTarget
 
-FO_Debug.debug_log("combat", "FO_CombatSystem carregado.")
+  attr_accessor :name
+  attr_accessor :hp
 
-FO_CORE.debug("FO_CombatSystem carregado com sucesso.")
+  def initialize
+
+    @name = "Boneco de Treino"
+    @hp = 300
+
+  end
+
+  def defense
+
+    return 0
+
+  end
+
+end
+
+FO_CombatSystem.log_action(
+  "FO_CombatSystem v1.1.2 carregado com sucesso."
+)
